@@ -6,12 +6,14 @@ const fs = require("fs");
 
 app.use(express.static("public"));
 app.use(cors());
+app.use(express.json())
+app.use(express.urlencoded({extended:false}))
 
 app.get("/", (request, response) => {
   response.sendFile(__dirname + "/views/index.html");
 });
 
-app.get("/download", (res, req) => {
+app.get("/download", (req, res) => {
   var url = req.query.url;
   var info = ytdl.getInfo(ytdl.getURLVideoID(url))
   console.log(info)
