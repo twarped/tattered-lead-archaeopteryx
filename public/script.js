@@ -1,6 +1,6 @@
-var url = document.querySelector("#yt-url").value
-var downloadbutton = document.querySelector("#download-button")
+var downloadbutton = document.getElementById("downloadbutton")
 downloadbutton.addEventListener("click",()=>{
+  var url = document.getElementById("yturl").value
   alert(url)
-  window.location = window.location+"download?url="+url
+  window.open(window.location+"download?url="+url)
 })

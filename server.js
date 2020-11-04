@@ -16,9 +16,9 @@ app.get("/", (request, response) => {
 app.get("/download", async (req, res) => {
   var url = req.query.url;
   var info = await ytdl.getInfo(ytdl.getURLVideoID(url))
-  var title = JSON.parse(info)
-  console.log(info)
-  res.header("Content-Disposition", `attachment; filename="${"video"}.mp4"`);
+  var title = info.videoDetails.title
+  console.log(title)
+  res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
   ytdl(url, {
     format: "mp4"
   }).pipe(res);
