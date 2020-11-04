@@ -1,34 +1,26 @@
-// server.js
-// where your node app starts
-
-// we've started you off with Express (https://expressjs.com/)
-// but feel free to use whatever libraries or frameworks you'd like through `package.json`.
 const express = require("express");
 const app = express();
+const cors = require("cors");
+const ytdl = require("ytdl-core");
+const fs = require("fs");
 
-// our default array of dreams
-const dreams = [
-  "Find and count some sheep",
-  "Climb a really tall mountain",
-  "Wash the dishes"
-];
-
-// make all the files in 'public' available
-// https://expressjs.com/en/starter/static-files.html
 app.use(express.static("public"));
+app.use(cors());
 
-// https://expressjs.com/en/starter/basic-routing.html
 app.get("/", (request, response) => {
   response.sendFile(__dirname + "/views/index.html");
 });
 
-// send the default array of dreams to the webpage
-app.get("/dreams", (request, response) => {
-  // express helps us take JS objects and send them as JSON
-  response.json(dreams);
+app.get("/download", (res, req) => {
+  var url = req.query.url;
+  var info = ytdl.getInfo(ytdl.getURLVideoID(url))
+  console.log(info)
+  res.header("Content-Disposition", `attachment; filename="${"video"}.mp4"`);
+  ytdl(url, {
+    format: "mp4"
+  }).pipe(res);
 });
 
-// listen for requests :)
 const listener = app.listen(process.env.PORT, () => {
   console.log("Your app is listening on port " + listener.address().port);
 });
