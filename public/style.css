@@ -1,6 +1,6 @@
 input {
   border-radius: 6px;
-  box-shadow: 7px 1px 10px grey;
+  box-shadow: -2px 1px 10px grey;
   border: solid 1px grey;
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
@@ -35,9 +35,7 @@ h1 {
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   font-family: sans-serif;
-  background-color: aqua;
-  border-radius: 6px;
-  padding: 6px;
   font-size: 40px;
   width: fit-content;
+  text-shadow: 3px 1px 4px grey;
 }
