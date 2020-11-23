@@ -18,6 +18,7 @@ button {
   box-shadow: 3px 1px 10px grey;
   margin: 10px;
   margin-left: -2px;
+  cursor: pointer;
 }
 .form {
   margin: 0;
