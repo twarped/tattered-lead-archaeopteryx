@@ -1,19 +1,25 @@
-  margin-left: 0px;dius: 6px;
-  box-shadow: 1px 1px 10px grey;
+input {
+  border-radius: 6px;
+  box-shadow: 7px 1px 10px grey;
   border: solid 1px grey;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
   padding: 15px;
   margin: 10px;
-  margin-right: 0px;
+  margin-right: -2px;
 }
 button {
   padding: 15px;
   border-radius: 6px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
   border: solid 1px grey;
-  box-shadow: 1px 1px 10px grey;
-  ma1gin: 10px;
-  margin-left: 0px;  margin-left: 0px;
+  border-left: solid 0px grey;
+  box-shadow: 3px 1px 10px grey;
+  margin: 10px;
+  margin-left: -2px;
 }
-.form{
+.form {
   margin: 0;
   position: absolute;
   top: 50%;
@@ -21,16 +27,17 @@ button {
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
-h1{
+h1 {
   margin: 0;
   position: absolute;
   top: 25%;
   left: 50%;
-  -ms-transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   font-family: sans-serif;
   background-color: aqua;
   border-radius: 6px;
-  padding:6px;
+  padding: 6px;
   font-size: 40px;
-  wi
+  width: fit-content;
+}
