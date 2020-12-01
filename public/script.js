@@ -7,7 +7,9 @@ downloadbutton.addEventListener("click", () => {
       "Download the video with the link of: \n" + url + "?"
     );
     if (wantstodownload == true) {
-      var download = window.open(window.location + "download?url=" + url);
+      var oldlocation = window.location;
+      window.location = window.location+"download?url="+url;
+      window.location = oldlocation;
     }
   } else {
     alert("Type In a Correct Youtube URL");
