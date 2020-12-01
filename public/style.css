@@ -37,11 +37,11 @@ button {
   text-align: center;
 }
 .remix {
-  position:absolute;
+  position: absolute;
   bottom: -5px;
   right: 10px;
 }
-.glitch{
+.glitch {
   position: absolute;
   bottom: -5px;
   left: 10px;
