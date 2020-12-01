@@ -8,7 +8,7 @@ downloadbutton.addEventListener("click", () => {
     );
     if (wantstodownload == true) {
       var oldlocation = window.location;
-      window.location = window.location+"download?url="+url;
+      window.location = window.location.replace("/?","/download?url="+url);
       window.location = oldlocation;
     }
   } else {
