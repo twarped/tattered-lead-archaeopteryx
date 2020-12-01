@@ -1,13 +1,13 @@
 dependencies:
   cors: 2.8.5
   express: 4.17.1
-  fs: 0.0.1-security
+  fs: 0.0.2
   youtube-dl: 3.0.2
-  ytdl-core: 4.0.3
+  ytdl-core: 4.1.1
 packages:
   /accepts/1.3.7:
     dependencies:
-      mime-types: 2.1.25
+      mime-types: 2.1.27
       negotiator: 0.6.2
     dev: false
     engines:
@@ -246,7 +246,7 @@ packages:
       on-finished: 2.3.0
       parseurl: 1.3.3
       path-to-regexp: 0.1.7
-      proxy-addr: 2.0.5
+      proxy-addr: 2.0.6
       qs: 6.7.0
       range-parser: 1.2.1
       safe-buffer: 5.1.2
@@ -326,10 +326,10 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha1-PYyt2Q2XZWn6g1qx+OSyOhBWBac=
-  /fs/0.0.1-security:
+  /fs/0.0.2:
     dev: false
     resolution:
-      integrity: sha1-invTcYa23d84E/I4WLV+yq9eQdQ=
+      integrity: sha1-4fJE7zkzwbKmS9R5kTYGDQ9ZFPg=
   /get-stream/5.2.0:
     dependencies:
       pump: 3.0.0
@@ -433,12 +433,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
-  /ipaddr.js/1.9.0:
+  /ipaddr.js/1.9.1:
     dev: false
     engines:
       node: '>= 0.10'
     resolution:
-      integrity: sha512-M4Sjn6N/+O6/IXSJseKqHoFc+5FdGJ22sXqnjTpdZweHK64MzEPAyQZyEU3R/KRv2GLoa7nNtg/C2Ev6m7z+eA==
+      integrity: sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==
   /is-stream/2.0.0:
     dev: false
     engines:
@@ -484,15 +484,15 @@ packages:
       '0': node >=0.6.0
     resolution:
       integrity: sha1-MT5mvB5cwG5Di8G3SZwuXFastqI=
-  /m3u8stream/0.8.0:
+  /m3u8stream/0.8.3:
     dependencies:
-      miniget: 2.1.0
+      miniget: 4.1.0
       sax: 1.2.4
     dev: false
     engines:
       node: '>=10'
     resolution:
-      integrity: sha512-vvSjdkBPdDHzVr2M+aIXbnYys4zX6m3UzxMaxBJr1PpE0e/3sawkLD4EEmz/q9hv87bleotR70cOWR3UBMtskw==
+      integrity: sha512-0nAcdrF8YJKUkb6PzWdvGftTPyCVWgoiot1AkNVbPKTeIGsWs6DrOjifrJ0Zi8WQfQmD2SuVCjkYIOip12igng==
   /media-typer/0.3.0:
     dev: false
     engines:
@@ -513,26 +513,12 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha1-VSmk1nZUE07cxSZmVoNbD4Ua/O4=
-  /mime-db/1.42.0:
-    dev: false
-    engines:
-      node: '>= 0.6'
-    resolution:
-      integrity: sha512-UbfJCR4UAVRNgMpfImz05smAXK7+c+ZntjaA26ANtkXLlOe947Aag5zdIcKQULAiF9Cq4WxBi9jUs5zkA84bYQ==
   /mime-db/1.44.0:
     dev: false
     engines:
       node: '>= 0.6'
     resolution:
       integrity: sha512-/NOTfLrsPBVeH7YtFPgsVWveuL+4SjjYxaQ1xtM1KMFj7HdxlBlxeyNLzhyJVx7r4rZGJAZ/6lkKCitSc/Nmpg==
-  /mime-types/2.1.25:
-    dependencies:
-      mime-db: 1.42.0
-    dev: false
-    engines:
-      node: '>= 0.6'
-    resolution:
-      integrity: sha512-5KhStqB5xpTAeGqKBAMgwaYMnQik7teQN4IAzC7npDv6kzeU6prfkR67bc87J1kWMPGkoaZSq1npmexMgkmEVg==
   /mime-types/2.1.27:
     dependencies:
       mime-db: 1.44.0
@@ -554,12 +540,12 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==
-  /miniget/2.1.0:
+  /miniget/4.1.0:
     dev: false
     engines:
       node: '>=10'
     resolution:
-      integrity: sha512-fy9x3d/0oOIhkwAms6kgxTYkHwdELhMfgj+9a/aYZpJdTWIIWGta9aXHUtnzUn+LjBmRoTdPRQSi2hkmEvXk3A==
+      integrity: sha512-kzhrNv5L7LlomwGmPGQsLQ2PnT1LeJJWfB0wNFGyv426gEM1gsfziBQmfkr6XOBA8EusZg9nowlNT5CbuKTjZg==
   /minimist/1.2.5:
     dev: false
     resolution:
@@ -655,15 +641,15 @@ packages:
     dev: false
     resolution:
       integrity: sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
-  /proxy-addr/2.0.5:
+  /proxy-addr/2.0.6:
     dependencies:
       forwarded: 0.1.2
-      ipaddr.js: 1.9.0
+      ipaddr.js: 1.9.1
     dev: false
     engines:
       node: '>= 0.10'
     resolution:
-      integrity: sha512-t/7RxHXPH6cJtP0pRG6smSr9QJidhB+3kXu0KgXnbGYMgzEnUxRQ4/LDdfOwZEMyIh3/xHb8PX3t+lfL9z+YVQ==
+      integrity: sha512-dh/frvCBVmSsDYzw6n926jv974gddhkFPfiN8hPOi30Wax25QZyZEGveluCgliBnqmuM+UJmBErbAUFIoDbjOw==
   /psl/1.8.0:
     dev: false
     resolution:
@@ -876,7 +862,7 @@ packages:
   /type-is/1.6.18:
     dependencies:
       media-typer: 0.3.0
-      mime-types: 2.1.25
+      mime-types: 2.1.27
     dev: false
     engines:
       node: '>= 0.6'
@@ -955,17 +941,17 @@ packages:
     requiresBuild: true
     resolution:
       integrity: sha512-LFFfpsYbRLpqKsnb4gzbnyN7fm190tJw3gJVSvfoEfnb/xYIPNT6i9G3jdzPDp/U5cwB3OSq63nUa7rUwxXAGA==
-  /ytdl-core/4.0.3:
+  /ytdl-core/4.1.1:
     dependencies:
       html-entities: 1.3.1
-      m3u8stream: 0.8.0
-      miniget: 2.1.0
+      m3u8stream: 0.8.3
+      miniget: 4.1.0
       sax: 1.2.4
     dev: false
     engines:
       node: '>=10'
     resolution:
-      integrity: sha512-+pM+EocvdHHTfH3xCr3c41cIm8bD7IE/wv/QKjaO7PwdLaaOMIj7xc/7yWwy9NwUDgIKA1YTotcn0qpQ0FVtMA==
+      integrity: sha512-T2VIS64sHKdLLqvuTV7S4WyoUCZLdR7HOP/9jX1CyXKYUjKLFP9UpVIFH0ZUvFSmK48eNFErWLOO5dGouwqztQ==
   /zero-fill/2.2.4:
     dev: false
     resolution:
@@ -976,6 +962,6 @@ shrinkwrapVersion: 3
 specifiers:
   cors: ^2.8.5
   express: ^4.17.1
-  fs: 0.0.1-security
+  fs: ^0.0.2
   youtube-dl: ^3.0.2
-  ytdl-core: ^4.0.3
+  ytdl-core: ^4.1.1

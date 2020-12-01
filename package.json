@@ -4,7 +4,7 @@
   "//3": "updating this file will download and update your packages",
   "name": "hello-express",
   "version": "0.0.1",
-  "description": "A simple Node app built on Express, instantly up and running.",
+  "description": "Free Youtube Downloader With No Ads",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
@@ -12,9 +12,9 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "fs": "0.0.1-security",
+    "fs": "^0.0.2",
     "youtube-dl": "^3.0.2",
-    "ytdl-core": "^4.0.3"
+    "ytdl-core": "^4.1.1"
   },
   "engines": {
     "node": "12.x"
@@ -26,6 +26,10 @@
   "keywords": [
     "node",
     "glitch",
-    "express"
+    "express",
+    "downloader",
+    "youtube",
+    "video",
+    "download"
   ]
 }
