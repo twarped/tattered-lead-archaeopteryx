@@ -6,8 +6,8 @@ const fs = require("fs");
 
 app.use(express.static("public"));
 app.use(cors());
-app.use(express.json())
-app.use(express.urlencoded({extended:false}))
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (request, response) => {
   response.sendFile(__dirname + "/views/index.html");
@@ -15,9 +15,9 @@ app.get("/", (request, response) => {
 
 app.get("/download", async (req, res) => {
   var url = req.query.url;
-  var info = await ytdl.getInfo(ytdl.getURLVideoID(url))
-  var title = info.videoDetails.title
-  console.log(title)
+  var info = await ytdl.getInfo(ytdl.getURLVideoID(url));
+  var title = info.videoDetails.title;
+  console.log(title);
   res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
   ytdl(url, {
     format: "mp4"
