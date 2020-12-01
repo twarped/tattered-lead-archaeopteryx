@@ -6,7 +6,7 @@ input {
   border-bottom-right-radius: 0px;
   padding: 15px;
   margin-right: -2px;
-  width:
+  width:75%;
 }
 button {
   padding: 15px;
@@ -18,6 +18,9 @@ button {
   box-shadow: 3px 1px 10px grey;
   margin-left: -2px;
   cursor: pointer;
+  font-size: 50%;
+  //width:15%;
+  text-align: center;
 }
 .form {
   margin: 0;
@@ -26,7 +29,7 @@ button {
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  width: 100%;
+  width: 80%;
   text-align: center;
 }
 h1 {
