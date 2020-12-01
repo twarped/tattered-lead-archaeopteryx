@@ -7,9 +7,7 @@ downloadbutton.addEventListener("click", () => {
       "Download the video with the link of: \n" + url + "?"
     );
     if (wantstodownload == true) {
-      var oldlocation = window.location;
-      window.location = window.location.replace("/?","/download?url="+url);
-      window.location = oldlocation;
+      window.open("https://tattered-lead-archaeopteryx.glitch.me/download?url="+url)
     }
   } else {
     alert("Type In a Correct Youtube URL");
