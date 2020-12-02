@@ -27,7 +27,104 @@
       type="image/x-icon"
     />
     <!-- import the webpage's stylesheet -->
-    <link rel="stylesheet" href="/style.css" />
+    <!--<link rel="stylesheet" href="/style.css" /> -->
+    <style>
+      input {
+        border-radius: 6px;
+        box-shadow: -2px 1px 10px grey;
+        border: solid 1px grey;
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+        padding: 15px;
+        margin-right: 2px;
+        width: 500px;
+      }
+      button {
+        padding: 15px;
+        width: 100px;
+        border-radius: 6px;
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+        border: solid 1px grey;
+        border-left: solid 0px grey;
+        box-shadow: 3px 1px 10px grey;
+        margin-left: -2px;
+        cursor: pointer;
+        font-size: 75%;
+        text-align: center;
+      }
+      .form {
+        justify-content: center;
+        display: flex;
+        flex-column: row;
+        flex-wrap: wrap;
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        width: 100%;
+        text-align: center;
+      }
+      .remix {
+        position: absolute;
+        bottom: -5px;
+        right: 10px;
+      }
+      .glitch {
+        position: absolute;
+        bottom: -5px;
+        left: 10px;
+      }
+      @media (max-width: 640px) {
+        input {
+          border-radius: 6px;
+          box-shadow: 0px 0.5px 10px grey;
+          border: solid 1px grey;
+          padding: 15px;
+          margin-right: 2px;
+        }
+        button {
+          padding: 15px;
+          border-radius: 6px;
+          border-top-left-radius: 0px;
+          border-top-right-radius: 0px;
+          border: solid 1px grey;
+          border-left: solid 0px grey;
+          box-shadow: 0px 2px 10px grey;
+          margin-left: -2px;
+          cursor: pointer;
+          font-size: 75%;
+          text-align: center;
+        }
+        .form {
+          display: flex;
+          flex-column: column;
+          margin: 0;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+          width: 95%;
+          text-align: center;
+        }
+      }
+      h1 {
+        margin: 0;
+        position: absolute;
+        top: 25%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        font-family: sans-serif;
+        font-size: 40px;
+        width: fit-content;
+        text-shadow: 3px 1px 4px grey;
+        text-align: center;
+      }
+    </style>
 
     <!-- import the webpage's client-side javascript file -->
     <script src="/script.js" defer></script>
@@ -37,7 +134,7 @@
       Unblocked Youtube Video Downloader
     </h1>
     <form class="form">
-      <input id="yturl" placeholder="Youtube Video URL" type="text"/>
+      <input id="yturl" placeholder="Youtube Video URL" type="text" />
       <button id="downloadbutton" role="submit">
         Download...
       </button>
