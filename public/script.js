@@ -13,3 +13,7 @@ downloadbutton.addEventListener("click", () => {
     alert("Type In a Correct Youtube URL");
   }
 });
+var twarped = document.getElementById("twarped");
+twarped.addEventListener("click", () => {
+  window.open()
+})
