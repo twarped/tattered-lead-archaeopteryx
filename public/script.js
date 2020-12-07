@@ -24,21 +24,25 @@ twarped.addEventListener("click", () => {
   );
   twarpedwindow.document.write(`
   <style>
-    a {
+    div {
+      text-align: center;
       font-size: 20px;
       position: absolute;
       left: 50%;
-      transform: translate(-50%,-50%)
+      top: 50%;
+      transform: translate(-50%, -50%);
       padding:10px;
-      width: 80px;
+      width: 120px;
       color: white;
       background-color: aqua;
       border-radius: 6px;
     }
   </style>
-  <a href="https://www.youtube.com/channel/UCqTscCS8dOJ3BTE9UG8ss3w">Youtube</a>
+  <div>
+  <a href="https://www.youtube.com/channel/UCqTscCS8dOJ3BTE9UG8ss3w" target="_blank">Youtube</a>
   <br>
-  <a href="https://greasyfork.org/en/users/317100-twarped">Greasyfork</a>
+  <a href="https://greasyfork.org/en/users/317100-twarped" target="_blank">Greasyfork</a>
+  </div>
   <script type="text/javascript">
   var atags = document.getElementsByClassName("a")
   for (var i = 0; i < atags.length; i++){
