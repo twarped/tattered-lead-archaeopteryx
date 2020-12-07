@@ -13,9 +13,9 @@ app.get("/", (request, response) => {
   response.sendFile(__dirname + "/views/index.html");
 });
 
-app.get("/download", async (req, res) => {
-  var url = req.query.url;
-  var info = await ytdl.getInfo(ytdl.getURLVideoID(url));
+app.get("/watch", async (req, res) => {
+  var url = req.query.v;
+  var info = await ytdl.getInfo(url);
   var title = info.videoDetails.title;
   console.log(title);
   res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
