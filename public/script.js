@@ -1,10 +1,10 @@
 var downloadbutton = document.getElementById("downloadbutton");
 downloadbutton.addEventListener("click", () => {
-  var url = document.getElementById("yturl").value.replace("/(http(s|):\/\/|)youtube.com/watch\?v=/g","");
-  var urlchecker = /(youtube\.com\/watch\?v=|)[a-zA-Z0-9]+/g;
+  var url = document.getElementById("yturl").value;
+  var urlchecker = /(youtube\.com\/watch\?v=|)[a-zA-Z0-9-\-]+/g;
   if (url.match(urlchecker)) {
     var wantstodownload = confirm(
-      "Download the video with the id of: \n" + url + "?"
+      "Download the video with the link/id of: \n" + url + "?"
     );
     if (wantstodownload == true) {
       window.open(
