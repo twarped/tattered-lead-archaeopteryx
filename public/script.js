@@ -15,5 +15,6 @@ downloadbutton.addEventListener("click", () => {
 });
 var twarped = document.getElementById("twarped");
 twarped.addEventListener("click", () => {
-  window.open()
+  var twarpedwindow = window.open("about:blank","twarped", "innerWidth=200,innerHeight=100")
+  twarpedwindow.document.write(`<a href="https://www.youtube.com/channel/UCqTscCS8dOJ3BTE9UG8ss3w">Youtube</a><br><a href="">Greasyfork</a>`)
 })
