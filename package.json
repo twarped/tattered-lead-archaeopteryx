@@ -14,7 +14,8 @@
     "express": "^4.17.1",
     "fs": "^0.0.2",
     "youtube-dl": "^3.0.2",
-    "ytdl-core": "^4.1.1"
+    "yt-dl-playlist": "^2.1.0",
+    "ytdl-core": "^4.4.5"
   },
   "engines": {
     "node": "12.x"

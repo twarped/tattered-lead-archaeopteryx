@@ -3,6 +3,7 @@ const app = express();
 const cors = require("cors");
 const ytdl = require("ytdl-core");
 const fs = require("fs");
+const ytdlp = require("yt-dl-playlist");
 
 app.use(express.static("public"));
 app.use(cors());
@@ -14,6 +15,10 @@ app.get("/", (request, response) => {
 });
 
 app.get("/watch", async (req, res) => {
+  console.log(req.query.v);
+  if (req.query.v[0] == "P" && req.query.v[1] == "P"){
+    console.log("PLAYLIST!")
+  } else {
   var url = req.query.v;
   var info = await ytdl.getInfo(url);
   var title = info.videoDetails.title;
@@ -22,6 +27,7 @@ app.get("/watch", async (req, res) => {
   ytdl(url, {
     format: "mp4"
   }).pipe(res);
+  }
 });
 
 const listener = app.listen(process.env.PORT, () => {
