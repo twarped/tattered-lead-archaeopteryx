@@ -47,16 +47,15 @@ function playlist(url) {
 
 
 app.get("/watch", async (req, res) => {
-  console.log(req.query.v);
-  if ((req.query.v.indexOf("PL") === 0) || (req.query.v.indexOf("list=PL") !== -1 && req.query.v.indexOf("you") !== -1)){
-    var url;
-    if (req.query.v.indexOf("PL") === 0) url = "https://www.youtube.com/?list="+req.query.v; 
-    else if(req.query.v.indexOf("list=PL") !== -1 && req.query.v.indexOf("you") !== -1) {
-      var playlistId = req.query.v.substring(req.query.v.indexOf('list=') + 5);
-      return "https://www.youtube.com/playlist?list=" + playlistId;
-    }
+  console.log(req.query)
+  if ((req.query.v.indexOf("PL") === 0) || (req.query.list != "")){
     console.log("PLAYLIST!");
-    playlist(req.query.v);
+    var url;
+    if (req.query.v.indexOf("PL") === 0) url = "https://www.youtube.com/playlist?list="+req.query.v; 
+    else if(req.query.list != "") {
+      url = "https://www.youtube.com/playlist?list=" + req.query.list;
+    }
+    playlist(url);
   } else {
   var url = req.query.v;
   var info = await ytdl.getInfo(url);
