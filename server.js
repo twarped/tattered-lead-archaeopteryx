@@ -49,12 +49,14 @@ function playlist(url) {
 app.get("/watch", async (req, res) => {
   console.log(req.query)
   if ((req.query.v.indexOf("PL") === 0) || (req.query.list != "")){
+    res.sendFile(__dirname+"/views/playlist.html");
     console.log("PLAYLIST!");
     var url;
     if (req.query.v.indexOf("PL") === 0) url = "https://www.youtube.com/playlist?list="+req.query.v; 
     else if(req.query.list != "") {
       url = "https://www.youtube.com/playlist?list=" + req.query.list;
     }
+    console.log(url);
     playlist(url);
   } else {
   var url = req.query.v;
