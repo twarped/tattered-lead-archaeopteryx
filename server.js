@@ -45,22 +45,23 @@ function playlist(url,res) {
   video.on('next', playlist)
 }
 
+app.get("/playlist", async (req, res) => {
+  console.log(req.query)
+  res.sendFile(__dirname+"/views/playlist.html");
+  console.log("PLAYLIST!");
+  var url;
+  if (req.query.v.indexOf("PL") === 0) url = "https://www.youtube.com/playlist?list="+req.query.v; 
+  else if(req.query.list) {
+    url = "https://www.youtube.com/playlist?list=" + req.query.list;
+  } else if(req.query.v.includes("list=")){
+    
+  }
+  console.log(url);
+  playlist(url,res);
+})
 
 app.get("/watch", async (req, res) => {
   console.log(req.query)
-  if ((req.query.v.indexOf("PL") === 0) || (req.query.list) || req.query.v.includes("list=")){
-    res.sendFile(__dirname+"/views/playlist.html");
-    console.log("PLAYLIST!");
-    var url;
-    if (req.query.v.indexOf("PL") === 0) url = "https://www.youtube.com/playlist?list="+req.query.v; 
-    else if(req.query.list) {
-      url = "https://www.youtube.com/playlist?list=" + req.query.list;
-    } else if(req.query.v.includes("list=")){
-      
-    }
-    console.log(url);
-    playlist(url,res);
-  } else {
   var url = req.query.v;
   var info = await ytdl.getInfo(url);
   var title = info.videoDetails.title;
@@ -69,7 +70,6 @@ app.get("/watch", async (req, res) => {
   ytdl(url, {
     format: "mp4"
   }).pipe(res);
-  }
 });
 
 const listener = app.listen(process.env.PORT, () => {

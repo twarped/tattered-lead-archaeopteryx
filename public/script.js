@@ -12,7 +12,14 @@ downloadbutton.addEventListener("click", () => {
       );
     }
   } else if(url.includes("list=")){
-    
+    var wantstodownload = confirm(
+      "Download the playlist with the link/id of: \n" + url + "?"
+    );
+    if (wantstodownload == true) {
+      window.open(
+        "https://tattered-lead-archaeopteryx.glitch.me/playlist?list=" + url
+      );
+    }
   } else {
     alert("Type In a Correct Youtube URL");
   }
