@@ -27,6 +27,7 @@ function playlist(url,res) {
   let size = 0
   video.on('info', function(info) {
     console.log(info.stderr)
+    res.render()
     size = info.size
     //let output = path.join(__dirname + '/', size + '.mp4')
     video.pipe(res)
