@@ -50,11 +50,11 @@ app.get("/playlist", async (req, res) => {
   res.sendFile(__dirname+"/views/playlist.html");
   console.log("PLAYLIST!");
   var url;
-  if (req.query.v.indexOf("PL") === 0) url = "https://www.youtube.com/playlist?list="+req.query.v; 
+  if (req.query.playlist.indexOf("PL") === 0) url = "https://www.youtube.com/playlist?list="+req.query.playlist; 
   else if(req.query.list) {
     url = "https://www.youtube.com/playlist?list=" + req.query.list;
-  } else if(req.query.v.includes("list=")){
-    
+  } else if(req.query.playlist.includes("list=")){
+    url = req.query.playlist;
   }
   console.log(url);
   playlist(url,res);

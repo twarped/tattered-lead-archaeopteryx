@@ -11,7 +11,7 @@ downloadbutton.addEventListener("click", () => {
         "https://tattered-lead-archaeopteryx.glitch.me/watch?v=" + url
       );
     }
-  } else if(url.includes("list=")){
+  } else if(url.indexOf("list=") > -1){
     var wantstodownload = confirm(
       "Download the playlist with the link/id of: \n" + url + "?"
     );
