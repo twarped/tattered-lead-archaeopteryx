@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (request, response) => {
-  response.sendFile(__dirname + "/views/index.html");
+  response.render(__dirname + "/views/index.ejs");
 });
 
 function playlist(url,res) {
@@ -50,7 +50,7 @@ function playlist(url,res) {
 
 app.get("/playlist", async (req, res) => {
   console.log(req.query)
-  res.sendFile(__dirname+"/views/playlist.html");
+  res.render(__dirname+"/views/playlist.ejs");
   console.log("PLAYLIST!");
   var url;
   console.log(req.query.list.indexOf("PL"))
