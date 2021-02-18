@@ -15,7 +15,7 @@ app.get("/", (request, response) => {
   response.sendFile(__dirname + "/views/index.html");
 });
 
-function playlist(url) {
+function playlist(url,res) {
 
   'use strict';
   const video = ytdlp(url);
@@ -27,8 +27,8 @@ function playlist(url) {
   let size = 0
   video.on('info', function(info) {
     size = info.size
-    let output = path.join(__dirname + '/', size + '.mp4')
-    video.pipe(fs.createWriteStream(output))
+    //let output = path.join(__dirname + '/', size + '.mp4')
+    video.pipe(res)
   })
 
   let pos = 0
@@ -48,16 +48,18 @@ function playlist(url) {
 
 app.get("/watch", async (req, res) => {
   console.log(req.query)
-  if ((req.query.v.indexOf("PL") === 0) || (req.query.list != "")){
+  if ((req.query.v.indexOf("PL") === 0) || (req.query.list) || req.query.v.includes("list=")){
     res.sendFile(__dirname+"/views/playlist.html");
     console.log("PLAYLIST!");
     var url;
     if (req.query.v.indexOf("PL") === 0) url = "https://www.youtube.com/playlist?list="+req.query.v; 
-    else if(req.query.list != "") {
+    else if(req.query.list) {
       url = "https://www.youtube.com/playlist?list=" + req.query.list;
+    } else if(req.query.v.includes("list=")){
+      
     }
     console.log(url);
-    playlist(url);
+    playlist(url,res);
   } else {
   var url = req.query.v;
   var info = await ytdl.getInfo(url);

@@ -11,6 +11,8 @@ downloadbutton.addEventListener("click", () => {
         "https://tattered-lead-archaeopteryx.glitch.me/watch?v=" + url
       );
     }
+  } else if(url.includes("list=")){
+    
   } else {
     alert("Type In a Correct Youtube URL");
   }
