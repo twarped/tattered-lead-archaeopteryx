@@ -15,6 +15,9 @@ app.get("/", (request, response) => {
   response.render(__dirname + "/views/index.ejs");
 });
 
+var ginfo = "";
+var gerror = "";
+
 function playlist(url,res) {
 
   'use strict';
@@ -22,16 +25,17 @@ function playlist(url,res) {
   var error;
   video.on('error', function error(err) {
     console.log('error 2:', err)
-    error = err;
+    gerror = err;
   })
 
   let size = 0
   video.on('info', function(info) {
     console.log(info.stderr)
-    res.render("log",{"info":info, "error":error})
+    ginfo = info.stderr
+    //res.render("log",{"info":info, "error":error})
     size = info.size
     //let output = path.join(__dirname + '/', size + '.mp4')
-    video.pipe(res)
+    //video.pipe(res)
   })
 
   let pos = 0
@@ -50,7 +54,7 @@ function playlist(url,res) {
 
 app.get("/playlist", async (req, res) => {
   console.log(req.query)
-  res.render(__dirname+"/views/playlist.ejs");
+  res.render(__dirname+"/views/playlist.ejs",{info:ginfo,error:gerror});
   console.log("PLAYLIST!");
   var url;
   console.log(req.query.list.indexOf("PL"))
