@@ -19,15 +19,16 @@ function playlist(url,res) {
 
   'use strict';
   const video = ytdlp(url);
-
+  var error;
   video.on('error', function error(err) {
     console.log('error 2:', err)
+    error = err;
   })
 
   let size = 0
   video.on('info', function(info) {
     console.log(info.stderr)
-    res.render()
+    res.render("log",{"info":info, "error":error})
     size = info.size
     //let output = path.join(__dirname + '/', size + '.mp4')
     video.pipe(res)
