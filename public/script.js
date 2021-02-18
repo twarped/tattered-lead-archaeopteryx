@@ -2,22 +2,23 @@ var downloadbutton = document.getElementById("downloadbutton");
 downloadbutton.addEventListener("click", () => {
   var url = document.getElementById("yturl").value;
   var urlchecker = /(youtube\.com\/watch\?v=|)[a-zA-Z0-9-\-]+/g;
-  if (url.match(urlchecker)) {
-    var wantstodownload = confirm(
-      "Download the video with the link/id of: \n" + url + "?"
-    );
-    if (wantstodownload == true) {
-      window.open(
-        "https://tattered-lead-archaeopteryx.glitch.me/watch?v=" + url
-      );
-    }
-  } else if(url.indexOf("list=") > -1){
+  if(url.indexOf("list=") > -1){
     var wantstodownload = confirm(
       "Download the playlist with the link/id of: \n" + url + "?"
     );
     if (wantstodownload == true) {
       window.open(
         "https://tattered-lead-archaeopteryx.glitch.me/playlist?list=" + url
+      );
+    }
+  }
+  else if (url.match(urlchecker)) {
+    var wantstodownload = confirm(
+      "Download the video with the link/id of: \n" + url + "?"
+    );
+    if (wantstodownload == true) {
+      window.open(
+        "https://tattered-lead-archaeopteryx.glitch.me/watch?v=" + url
       );
     }
   } else {
