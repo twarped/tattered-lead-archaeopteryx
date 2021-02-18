@@ -5,11 +5,13 @@ const ytdl = require("ytdl-core");
 const fs = require("fs");
 const ytdlp = require("youtube-dl");
 const path = require("path");
+const ejs = require("ejs");
 
 app.use(express.static("public"));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.set('view engine', 'ejs');
 
 app.get("/", (request, response) => {
   response.render(__dirname + "/views/index.ejs");
@@ -54,7 +56,9 @@ function playlist(url,res) {
 
 app.get("/playlist", async (req, res) => {
   console.log(req.query)
-  res.send(__dirname+"/views/playlist.ejs",{info:ginfo,error:gerror});
+  var view = ejs.render(__dirname+"/views/playlist",{info:ginfo,error:gerror})
+  res.type(".html")
+  res.render(view);
   console.log("PLAYLIST!");
   var url;
   console.log(req.query.list.indexOf("PL"))
