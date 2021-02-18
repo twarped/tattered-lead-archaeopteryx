@@ -33,7 +33,6 @@ function playlist(url,res) {
     
     console.log(info.stderr)
     ginfo = info.stderr
-    res.render(__dirname+"/views/playlist.ejs",{"info":ginfo, "error":gerror})
     size = info.size
     //let output = path.join(__dirname + '/', size + '.mp4')
     //video.pipe(res)
@@ -55,7 +54,7 @@ function playlist(url,res) {
 
 app.get("/playlist", async (req, res) => {
   console.log(req.query)
-  res.render(__dirname+"/views/playlist.ejs",{info:ginfo,error:gerror});
+  res.send(__dirname+"/views/playlist.ejs",{info:ginfo,error:gerror});
   console.log("PLAYLIST!");
   var url;
   console.log(req.query.list.indexOf("PL"))
