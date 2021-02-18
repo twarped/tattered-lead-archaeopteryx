@@ -50,6 +50,7 @@ app.get("/playlist", async (req, res) => {
   res.sendFile(__dirname+"/views/playlist.html");
   console.log("PLAYLIST!");
   var url;
+  console.log(req.query.list.indexOf("PL"))
   if (req.query.list.indexOf("PL") === 0) url = "https://www.youtube.com/playlist?list="+req.query.list; 
   else if(req.query.list.includes("list=")){
     url = req.query.list;
