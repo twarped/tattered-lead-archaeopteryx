@@ -19,7 +19,7 @@ app.get("/", (request, response) => {
 
 app.get("/playlist", async (req, res) => {
   var logs = {info : "", error : ""};
-  var playlist = (url,res) => {
+  var playlist = function (url,res){
   'use strict';
   const video = ytdlp(url);
   video.on('error', function error(err) {
