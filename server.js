@@ -20,13 +20,14 @@ app.get("/", (request, response) => {
 app.get("/playlist", async (req, res) => {
   var logs = {info : "", error : ""};
   const video = ytdlp(url);
-  video.on('error', function error(err) {
+  var shouldKeepGoingPlaylist = true
+  await video.on('error', function error(err) {
     console.log('error 2: '+ err)
     logs.error += error
   })
 
   let size = 0
-  video.on('info', function(info) {
+  await video.on('info', function(info) {
     
     console.log(info.stderr+"\n")
     logs.info += info.stderr
@@ -50,7 +51,6 @@ app.get("/playlist", async (req, res) => {
   console.log(req.query)
   //var view = ejs.render(__dirname+"/views/playlist",{'logs':logs})
   //res.type(".html")
-  res.render('playlist',{'logs':logs});
   console.log("PLAYLIST!");
   var url;
   console.log(req.query.list.indexOf("PL"))
@@ -59,7 +59,8 @@ app.get("/playlist", async (req, res) => {
     url = req.query.list;
   }
   console.log(url);
-  playlist(url,res);
+  await playlist(url);
+  res.render('playlist',{'logs':logs});
 })
 
 app.get("/watch", async (req, res) => {
