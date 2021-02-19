@@ -51,9 +51,9 @@ app.get("/playlist", async (req, res) => {
   video.on('next', playlist)
 }
   console.log(req.query)
-  var view = ejs.render(__dirname+"/views/playlist",logs)
-  res.type(".html")
-  res.render(view);
+  //var view = ejs.render(__dirname+"/views/playlist",{'logs':logs})
+  //res.type(".html")
+  res.render('playlist',{'logs':logs});
   console.log("PLAYLIST!");
   var url;
   console.log(req.query.list.indexOf("PL"))
