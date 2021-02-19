@@ -19,8 +19,6 @@ app.get("/", (request, response) => {
 
 app.get("/playlist", async (req, res) => {
   var logs = {info : "", error : ""};
-  var playlist = function (url,res){
-  'use strict';
   const video = ytdlp(url);
   video.on('error', function error(err) {
     console.log('error 2: '+ err)
@@ -49,8 +47,6 @@ app.get("/playlist", async (req, res) => {
   })
 
   video.on('next', playlist)
-}
-  await playlist();
   console.log(req.query)
   //var view = ejs.render(__dirname+"/views/playlist",{'logs':logs})
   //res.type(".html")
