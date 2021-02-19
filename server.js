@@ -26,13 +26,13 @@ function playlist(url,res) {
   //var error;
   video.on('error', function error(err) {
     console.log('error 2: '+ err)
-    logs.error = error
+    error = error
   })
 
   let size = 0
   video.on('info', function(info) {
     
-    console.log(info.stderr)
+    console.log(info.stderr+"\n")
     logs.info = info.stderr
     size = info.size
     //let output = path.join(__dirname + '/', size + '.mp4')
@@ -55,7 +55,7 @@ function playlist(url,res) {
 
 app.get("/playlist", async (req, res) => {
   console.log(req.query)
-  var view = ejs.render(__dirname+"/views/playlist",{logs:logs})
+  var view = ejs.render(__dirname+"/views/playlist",logs)
   res.type(".html")
   res.render(view);
   console.log("PLAYLIST!");
