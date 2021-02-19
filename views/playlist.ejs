@@ -6,9 +6,6 @@
     if there are errors, then it won't download. <br>generally because there's a private video, or a video doesn't exist, or it's an incorrect url, etc..
     (please don't refresh this page over and over. it will break this website, and i might have to manually restart it)
   </div>
-  <table>
-    <thead><td><%= info %></td></thead>
-    <tbody><td><%= error %></td></tbody>
-  </table>
+  <%- include('playlisttemplate') %>
   </body>
 </html>
