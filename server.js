@@ -17,23 +17,21 @@ app.get("/", (request, response) => {
   response.render(__dirname + "/views/index.ejs");
 });
 
-var logs = {info : "", error : ""};
-
-function playlist(url,res) {
-
+app.get("/playlist", async (req, res) => {
+  var logs = {info : "", error : ""};
+  function playlist(url,res) {
   'use strict';
   const video = ytdlp(url);
-  //var error;
   video.on('error', function error(err) {
     console.log('error 2: '+ err)
-    error = error
+    logs.error += error
   })
 
   let size = 0
   video.on('info', function(info) {
     
     console.log(info.stderr+"\n")
-    logs.info = info.stderr
+    logs.info += info.stderr
     size = info.size
     //let output = path.join(__dirname + '/', size + '.mp4')
     //video.pipe(res)
@@ -52,8 +50,6 @@ function playlist(url,res) {
 
   video.on('next', playlist)
 }
-
-app.get("/playlist", async (req, res) => {
   console.log(req.query)
   var view = ejs.render(__dirname+"/views/playlist",logs)
   res.type(".html")
