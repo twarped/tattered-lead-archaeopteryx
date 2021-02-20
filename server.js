@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const ytdl = require("ytdl-core");
+const youtubedl = require("youtube-dl");
 const fs = require("fs");
 
 app.use(express.static("public"));
@@ -15,7 +16,8 @@ app.get("/", (request, response) => {
 
 app.get("/watch", async (req, res) => {
   var url = req.query.v;
-  var info = await ytdl.getInfo(url);
+  var video = youtubedl(url,{format:"mp4"})
+  var info = await youtubedl.getInfo(url);
   var title = info.videoDetails.title;
   console.log(title);
   res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
