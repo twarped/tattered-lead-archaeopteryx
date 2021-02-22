@@ -21,9 +21,9 @@ app.get("/watch", async (req, res) => {
   youtubedl.getInfo(url, async (err, info) => {
     if (err) throw err;
     //console.log(info);
-    //var title = info.fullTitle;
-    console.log(info.title);
-    //res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
+    var title = info.title;
+    //console.log(info.title);
+    res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
     youtubedl(url, {
       format: "mp4"
     }).pipe(res);
