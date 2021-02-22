@@ -17,7 +17,8 @@ app.get("/", (request, response) => {
 
 app.get("/watch", (req, res) => {
   //var video = youtubedl(url,{format:"mp4"})
-  youtubedl.getInfo(req.query.v, (err, info) => {
+  youtubedl.getInfo(req.query.v, [], function (err, info) {
+    //console.log(err)
     console.log(req.query.v)
     var url = req.query.v;
     //console.log(info);
