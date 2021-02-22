@@ -15,11 +15,12 @@ app.get("/", (request, response) => {
   response.sendFile(__dirname + "/views/index.html");
 });
 
-app.get("/watch", async (req, res) => {
-  var url = req.query.v;
+app.get("/watch", (req, res) => {
   //var video = youtubedl(url,{format:"mp4"})
-  youtubedl.getInfo(url, async (err, info) => {
+  youtubedl.getInfo(req.query.v, (err, info) => {
     if (err) throw err;
+    console.log(req.query.v)
+    var url = req.query.v;
     //console.log(info);
     var title = info.title;
     //console.log(info.title);
