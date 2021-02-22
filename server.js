@@ -18,19 +18,16 @@ app.get("/", (request, response) => {
 app.get("/watch", async (req, res) => {
   var url = req.query.v;
   //var video = youtubedl(url,{format:"mp4"})
-  var info;
-  await youtubedl.getInfo(url,(err,inf)=>{
+  youtubedl.getInfo(url, async (err, info) => {
     if (err) throw err;
-    console.log(inf);
-    info = inf;
+    //console.log(info);
+    //var title = info.fullTitle;
+    console.log(info.title);
+    //res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
+    youtubedl(url, {
+      format: "mp4"
+    }).pipe(res);
   });
-  console.log(info)
-  var title = info.fulltitle;
-  console.log(title);
-  res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
-  youtubedl(url, {
-    format: "mp4"
-  }).pipe(res);
 });
 
 const listener = app.listen(process.env.PORT, () => {
