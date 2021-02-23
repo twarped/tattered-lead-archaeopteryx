@@ -6,6 +6,7 @@ const got = require("got");
 const youtubedl = require("youtube-dl");
 const fs = require("fs");
 const path = require("path");
+const ffmpeg = require("ffmpeg");
 
 app.use(express.static("public"));
 app.use(cors());
@@ -25,8 +26,9 @@ app.get("/watch", (req, res) => {
     //console.log(info);
     var title = info.title;
     //console.log(info.title);
-    //res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
+    res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
     const video = youtubedl(url);
+    ffmpeg().input(video).pipe(res);
     var stream = video.pipe(
       fs.createWriteStream(
         "/rbd/pnpm-volume/46445d14-adc1-4847-b269-fdfb11fa2547/youtubevids/" +
@@ -34,7 +36,7 @@ app.get("/watch", (req, res) => {
           ".mp4"
       )
     );
-    stream.on("close", () => {
+    stream.on("finish", () => {
       console.log("finished downloading!");
       var vidPath = path.join(
         "/rbd/pnpm-volume/46445d14-adc1-4847-b269-fdfb11fa2547/youtubevids/"+
