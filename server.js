@@ -25,7 +25,7 @@ app.get("/watch", (req, res) => {
     var title = info.title;
     //console.log(info.title);
     res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
-    youtubedl(url, {
+    ytdl(url, {
       format: "mp4"
     }).pipe(res);
   });
