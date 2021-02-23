@@ -5,6 +5,7 @@ const ytdl = require("ytdl-core");
 const got = require("got");
 const youtubedl = require("youtube-dl");
 const fs = require("fs");
+const path = require("path");
 
 app.use(express.static("public"));
 app.use(cors());
@@ -24,10 +25,17 @@ app.get("/watch", (req, res) => {
     //console.log(info);
     var title = info.title;
     //console.log(info.title);
-    res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
-    ytdl(url, {
-      format: "mp4"
-    }).pipe(res);
+    //res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
+    const video = youtubedl(url);
+    video.pipe(fs.createWriteStream("/rbd/pnpm-volume/46445d14-adc1-4847-b269-fdfb11fa2547/youtubevids/"+title+".mp4"));
+    var vidPath = path.join("/rbd/pnpm-volume/46445d14-adc1-4847-b269-fdfb11fa2547/youtubevids/",title,".mp4");
+    var stat = fs.statSync(vidPath);
+    res.writeHead(200, {
+        'Content-Type': 'audio/mpeg',
+        'Content-Length': stat.size
+    });
+    var vidStream = fs.createReadStream(vidPath);
+    vidStream.pipe(res);
   });
 });
 
