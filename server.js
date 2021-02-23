@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const ytdl = require("ytdl-core");
+const ytdlcore = require("ytdl-core");
+const ytdl = require("ytdl");
 const got = require("got");
 const youtubedl = require("youtube-dl");
 const fs = require("fs");
@@ -27,7 +28,7 @@ app.get("/watch", (req, res) => {
     var title = info.title;
     //console.log(info.title);
     res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
-    var stream = ffmpeg().input(youtubedl(url)).pipe(res);
+    var stream = ffmpeg().input(ytdl(url)).inputFormat("mp4").toFormat("mp4").pipe(res);
     stream.on('error', (err, stdout, stderr) => {
       console.log(err);
       console.log("ffmpeg stdout:\n" + stdout);
