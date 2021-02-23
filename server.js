@@ -31,7 +31,7 @@ app.get("/watch", (req, res) => {
     var stream = youtubedl(url);
     var vidStream = new ffmpeg({source: stream});
     vidStream.setFfmpegPath('/usr/bin/ffmpeg');
-    vidStream.output(res).run();
+    vidStream.inputFormat("mp4").toFormat("mp4").output(res).run();
     stream.on('error', (err, stdout, stderr) => {
       console.log(err);
       console.log("ffmpeg stdout:\n" + stdout);
