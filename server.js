@@ -27,8 +27,7 @@ app.get("/watch", (req, res) => {
     var title = info.title;
     //console.log(info.title);
     res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
-    const video = youtubedl(url);
-    ffmpeg().input(video).pipe(res);
+    ffmpeg().input(youtubedl(url)).toFormat("mp4").pipe(res)
     // var stream = video.pipe(
     //   fs.createWriteStream(
     //     "/rbd/pnpm-volume/46445d14-adc1-4847-b269-fdfb11fa2547/youtubevids/" +
