@@ -18,7 +18,7 @@ app.get("/", (request, response) => {
 
 app.get("/watch", (req, res) => {
   //var video = youtubedl(url,{format:"mp4"})
-  youtubedl.getInfo(req.query.v, function (err, info) {
+  youtubedl.getInfo(req.query.v, async function (err, info) {
     //console.log(err)
     console.log(req.query.v)
     var url = req.query.v;
@@ -27,7 +27,7 @@ app.get("/watch", (req, res) => {
     //console.log(info.title);
     //res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
     const video = youtubedl(url);
-    video.pipe(fs.createWriteStream("/rbd/pnpm-volume/46445d14-adc1-4847-b269-fdfb11fa2547/youtubevids/"+title+".mp4"));
+    await video.pipe(fs.createWriteStream("/rbd/pnpm-volume/46445d14-adc1-4847-b269-fdfb11fa2547/youtubevids/"+title+".mp4"));
     var vidPath = path.join("/rbd/pnpm-volume/46445d14-adc1-4847-b269-fdfb11fa2547/youtubevids/",title,".mp4");
     var stat = fs.statSync(vidPath);
     res.writeHead(200, {
@@ -36,6 +36,9 @@ app.get("/watch", (req, res) => {
     });
     var vidStream = fs.createReadStream(vidPath);
     vidStream.pipe(res);
+    fs.unlink("/rbd/pnpm-volume/46445d14-adc1-4847-b269-fdfb11fa2547/youtubevids/"+title+".mp4", (err) => {
+      if (err) throw err;
+    })
   });
 });
 
