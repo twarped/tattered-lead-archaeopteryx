@@ -6,7 +6,7 @@ const got = require("got");
 const youtubedl = require("youtube-dl");
 const fs = require("fs");
 const path = require("path");
-const ffmpeg = require("ffmpeg");
+const ffmpeg = require("fluent-ffmpeg");
 
 app.use(express.static("public"));
 app.use(cors());
@@ -27,7 +27,12 @@ app.get("/watch", (req, res) => {
     var title = info.title;
     //console.log(info.title);
     res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
-    ffmpeg().input(youtubedl(url)).toFormat("mp4").pipe(res)
+    var stream = ffmpeg().input(youtubedl(url)).pipe(res);
+    stream.on('error', (err, stdout, stderr) => {
+      console.log(err);
+      console.log("ffmpeg stdout:\n" + stdout);
+      console.log("ffmpeg stderr:\n" + stderr);
+    })
     // var stream = video.pipe(
     //   fs.createWriteStream(
     //     "/rbd/pnpm-volume/46445d14-adc1-4847-b269-fdfb11fa2547/youtubevids/" +
