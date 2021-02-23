@@ -27,7 +27,11 @@ app.get("/watch", (req, res) => {
     var title = info.title;
     //console.log(info.title);
     res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
-    var stream = ffmpeg().input(youtubedl(url)).inputFormat("mp4").toFormat("mp4").pipe(res);
+    //var stream = ffmpeg().input(youtubedl(url)).inputFormat("mp4").toFormat("mp4").pipe(res);
+    var stream = youtubedl(url);
+    var vidStream = new ffmpeg({source: stream});
+    vidStream.setFfmpegPath('/usr/bin/ffmpeg');
+    vidStream.output(res).run();
     stream.on('error', (err, stdout, stderr) => {
       console.log(err);
       console.log("ffmpeg stdout:\n" + stdout);
