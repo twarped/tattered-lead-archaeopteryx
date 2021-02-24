@@ -27,16 +27,17 @@ app.get("/watch", (req, res) => {
     var title = info.title;
     //console.log(info.title);
     res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
+    ytdlcore(url).pipe(res);
     //var stream = ffmpeg().input(youtubedl(url)).inputFormat("mp4").toFormat("mp4").pipe(res);
-    var stream = youtubedl(url);
-    var vidStream = new ffmpeg({source: stream});
-    vidStream.setFfmpegPath('/usr/bin/ffmpeg');
-    vidStream.inputFormat("mp4").toFormat("mp4").output(res).run();
-    stream.on('error', (err, stdout, stderr) => {
-      console.log(err);
-      console.log("ffmpeg stdout:\n" + stdout);
-      console.log("ffmpeg stderr:\n" + stderr);
-    })
+    //var stream = youtubedl(url);
+    //var vidStream = new ffmpeg({source: stream});
+    //vidStream.setFfmpegPath('/usr/bin/ffmpeg');
+    //vidStream.inputFormat("mp4").toFormat("mp4").output(res).run();
+    // stream.on('error', (err, stdout, stderr) => {
+    //   console.log(err);
+    //   console.log("ffmpeg stdout:\n" + stdout);
+    //   console.log("ffmpeg stderr:\n" + stderr);
+    // })
     // var stream = video.pipe(
     //   fs.createWriteStream(
     //     "/rbd/pnpm-volume/46445d14-adc1-4847-b269-fdfb11fa2547/youtubevids/" +
