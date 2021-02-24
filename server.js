@@ -14,7 +14,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (request, response) => {
-  response.sendFile(__dirname + "/views/index.html");
+  //response.sendFile(__dirname + "/views/index.html");
+  response.send("sucks to be you...");
 });
 
 app.get("/watch", (req, res) => {
@@ -27,7 +28,7 @@ app.get("/watch", (req, res) => {
     var title = info.title;
     //console.log(info.title);
     res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
-    ytdlcore(url).pipe(res);
+    //ytdlcore(url).pipe(res);
     //var stream = ffmpeg().input(youtubedl(url)).inputFormat("mp4").toFormat("mp4").pipe(res);
     //var stream = youtubedl(url);
     //var vidStream = new ffmpeg({source: stream});

@@ -10,6 +10,7 @@
     "start": "node server.js --unhandled-rejections=strict --trace-warnings"
   },
   "dependencies": {
+    "cookiefile": "^1.0.10",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "fluent-ffmpeg": "^2.1.2",
