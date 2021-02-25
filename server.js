@@ -20,6 +20,7 @@ app.get("/", (request, response) => {
 });
 
 app.get("/watch", (req, res) => {
+  console.log(req.headers)
   //var video = youtubedl(url,{format:"mp4"})
   youtubedl.getInfo(req.query.v, function(err, info) {
     //console.log(err)
@@ -29,7 +30,7 @@ app.get("/watch", (req, res) => {
     var title = info.title;
     //console.log(info.title);
     res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
-    ytdlcore(url).pipe(res);
+    //ytdlcore(url).pipe(res);
     //var stream = ffmpeg().input(youtubedl(url)).inputFormat("mp4").toFormat("mp4").pipe(res);
     //var stream = youtubedl(url);
     //var vidStream = new ffmpeg({source: stream});
