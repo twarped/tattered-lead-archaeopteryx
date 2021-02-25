@@ -9,6 +9,7 @@ const path = require("path");
 const ffmpeg = require("fluent-ffmpeg");
 const jwt = require("express-jwt");
 const cookieparser = require("cookie-parser");
+const axios = require("axios");
 
 app.use(cookieparser());
 app.use(express.static("public"));
@@ -29,8 +30,17 @@ app.get("/watch", (req, res) => {
     //console.log(err)
     //console.log("retrieved info!");
     //var url = req.query.v;
-    console.log(info);
+    //console.log(info);
     res.send(info)
+    console.log(`${info.url}`)
+    axios({
+      'url':info.url,
+      'method':'post'
+    }).then(function (data) {
+      console.log("yayness: "+data);
+    }).catch(err => {
+      throw err;
+    })
     //var title = info.title;
     //console.log(info.title);
     //res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
