@@ -17,6 +17,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "fs": "^0.0.2",
     "got": "^11.8.1",
+    "jsonwebtoken": "^8.5.1",
     "youtube-dl": "^3.4.0",
     "ytdl-core": "^4.4.5"
   },

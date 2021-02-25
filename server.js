@@ -20,23 +20,6 @@ app.get("/", (request, response) => {
 });
 
 app.get("/watch", (req, res) => {
-  function signToken(userId, secretKey, expiresIn) {
-    return new Promise((resolve, reject) => {
-      const options = {
-        expiresIn: expiresIn,
-        issuer: "example.com",
-        audience: userId
-      };
-
-      jwt.sign({}, secretKey, options, (err, token) => {
-        if (err) {
-          reject({ isError: true, message: "Invalid operation!" });
-        } else {
-          resolve(token);
-        }
-      });
-    });
-  }
   //var video = youtubedl(url,{format:"mp4"})
   youtubedl.getInfo(req.query.v, function(err, info) {
     //console.log(err)
