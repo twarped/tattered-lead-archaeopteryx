@@ -22,14 +22,15 @@ app.get("/", (request, response) => {
 });
 
 app.get("/watch", (req, res) => {
-  console.log(req.headers)
+  //console.log(req.headers)
   //console.log(res)
   //var video = youtubedl(url,{format:"mp4"})
-  //youtubedl.getInfo(req.query.v, function(err, info) {
+  youtubedl.getInfo(req.query.v, function(err, info) {
     //console.log(err)
     //console.log("retrieved info!");
     //var url = req.query.v;
-    //console.log(info);
+    console.log(info);
+    res.send(info)
     //var title = info.title;
     //console.log(info.title);
     //res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
@@ -73,7 +74,7 @@ app.get("/watch", (req, res) => {
     //       if (err) throw err;
     //     }
     //   );
-    // });
+     });
   //});
 });
 
