@@ -22,17 +22,17 @@ app.get("/", (request, response) => {
 });
 
 app.get("/watch", (req, res) => {
-  console.log(req.cookies[""])
+  console.log(req.headers)
   //console.log(res)
   //var video = youtubedl(url,{format:"mp4"})
-  youtubedl.getInfo(req.query.v, function(err, info) {
+  //youtubedl.getInfo(req.query.v, function(err, info) {
     //console.log(err)
-    console.log("retrieved info!");
-    var url = req.query.v;
+    //console.log("retrieved info!");
+    //var url = req.query.v;
     //console.log(info);
-    var title = info.title;
+    //var title = info.title;
     //console.log(info.title);
-    res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
+    //res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
     //ytdlcore(url).pipe(res);
     //var stream = ffmpeg().input(youtubedl(url)).inputFormat("mp4").toFormat("mp4").pipe(res);
     //var stream = youtubedl(url);
@@ -74,7 +74,7 @@ app.get("/watch", (req, res) => {
     //     }
     //   );
     // });
-  });
+  //});
 });
 
 const listener = app.listen(process.env.PORT, () => {
