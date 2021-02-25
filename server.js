@@ -8,7 +8,9 @@ const fs = require("fs");
 const path = require("path");
 const ffmpeg = require("fluent-ffmpeg");
 const jwt = require("express-jwt");
+const cookieparser = require("cookie-parser");
 
+app.use(cookieparser());
 app.use(express.static("public"));
 app.use(cors());
 app.use(express.json());
@@ -20,8 +22,8 @@ app.get("/", (request, response) => {
 });
 
 app.get("/watch", (req, res) => {
-  console.log(req.headers)
-  console.log(res)
+  console.log(req.cookies[""])
+  //console.log(res)
   //var video = youtubedl(url,{format:"mp4"})
   youtubedl.getInfo(req.query.v, function(err, info) {
     //console.log(err)
