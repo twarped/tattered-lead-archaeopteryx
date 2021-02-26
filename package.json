@@ -12,6 +12,7 @@
   "dependencies": {
     "content-disposition": "^0.5.3",
     "cors": "^2.8.5",
+    "events": "^3.2.0",
     "express": "^4.17.1",
     "fs": "^0.0.2",
     "got": "^11.8.1",

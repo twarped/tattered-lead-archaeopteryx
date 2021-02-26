@@ -4,6 +4,7 @@ const cors = require("cors");
 const got = require("got");
 const youtubedl = require("youtube-dl");
 const request = require("request");
+const events = require("events");
 const contentdisposition = require("content-disposition");
 
 app.use(express.static("public"));
@@ -33,8 +34,7 @@ app.get("/playlist", (req, res) => {
     data = JSON.parse('['+data+']');
     console.log(data.length)
     var i = 0;
-    console.log(err.stdout.indexOf("} {"))
-    emmiter.setMaxListeners
+    events.EventEmitter.defaultMaxListeners = 0;
     for (i; i < data.length; i++){
       var playlistdl = request.get(data[i].url).pipe(res)
     }
