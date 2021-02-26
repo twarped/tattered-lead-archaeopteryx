@@ -24,12 +24,12 @@ app.get("/watch", (req, res) => {
 });
 
 app.get("/playlist", (req, res) => {
-  const playlist = youtubedl("https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr");
+  var playlist = youtubedl("https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr");
   playlist.on('info', (info) => {
     res.send(info)
   })
   playlist.on('error', (err) => {
-    res.send(err)
+    res.send(err.stdout)
   })
 });
 
