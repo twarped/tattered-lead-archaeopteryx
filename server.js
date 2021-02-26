@@ -29,8 +29,9 @@ app.get("/playlist", (req, res) => {
     res.send("no error: "+info.split("} {").join(","))
   })
   playlist.on('error', (err) => {
-    var data = err.stoud.split("} {")
-    res.send("error: "+err.stdout.split("} {").join(","))
+    var data = err.stdout.replace("} {", "}, {")
+    console.log(data.length)
+    res.send("error: "+data)
   })
 });
 
