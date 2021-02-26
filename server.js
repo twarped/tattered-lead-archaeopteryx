@@ -13,19 +13,12 @@ app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (request, response) => {
   response.sendFile(__dirname + "/views/index.html");
-  //response.send("sucks to be you...");
 });
 
 app.get("/watch", (req, res) => {
-  console.log(req.query)
   youtubedl.getInfo(req.query.v, function(err, info) {
-    console.log(info.title[info.title.length-1])
-    var title = info.title.substring(0, info.title.length - 1)
-    //if(info.title[info.title.length - 1] == ".") info.title[info.title.length - 1] = "";
-    console.log(title);
-    console.log(`attachment; filename="${title}.mp4"`)
-    res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
-    if (!req.query.inbrowser) res.write("")
+    var title = info.title.substring(0, info.title.length - 1) + ".mp4"
+    if (!req.query.inbrowser) res.header("Content-Disposition", contentdisposition(title));
     request.get(info.url).pipe(res)
   });
 });
