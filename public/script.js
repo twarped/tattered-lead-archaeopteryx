@@ -1,4 +1,6 @@
 var downloadbutton = document.getElementById("downloadbutton");
+var ytbrowser = document.getElementById("ytbrowser")
+var watchInBrowser = false;
 downloadbutton.addEventListener("click", () => {
   var url = document.getElementById("yturl").value.replace("/(http(s|):\/\/|)youtube.com/watch\?v=/g","");
   var urlchecker = /(youtube\.com\/watch\?v=|)[a-zA-Z0-9]+/g;
@@ -8,7 +10,7 @@ downloadbutton.addEventListener("click", () => {
     );
     if (wantstodownload == true) {
       window.open(
-        "https://tattered-lead-archaeopteryx.glitch.me/watch?v=" + url
+        "https://tattered-lead-archaeopteryx.glitch.me/watch?v=" + url + (ytbrowser.checked ? "&inbrowser=true" : "")
       );
     }
   } else {
