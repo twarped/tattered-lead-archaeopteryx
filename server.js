@@ -45,19 +45,22 @@ app.get("/playlist", (req, res) => {
       contentdisposition(data[0].playlist + ".zip")
     );
     console.log(data.length);
-    await (() => {
-    for (var i = 0; i < data.length; i++) {
-      var title =
-        data[i].title.indexOf(".") === data[i].title.length - 1
-          ? data[i].title.substring(0, data[i].title.length - 1) + ".mp4"
-          : data[i].title + ".mp4";
-      var playlistdl = request.get(data[i].url, (error, response, body) => {
-        zip.append(body, { name: title + ".mp4" });
+    () => {
+      return new Promise((resolve, result) => {
+        for (var i = 0; i < data.length; i++) {
+          var title =
+            data[i].title.indexOf(".") === data[i].title.length - 1
+              ? data[i].title.substring(0, data[i].title.length - 1) + ".mp4"
+              : data[i].title + ".mp4";
+          var playlistdl = request.get(data[i].url, (error, response, body) => {
+            zip.append(body, { name: title + ".mp4" });
+          });
+        }
+        resolve();
       });
-    }
+    });
     zip.finalize();
     zip.pipe(res);
-    //res.send(data)
   });
 });
 
