@@ -30,10 +30,13 @@ app.get("/playlist", (req, res) => {
   })
   playlist.on('error', (err) => {
     var data = err.stdout.split("\n")
-    data = '['+data+']';
+    data = JSON.parse('['+data+']');
     console.log(data.length)
     console.log(err.stdout.indexOf("} {"))
-    res.send(JSON.parse(data))
+    for (i = 0; i < data.length; i++){
+      request.get(data[i].url).pipe(res, {end: false})
+    }
+    res.send(data)
   })
 });
 
