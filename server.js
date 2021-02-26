@@ -6,6 +6,7 @@ const youtubedl = require("youtube-dl");
 const request = require("request");
 const events = require("events");
 const contentdisposition = require("content-disposition");
+const archiver = require("archiver");
 
 app.use(express.static("public"));
 app.use(cors());
@@ -33,14 +34,17 @@ app.get("/playlist", (req, res) => {
     var data = err.stdout.split("\n")
     data = JSON.parse('['+data+']');
     console.log(data.length)
+    request.get(data[8].url, (error, response, body) => {
+      res.send(body);
+    });
     var i = 0;
-    events.EventEmitter.defaultMaxListeners = 0;
-    for (i; i < data.length; i++){
-      var title = (data[i].title.indexOf(".") === data[i].title.length -1 ? data[i].title.substring(0, data[i].title.length - 1) + ".mp4" : data[i].title+".mp4")
-      res.header("Content-Disposition", contentdisposition(data[i].title+".mp4"))
-      res.write("");
-      var playlistdl = request.get(data[i].url).pipe(res)
-    }
+    // events.EventEmitter.defaultMaxListeners = 0;
+    // for (i; i < data.length; i++){
+    //   var title = (data[i].title.indexOf(".") === data[i].title.length -1 ? data[i].title.substring(0, data[i].title.length - 1) + ".mp4" : data[i].title+".mp4")
+    //   res.header("Content-Disposition", contentdisposition(data[i].title+".mp4"))
+    //   res.write("");
+    //   var playlistdl = request.get(data[i].url).pipe(res)
+    // }
     //res.send(data)
   })
 });
