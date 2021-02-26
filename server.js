@@ -34,6 +34,7 @@ app.get("/playlist", (req, res) => {
     console.log(data.length)
     var i = 0;
     console.log(err.stdout.indexOf("} {"))
+    emmiter.setMaxListeners
     for (i; i < data.length; i++){
       var playlistdl = request.get(data[i].url).pipe(res)
     }
