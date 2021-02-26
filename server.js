@@ -45,7 +45,7 @@ app.get("/playlist", (req, res) => {
       contentdisposition(data[0].playlist + ".zip")
     );
     console.log(data.length);
-    () => {
+    const looppl = () => {
       return new Promise((resolve, result) => {
         for (var i = 0; i < data.length; i++) {
           var title =
@@ -58,9 +58,11 @@ app.get("/playlist", (req, res) => {
         }
         resolve();
       });
-    });
-    zip.finalize();
-    zip.pipe(res);
+    };
+    looppl().then(()=>{
+      zip.finalize();
+      zip.pipe(res);
+    })
   });
 });
 
