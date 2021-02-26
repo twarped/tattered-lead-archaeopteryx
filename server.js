@@ -10,7 +10,8 @@ const ffmpeg = require("fluent-ffmpeg");
 const jwt = require("express-jwt");
 const cookieparser = require("cookie-parser");
 //const axios = require("axios");
-const fetch = require("fetch");
+const fetch = require("node-fetch");
+const request = require("request");
 
 app.use(cookieparser());
 app.use(express.static("public"));
@@ -32,15 +33,9 @@ app.get("/watch", (req, res) => {
     //console.log("retrieved info!");
     //var url = req.query.v;
     //console.log(info);
-    res.send(info)
+    //res.send(info)
     console.log(`${info.url}`)
-    fetch(info.url).then(data => {
-      data.text()
-    }).then(data => {
-      console.log(data);
-    }).catch(err => {
-      throw err;
-    })
+    request.get(info.url).pipe(res)
     //var title = info.title;
     //console.log(info.title);
     //res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);

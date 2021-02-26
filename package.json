@@ -21,6 +21,7 @@
     "got": "^11.8.1",
     "jsonwebtoken": "^8.5.1",
     "node-fetch": "^2.6.1",
+    "request": "^2.88.2",
     "youtube-dl": "^3.5.0",
     "ytdl-core": "^4.4.5"
   },
