@@ -18,7 +18,9 @@ app.get("/", (request, response) => {
 app.get("/watch", (req, res) => {
   console.log(req.query)
   youtubedl.getInfo(req.query.v, function(err, info) {
-    console.log(info.title)
+    console.log(info.title[info.title.length-1])
+    //if(info.title[info.title.length - 1] == ".") info.title[info.title.length - 1] = "";
+    console.log(info.title);
     console.log(`attachment; filename="${info.title}.mp4"`)
     res.header("Content-Disposition", `attachment; filename="${info.title}.mp4"`);
     if (!req.query.inbrowser) res.write("")
