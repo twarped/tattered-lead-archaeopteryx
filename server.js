@@ -19,34 +19,47 @@ app.get("/", (request, response) => {
 
 app.get("/watch", (req, res) => {
   youtubedl.getInfo(req.query.v, function(err, info) {
-    var title = (info.title.indexOf(".") === info.title.length -1 ? info.title.substring(0, info.title.length - 1) + ".mp4" : info.title+".mp4")
-    if (!req.query.inbrowser) res.header("Content-Disposition", contentdisposition(title));
-    request.get(info.url).pipe(res)
+    var title =
+      info.title.indexOf(".") === info.title.length - 1
+        ? info.title.substring(0, info.title.length - 1) + ".mp4"
+        : info.title + ".mp4";
+    if (!req.query.inbrowser)
+      res.header("Content-Disposition", contentdisposition(title));
+    request.get(info.url).pipe(res);
   });
 });
 
 app.get("/playlist", (req, res) => {
-  var playlist = youtubedl("https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr");
-  playlist.on('info', (info) => {
-    res.send("no error: "+info.split("} {").join(","))
-  })
-  playlist.on('error', (err) => {
-    var zip = archiver('zip');
-    var data = err.stdout.split("\n")
-    data = JSON.parse('['+data+']');
+  var playlist = youtubedl(
+    "https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr"
+  );
+  playlist.on("info", info => {
+    res.send("no error: " + info.split("} {").join(","));
+  });
+  playlist.on("error", async err => {
+    var zip = archiver("zip");
+    var data = err.stdout.split("\n");
+    data = JSON.parse("[" + data + "]");
     //res.send(data)
-    res.header("Content-Disposition", contentdisposition(data[1].playlist+".zip"))
-    console.log(data.length)
+    res.header(
+      "Content-Disposition",
+      contentdisposition(data[0].playlist + ".zip")
+    );
+    console.log(data.length);
+    await (() => {
+      for (var i = 0; i < data.length; i++) {
+        var title =
+          data[i].title.indexOf(".") === data[i].title.length - 1
+            ? data[i].title.substring(0, data[i].title.length - 1) + ".mp4"
+            : data[i].title + ".mp4";
+        var playlistdl = request.get(data[i].url, (error, response, body) => {
+          zip.append(body, { name: title + ".mp4" });
+        });
+      }
+    })();
     zip.pipe(res);
-    for (var i = 0; i < data.length; i++){
-      var title = (data[i].title.indexOf(".") === data[i].title.length -1 ? data[i].title.substring(0, data[i].title.length - 1) + ".mp4" : data[i].title+".mp4")
-      var playlistdl = request.get(data[i].url, (error, response, body) => {
-        zip.append(body, {name: title+".mp4"})
-      })
-    }
-    zip.finalize();
     //res.send(data)
-  })
+  });
 });
 
 const listener = app.listen(process.env.PORT, () => {
