@@ -25,63 +25,17 @@ app.get("/", (request, response) => {
 });
 
 app.get("/watch", (req, res) => {
-  //console.log(req.headers)
-  //console.log(res)
-  //var video = youtubedl(url,{format:"mp4"})
   youtubedl.getInfo(req.query.v, function(err, info) {
-    //console.log(err)
-    //console.log("retrieved info!");
-    //var url = req.query.v;
-    //console.log(info);
-    //res.send(info)
-    console.log(`${info.url}`)
-    //res.send("Enter the command Ctrl-S to save the video!")
+    res.header("Content-Disposition", `attachment; filename="${info.title}.mp4"`);
+    res.write("")
     request.get(info.url).pipe(res)
-    //var title = info.title;
-    //console.log(info.title);
-    //res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
-    //ytdlcore(url).pipe(res);
-    //var stream = ffmpeg().input(youtubedl(url)).inputFormat("mp4").toFormat("mp4").pipe(res);
-    //var stream = youtubedl(url);
-    //var vidStream = new ffmpeg({source: stream});
-    //vidStream.setFfmpegPath('/usr/bin/ffmpeg');
-    //vidStream.inputFormat("mp4").toFormat("mp4").output(res).run();
-    // stream.on('error', (err, stdout, stderr) => {
-    //   console.log(err);
-    //   console.log("ffmpeg stdout:\n" + stdout);
-    //   console.log("ffmpeg stderr:\n" + stderr);
-    // })
-    // var stream = video.pipe(
-    //   fs.createWriteStream(
-    //     "/rbd/pnpm-volume/46445d14-adc1-4847-b269-fdfb11fa2547/youtubevids/" +
-    //       title +
-    //       ".mp4"
-    //   )
-    // );
-    // stream.on("finish", () => {
-    //   console.log("finished downloading!");
-    //   var vidPath = path.join(
-    //     "/rbd/pnpm-volume/46445d14-adc1-4847-b269-fdfb11fa2547/youtubevids/"+
-    //     title,
-    //     ".mp4"
-    //   );
-    //   var stat = fs.statSync(vidPath);
-    //   res.writeHead(200, {
-    //     "Content-Type": "video/mp4",
-    //     "Content-Length": stat.size
-    //   });
-    //   var vidStream = fs.createReadStream(vidPath);
-    //   vidStream.pipe(res);
-    //   fs.unlink(
-    //     "/rbd/pnpm-volume/46445d14-adc1-4847-b269-fdfb11fa2547/youtubevids/" +
-    //       title +
-    //       ".mp4",
-    //     err => {
-    //       if (err) throw err;
-    //     }
-    //   );
-     });
-  //});
+  });
+});
+
+app.get("/playlist", (req, res) => {
+  youtubedl.getInfo("https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr", function(err, info) {
+    res.send(info)
+  });
 });
 
 const listener = app.listen(process.env.PORT, () => {
