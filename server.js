@@ -26,10 +26,11 @@ app.get("/watch", (req, res) => {
 app.get("/playlist", (req, res) => {
   var playlist = youtubedl("https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr");
   playlist.on('info', (info) => {
-    res.send("no error: "+info.split("} {"))
+    res.send("no error: "+info.split("} {").join(","))
   })
   playlist.on('error', (err) => {
-    res.send("error: "+err.stdout.split("} {"))
+    var data = err.stoud.split("} {")
+    res.send("error: "+err.stdout.split("} {").join(","))
   })
 });
 
