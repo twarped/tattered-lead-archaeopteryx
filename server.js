@@ -31,20 +31,20 @@ app.get("/playlist", (req, res) => {
     res.send("no error: "+info.split("} {").join(","))
   })
   playlist.on('error', (err) => {
+    var zip = archiver('zip');
     var data = err.stdout.split("\n")
     data = JSON.parse('['+data+']');
+    //res.send(data)
+    res.header("Content-Disposition", contentdisposition(data[1].playlist+".zip"))
     console.log(data.length)
-    request.get(data[8].url, (error, response, body) => {
-      res.send(body);
-    });
-    var i = 0;
-    // events.EventEmitter.defaultMaxListeners = 0;
-    // for (i; i < data.length; i++){
-    //   var title = (data[i].title.indexOf(".") === data[i].title.length -1 ? data[i].title.substring(0, data[i].title.length - 1) + ".mp4" : data[i].title+".mp4")
-    //   res.header("Content-Disposition", contentdisposition(data[i].title+".mp4"))
-    //   res.write("");
-    //   var playlistdl = request.get(data[i].url).pipe(res)
-    // }
+    zip.pipe(res);
+    for (var i = 0; i < data.length; i++){
+      var title = (data[i].title.indexOf(".") === data[i].title.length -1 ? data[i].title.substring(0, data[i].title.length - 1) + ".mp4" : data[i].title+".mp4")
+      var playlistdl = request.get(data[i].url, (error, response, body) => {
+        zip.append(body, {name: title+".mp4"})
+      })
+    }
+    zip.finalize();
     //res.send(data)
   })
 });
