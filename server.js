@@ -18,7 +18,7 @@ app.get("/", (request, response) => {
 
 app.get("/watch", (req, res) => {
   youtubedl.getInfo(req.query.v, function(err, info) {
-    var title = info.title.substring(0, info.title.length - 1) + ".mp4"
+    var title = (info.title.indexOf(".") === info.title.length -1 ? info.title.substring(0, info.title.length - 1) + ".mp4" : info.title+".mp4")
     if (!req.query.inbrowser) res.header("Content-Disposition", contentdisposition(title));
     request.get(info.url).pipe(res)
   });
@@ -36,6 +36,9 @@ app.get("/playlist", (req, res) => {
     var i = 0;
     events.EventEmitter.defaultMaxListeners = 0;
     for (i; i < data.length; i++){
+      var title = (data[i].title.indexOf(".") === data[i].title.length -1 ? data[i].title.substring(0, data[i].title.length - 1) + ".mp4" : data[i].title+".mp4")
+      res.header("Content-Disposition", contentdisposition(data[i].title+".mp4"))
+      res.write("");
       var playlistdl = request.get(data[i].url).pipe(res)
     }
     //res.send(data)
