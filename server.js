@@ -35,6 +35,7 @@ app.get("/watch", (req, res) => {
     //console.log(info);
     //res.send(info)
     console.log(`${info.url}`)
+    //res.send("Enter the command Ctrl-S to save the video!")
     request.get(info.url).pipe(res)
     //var title = info.title;
     //console.log(info.title);
