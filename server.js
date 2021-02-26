@@ -32,11 +32,12 @@ app.get("/playlist", (req, res) => {
     var data = err.stdout.split("\n")
     data = JSON.parse('['+data+']');
     console.log(data.length)
+    var i = 0;
     console.log(err.stdout.indexOf("} {"))
-    for (i = 0; i < data.length; i++){
-      request.get(data[i].url).pipe(res, {end: false})
+    for (i; i < data.length; i++){
+      var playlistdl = request.get(data[i].url).pipe(res)
     }
-    res.send(data)
+    //res.send(data)
   })
 });
 
