@@ -4,6 +4,7 @@ const cors = require("cors");
 const got = require("got");
 const youtubedl = require("youtube-dl");
 const request = require("request");
+const contentdisposition = require("content-disposition");
 
 app.use(express.static("public"));
 app.use(cors());
@@ -19,10 +20,11 @@ app.get("/watch", (req, res) => {
   console.log(req.query)
   youtubedl.getInfo(req.query.v, function(err, info) {
     console.log(info.title[info.title.length-1])
+    var title = info.title.substring(0, info.title.length - 1)
     //if(info.title[info.title.length - 1] == ".") info.title[info.title.length - 1] = "";
-    console.log(info.title);
-    console.log(`attachment; filename="${info.title}.mp4"`)
-    res.header("Content-Disposition", `attachment; filename="${info.title}.mp4"`);
+    console.log(title);
+    console.log(`attachment; filename="${title}.mp4"`)
+    res.header("Content-Disposition", `attachment; filename="${title}.mp4"`);
     if (!req.query.inbrowser) res.write("")
     request.get(info.url).pipe(res)
   });
