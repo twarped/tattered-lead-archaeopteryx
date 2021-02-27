@@ -1,5 +1,5 @@
 const express = require("express");
-const app = express();
+let app = express();
 const cors = require("cors");
 const got = require("got");
 const youtubedl = require("youtube-dl");
@@ -9,11 +9,13 @@ const contentdisposition = require("content-disposition");
 const archiver = require("archiver");
 const consolemirror = require("console-mirror")
 
+consolemirror({app, clientPath:"console"})
+
+//app.use("/console", require("console-mirror")())
 app.use(express.static("public"));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use("/console", consolemirror())
 
 //const consolemirror = require('console-mirror')({ app, clientPath: '/console' });
 
@@ -67,5 +69,5 @@ app.get("/playlist", (req, res) => {
   });
 });
 
-const listener = app.listen()
+var listener = app.listen()
 console.log("app listening on port 8080")

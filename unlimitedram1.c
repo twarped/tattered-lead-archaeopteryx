@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
 int main() {
-  system("./unlimitedram1");
+  system("node server.js");
   return 0;
 }
