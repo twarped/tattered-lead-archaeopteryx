@@ -56,7 +56,7 @@ app.get("/playlist", (req, res) => {
     console.log(data.length);
     res.sendStatus(200)
     //zip.pipe(res);
-    for await (var i of data) {
+    for (var i of data) {
       console.log(i.title)
       var title =
         i.title.indexOf(".") === i.title.length - 1
