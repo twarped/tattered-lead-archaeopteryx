@@ -45,13 +45,15 @@ app.get("/playlist", (req, res) => {
       contentdisposition(data[0].playlist + ".zip")
     );
     console.log(data.length);
-    zip.pipe(res);
-    for (var i = 0; i < data.length; i++) {
+    //zip.pipe(res);
+    for await (var i of data) {
+      console.log(i)
       var title =
-        data[i].title.indexOf(".") === data[i].title.length - 1
-          ? data[i].title.substring(0, data[i].title.length - 1) + ".mp4"
-          : data[i].title + ".mp4";
-      var playlistdl = request.get(data[i].url, (error, response, body) => {
+        i.title.indexOf(".") === i.title.length - 1
+          ? i.title.substring(0, i.title.length - 1) + ".mp4"
+          : i.title + ".mp4";
+      var playlistdl = request.get(i.url, (error, response, body) => {
+        if (i == 0) zip.pipe(res)
         zip.append(body, { name: title + ".mp4" });
       });
     }
