@@ -8,13 +8,19 @@ const events = require("events");
 const contentdisposition = require("content-disposition");
 const archiver = require("archiver");
 
-require("console-mirror")({ app })
+//require("console-mirror")({ app })
+
+//require("console-mirror")({ clientPath: "/logs/" })
 
 app.use(express.static("public"));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use("/logs", require("console-mirror")())
+
+const consolemirror = require('console-mirror')({ app, clientPath: '/console' });
+
+//require("console-mirror")({ app })
+//app.use("/logs", require("console-mirror")())
 
 app.get("/", (request, response) => {
   response.sendFile(__dirname + "/views/index.html");
@@ -63,6 +69,6 @@ app.get("/playlist", (req, res) => {
   });
 });
 
-const listener = app.listen(process.env.PORT, () => {
+const listener = consolemirror.listen(process.env.PORT, () => {
   console.log("Your app is listening on port " + listener.address().port);
 });
