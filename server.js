@@ -17,7 +17,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-const consolemirror = require('console-mirror')({ app, clientPath: '/console' });
+//const consolemirror = require('console-mirror')({ app, clientPath: '/console' });
 
 //require("console-mirror")({ app })
 //app.use("/logs", require("console-mirror")())
@@ -69,6 +69,6 @@ app.get("/playlist", (req, res) => {
   });
 });
 
-const listener = consolemirror.listen(process.env.PORT, () => {
+const listener = app.listen(process.env.PORT, () => {
   console.log("Your app is listening on port " + listener.address().port);
 });
