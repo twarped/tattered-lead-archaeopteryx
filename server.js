@@ -7,12 +7,14 @@ const request = require("request");
 const events = require("events");
 const contentdisposition = require("content-disposition");
 const archiver = require("archiver");
-const consolemirror = require("console-mirror")
+
+require("console-mirror")({ app })
 
 app.use(express.static("public"));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use("/logs", require("console-mirror")())
 
 app.get("/", (request, response) => {
   response.sendFile(__dirname + "/views/index.html");
