@@ -7,15 +7,13 @@ const request = require("request");
 const events = require("events");
 const contentdisposition = require("content-disposition");
 const archiver = require("archiver");
-
-//require("console-mirror")({ app })
-
-//require("console-mirror")({ clientPath: "/logs/" })
+const consolemirror = require("console-mirror")
 
 app.use(express.static("public"));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use("/console", consolemirror())
 
 //const consolemirror = require('console-mirror')({ app, clientPath: '/console' });
 
@@ -69,6 +67,5 @@ app.get("/playlist", (req, res) => {
   });
 });
 
-const listener = app.listen(process.env.PORT, () => {
-  console.log("Your app is listening on port " + listener.address().port);
-});
+const listener = app.listen()
+console.log("app listening on port 8080")
