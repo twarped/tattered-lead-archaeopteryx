@@ -7,7 +7,7 @@
   "description": "Free Youtube Downloader With No Ads",
   "main": "server.js",
   "scripts": {
-    "start": "./unlimitedram"
+    "start": "node donothing.js"
   },
   "dependencies": {
     "content-disposition": "^0.5.3",
