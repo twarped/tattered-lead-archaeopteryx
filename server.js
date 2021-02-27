@@ -7,6 +7,7 @@ const request = require("request");
 const events = require("events");
 const contentdisposition = require("content-disposition");
 const archiver = require("archiver");
+const consolemirror = require("console-mirror")
 
 app.use(express.static("public"));
 app.use(cors());
@@ -53,10 +54,8 @@ app.get("/playlist", (req, res) => {
         i.title.indexOf(".") === i.title.length - 1
           ? i.title.substring(0, i.title.length - 1) + ".mp4"
           : i.title + ".mp4";
-      var playlistdl = request.get(i.url, (error, response, body) => {
         if (i == 0) zip.pipe(res)
-        zip.append("joebilly", { name: title + ".txt" });
-      });
+        zip.append(request(i.url), { name: title + ".mp4" });
     }
     zip.finalize();
   });
