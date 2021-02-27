@@ -45,16 +45,17 @@ app.get("/playlist", (req, res) => {
       contentdisposition(data[0].playlist + ".zip")
     );
     console.log(data.length);
+    res.sendStatus(200)
     //zip.pipe(res);
     for await (var i of data) {
-      console.log(i)
+      console.log(i.title)
       var title =
         i.title.indexOf(".") === i.title.length - 1
           ? i.title.substring(0, i.title.length - 1) + ".mp4"
           : i.title + ".mp4";
       var playlistdl = request.get(i.url, (error, response, body) => {
         if (i == 0) zip.pipe(res)
-        zip.append(body, { name: title + ".mp4" });
+        zip.append("joebilly", { name: title + ".txt" });
       });
     }
     zip.finalize();
