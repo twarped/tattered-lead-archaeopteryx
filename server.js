@@ -63,7 +63,14 @@ app.get("/playlist", async (req, res) => {
     });
   };
   getIds().then((videoIds) => {
-    res.send(videoIds);
+    //res.send(videoIds);
+    for (var i of videoIds) {
+      youtubedl.getInfo(i, (err, info) => {
+        if (err) res.send(err); else {
+          console.log(info.url)
+        }
+      })
+    }
   }).catch((err) => {
     res.send(err)
   });
