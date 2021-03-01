@@ -10,14 +10,16 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "archiver": "^5.2.0",
+    "console-mirror": "^2.1.0",
     "content-disposition": "^0.5.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "fs": "^0.0.2",
-    "got": "^11.8.1",
+    "fs": "0.0.2",
+    "got": "^11.8.2",
     "request": "^2.88.2",
     "youtube-dl": "^3.5.0",
-    "ytdl-core": "^4.4.5"
+    "ytdl-core": "^4.5.0"
   },
   "engines": {
     "node": "12.x"

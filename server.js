@@ -3,15 +3,16 @@ let app = express();
 const cors = require("cors");
 const got = require("got");
 const youtubedl = require("youtube-dl");
-const ytdl = require("ytdl-core")
+const ytdl = require("ytdl-core");
 const request = require("request");
 const events = require("events");
 const contentdisposition = require("content-disposition");
 const archiver = require("archiver");
-const consolemirror = require("console-mirror")
+archiver;
+const consolemirror = require("console-mirror");
 const apikey = process.env.api_key;
 
-consolemirror({app, clientPath:"console"})
+consolemirror({ app, clientPath: "console" });
 
 app.use(express.static("public"));
 app.use(cors());
@@ -34,20 +35,38 @@ app.get("/watch", (req, res) => {
   });
 });
 
-app.get("/playlist", (req, res) => {
-  ytdl.getInfo("lD4ZIzosp_c")
+app.get("/playlist", async (req, res) => {
   var placeholder = "PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr";
   var pageToken = "";
   const getIds = () => {
-    request("https://www.googleapis.com/youtube/v3/playlistItems?key="+apikey+"&playlistId="+placeholder+"&part=contentDetails&maxResults=50"+(pageToken != "" ? "&pageToken="+pageToken : ""), (err, body) => {
-      if(err) res.send(err); else res.send(JSON.parse(body.body));
-      var bodies = JSON.parse(body.body);
-      for (var i of bodies.items) {
-        console.log(""+i.contentDetails.videoId)
-      }
-    })
-  }
-  getIds();
+    return new Promise((resolve, reject) => {
+      var videoIds = [];
+      request(
+        "https://www.googleapis.com/youtube/v3/playlistItems?key=" +
+          apikey +
+          "&playlistId=" +
+          placeholder +
+          "&part=contentDetails&maxResults=50" +
+          (pageToken != "" ? "&pageToken=" + pageToken : ""),
+        (err, body) => {
+          if (err) {
+            reject(err);
+          } else {
+            var bodies = JSON.parse(body.body);
+            for (var i of bodies.items) {
+              videoIds.push(i.contentDetails.videoId);
+            }
+            resolve(videoIds);
+          }
+        }
+      );
+    });
+  };
+  getIds().then((videoIds) => {
+    res.send(videoIds);
+  }).catch((err) => {
+    res.send(err)
+  });
   // youtubedl.getInfo("https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr", (err, info)=>{
   //   if (err) res.send(err); else res.send(info)
   // })
@@ -83,5 +102,5 @@ app.get("/playlist", (req, res) => {
   // });
 });
 
-var listener = app.listen()
-console.log("app listening on port 8080")
+var listener = app.listen();
+console.log("app listening on port 8080");
