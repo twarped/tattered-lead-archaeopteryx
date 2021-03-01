@@ -3,12 +3,10 @@ let app = express();
 const cors = require("cors");
 const got = require("got");
 const youtubedl = require("youtube-dl");
-const ytdl = require("ytdl-core");
 const request = require("request");
 const events = require("events");
 const contentdisposition = require("content-disposition");
 const archiver = require("archiver");
-archiver;
 const apikey = process.env.api_key;
 
 app.use(express.static("public"));
@@ -67,7 +65,6 @@ app.get("/playlist", async (req, res) => {
           console.log(info.url)
         }
       })
-      setTimeout(()=>{},1000)
     }
   }).catch((err) => {
     res.send(err)
