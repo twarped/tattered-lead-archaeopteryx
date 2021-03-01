@@ -38,8 +38,11 @@ app.get("/playlist", (req, res) => {
   var pageToken = "";
   const getIds = () => {
     request("https://www.googleapis.com/youtube/v3/playlistItems?key="+apikey+"&playlistId="+placeholder+"&part=contentDetails&maxResults=50"+(pageToken != "" ? "&pageToken="+pageToken : ""), (err, body) => {
-      console.log(err)
-      console.log(body)
+      if(err) res.send(err); else res.send(JSON.parse(body.body));
+      var bodies = JSON.parse(body.body)
+      for (var i in bodies){
+        console.log(bodies[i].contentDetails.videoId)
+      }
     })
   }
   getIds();
