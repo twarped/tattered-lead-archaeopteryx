@@ -34,10 +34,15 @@ app.get("/watch", (req, res) => {
 });
 
 app.get("/playlist", (req, res) => {
-  // request("http://youtube.com/get_video?video_id=zO_pziA1V6c", (err, body) => {
-  //   console.log(err)
-  //   console.log(body)
-  // })
+  var placeholder = "PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr";
+  var pageToken = "";
+  const getIds = () => {
+    request("https://www.googleapis.com/youtube/v3/playlistItems?key="+apikey+"&playlistId="+placeholder+"&part=contentDetails&maxResults=50"+(pageToken != "" ? "&pageToken="+pageToken : ""), (err, body) => {
+      console.log(err)
+      console.log(body)
+    })
+  }
+  getIds();
   // youtubedl.getInfo("https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr", (err, info)=>{
   //   if (err) res.send(err); else res.send(info)
   // })
