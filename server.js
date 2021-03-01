@@ -9,10 +9,7 @@ const events = require("events");
 const contentdisposition = require("content-disposition");
 const archiver = require("archiver");
 archiver;
-const consolemirror = require("console-mirror");
 const apikey = process.env.api_key;
-
-consolemirror({ app, clientPath: "console" });
 
 app.use(express.static("public"));
 app.use(cors());
@@ -70,6 +67,7 @@ app.get("/playlist", async (req, res) => {
           console.log(info.url)
         }
       })
+      setTimeout(()=>{},1000)
     }
   }).catch((err) => {
     res.send(err)
