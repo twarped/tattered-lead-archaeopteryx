@@ -7,11 +7,10 @@
   "description": "Free Youtube Downloader With No Ads",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node donothing.js"
   },
   "dependencies": {
     "archiver": "^5.2.0",
-    "console-mirror": "^2.1.0",
     "content-disposition": "^0.5.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",

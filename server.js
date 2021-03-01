@@ -57,18 +57,23 @@ app.get("/playlist", async (req, res) => {
       );
     });
   };
-  getIds().then((videoIds) => {
-    //res.send(videoIds);
-    for (var i of videoIds) {
-      youtubedl.getInfo(i, (err, info) => {
-        if (err) res.send(err); else {
-          console.log(info.url)
-        }
-      })
-    }
-  }).catch((err) => {
-    res.send(err)
-  });
+  getIds()
+    .then(videoIds => {
+      //res.send(videoIds);
+      for (var i of videoIds) {
+        setTimeout(() => {
+          youtubedl.getInfo(i, (err, info) => {
+            if (err) res.send(err);
+            else {
+              console.log(info.url);
+            }
+          });
+        }, 1000);
+      }
+    })
+    .catch(err => {
+      res.send(err);
+    });
   // youtubedl.getInfo("https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr", (err, info)=>{
   //   if (err) res.send(err); else res.send(info)
   // })
@@ -104,5 +109,5 @@ app.get("/playlist", async (req, res) => {
   // });
 });
 
-var listener = app.listen();
-console.log("app listening on port 8080");
+var listener = app.listen(process.env.PORT);
+console.log("3000 is the port");
