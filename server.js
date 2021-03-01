@@ -33,9 +33,13 @@ app.get("/watch", (req, res) => {
 });
 
 app.get("/playlist", (req, res) => {
-  youtubedl.getInfo("https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr", (err, info)=>{
-    if (err) res.send(err); else res.send(info)
+  request("http://youtube.com/get_video?video_id=zO_pziA1V6c", (err, body) => {
+    console.log(err)
+    console.log(body)
   })
+  // youtubedl.getInfo("https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr", (err, info)=>{
+  //   if (err) res.send(err); else res.send(info)
+  // })
   // var playlist = youtubedl(
   //   "https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr"
   // );
