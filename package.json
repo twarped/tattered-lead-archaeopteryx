@@ -16,7 +16,8 @@
     "fs": "^0.0.2",
     "got": "^11.8.1",
     "request": "^2.88.2",
-    "youtube-dl": "^3.5.0"
+    "youtube-dl": "^3.5.0",
+    "ytdl-core": "^4.4.5"
   },
   "engines": {
     "node": "12.x"
