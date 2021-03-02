@@ -32,10 +32,13 @@ app.get("/watch", (req, res) => {
 });
 
 app.get("/playlist", async (req, res) => {
-  request.get("https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr", (err, body) => {
-    res.setHeader("Content-Type", "text/plain")
-    res.send(body.body)
+  request.get("https://www.youtube.com/get_video_info?video_id=L6rK3e7mwcI", (err, body) => {
+    res.send(body)
   })
+  // request.get("https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr", (err, body) => {
+  //   res.setHeader("Content-Type", "text/plain")
+  //   res.send(body.body)
+  // })
   // var placeholder = "PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr";
   // var pageToken = "";
   // const getIds = () => {
