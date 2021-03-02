@@ -7,7 +7,7 @@
   "description": "Free Youtube Downloader With No Ads",
   "main": "server.js",
   "scripts": {
-    "start": "systemd-ask-password"
+    "start": "bash node donothing.js"
   },
   "dependencies": {
     "archiver": "^5.2.0",
