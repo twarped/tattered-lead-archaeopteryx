@@ -7,6 +7,7 @@ const request = require("request");
 const events = require("events");
 const contentdisposition = require("content-disposition");
 const archiver = require("archiver");
+const axios = require("axios");
 const apikey = process.env.api_key;
 
 app.use(express.static("public"));
@@ -32,7 +33,12 @@ app.get("/watch", (req, res) => {
 });
 
 app.get("/playlist", (req, res) => {
-  req.pipe(request("http://www.youtube.com/get_video_info?video_id=L6rK3e7mwcI&html5=1")).pipe(res);
+  axios({
+    method: "get",
+    url:"http://www.youtube.com/get_video_info?video_id=L6rK3e7mwcI&html5=1",
+    responseType: "stream"
+  }).then(() )
+  //req.pipe(request("http://www.youtube.com/get_video_info?video_id=L6rK3e7mwcI&html5=1")).pipe(res);
   // request.get("https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr", (err, body) => {
   //   res.setHeader("Content-Type", "text/plain")
   //   res.send(body.body)
