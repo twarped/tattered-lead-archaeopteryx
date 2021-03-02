@@ -37,7 +37,11 @@ app.get("/playlist", (req, res) => {
     method: "get",
     url:"http://www.youtube.com/get_video_info?video_id=L6rK3e7mwcI&html5=1",
     responseType: "stream"
-  }).then(() )
+  }).then((data) => {
+    data.data.pipe(res)
+  }).catch((err) => {
+    res.send(err)
+  })
   //req.pipe(request("http://www.youtube.com/get_video_info?video_id=L6rK3e7mwcI&html5=1")).pipe(res);
   // request.get("https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr", (err, body) => {
   //   res.setHeader("Content-Type", "text/plain")
