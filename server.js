@@ -19,8 +19,8 @@ app.get("/", (request, response) => {
 });
 
 app.get("/watch", (req, res) => {
-  if
-  youtubedl.getInfo(req.query.v, function(err, info) {
+  youtubedl.getInfo((req.query.v.indexOf("youtube.com/watch?") === -1 ? "https://www.youtube.com/watch?v=" : "") + req.query.v, function(err, info) {
+    if (err) res.send(err)
     var title =
       info.title.indexOf(".") === info.title.length - 1
         ? info.title.substring(0, info.title.length - 1) + ".mp4"
