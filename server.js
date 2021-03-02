@@ -27,12 +27,14 @@ app.get("/watch", (req, res) => {
     if (!req.query.inbrowser)
       res.header("Content-Disposition", contentdisposition(title));
     request.get(info.url).pipe(res);
+    console.log(info.url)
   });
 });
 
 app.get("/playlist", async (req, res) => {
   request.get("https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr", (err, body) => {
-    res.send("\""+body.body+"\"")
+    res.setHeader("Content-Type", "text/plain")
+    res.send(body.body)
   })
   // var placeholder = "PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr";
   // var pageToken = "";
