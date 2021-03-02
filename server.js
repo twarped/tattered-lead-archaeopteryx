@@ -19,7 +19,6 @@ app.get("/", (request, response) => {
 });
 
 app.get("/watch", (req, res) => {
-  if
   youtubedl.getInfo(req.query.v, function(err, info) {
     var title =
       info.title.indexOf(".") === info.title.length - 1
@@ -33,7 +32,7 @@ app.get("/watch", (req, res) => {
 
 app.get("/playlist", async (req, res) => {
   request.get("https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr", (err, body) => {
-    res.send(body.body)
+    res.send("\""+body.body+"\"")
   })
   // var placeholder = "PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr";
   // var pageToken = "";
