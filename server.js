@@ -31,10 +31,8 @@ app.get("/watch", (req, res) => {
   });
 });
 
-app.get("/playlist", async (req, res) => {
-  request.get("http://www.youtube.com/get_video_info?video_id=L6rK3e7mwcI&html5=1", (err, body) => {
-    if (err) res.send("error: "+err); else res.send("body: "+JSON.stringify(body))
-  })
+app.get("/playlist", (req, res) => {
+  request.get("http://www.youtube.com/get_video_info?video_id=L6rK3e7mwcI&html5=1").pipe(res);
   // request.get("https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr", (err, body) => {
   //   res.setHeader("Content-Type", "text/plain")
   //   res.send(body.body)
