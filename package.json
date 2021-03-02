@@ -7,7 +7,7 @@
   "description": "Free Youtube Downloader With No Ads",
   "main": "server.js",
   "scripts": {
-    "start": "echo \"node server.js\" | dash"
+    "start": "node server.js"
   },
   "dependencies": {
     "archiver": "^5.2.0",
