@@ -19,6 +19,7 @@ app.get("/", (request, response) => {
 });
 
 app.get("/watch", (req, res) => {
+  if
   youtubedl.getInfo(req.query.v, function(err, info) {
     var title =
       info.title.indexOf(".") === info.title.length - 1
@@ -31,49 +32,52 @@ app.get("/watch", (req, res) => {
 });
 
 app.get("/playlist", async (req, res) => {
-  var placeholder = "PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr";
-  var pageToken = "";
-  const getIds = () => {
-    return new Promise((resolve, reject) => {
-      var videoIds = [];
-      request(
-        "https://www.googleapis.com/youtube/v3/playlistItems?key=" +
-          apikey +
-          "&playlistId=" +
-          placeholder +
-          "&part=contentDetails&maxResults=50" +
-          (pageToken != "" ? "&pageToken=" + pageToken : ""),
-        (err, body) => {
-          if (err) {
-            reject(err);
-          } else {
-            var bodies = JSON.parse(body.body);
-            for (var i of bodies.items) {
-              videoIds.push(i.contentDetails.videoId);
-            }
-            resolve(videoIds);
-          }
-        }
-      );
-    });
-  };
-  getIds()
-    .then(videoIds => {
-      //res.send(videoIds);
-      for (var i of videoIds) {
-        setTimeout(() => {
-          youtubedl.getInfo(i, (err, info) => {
-            if (err) res.send(err);
-            else {
-              console.log(info.url);
-            }
-          });
-        }, 1000);
-      }
-    })
-    .catch(err => {
-      res.send(err);
-    });
+  request.get("https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr", (err, body) => {
+    res.send(body.body)
+  })
+  // var placeholder = "PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr";
+  // var pageToken = "";
+  // const getIds = () => {
+  //   return new Promise((resolve, reject) => {
+  //     var videoIds = [];
+  //     request(
+  //       "https://www.googleapis.com/youtube/v3/playlistItems?key=" +
+  //         apikey +
+  //         "&playlistId=" +
+  //         placeholder +
+  //         "&part=contentDetails&maxResults=50" +
+  //         (pageToken != "" ? "&pageToken=" + pageToken : ""),
+  //       (err, body) => {
+  //         if (err) {
+  //           reject(err);
+  //         } else {
+  //           var bodies = JSON.parse(body.body);
+  //           for (var i of bodies.items) {
+  //             videoIds.push(i.contentDetails.videoId);
+  //           }
+  //           resolve(videoIds);
+  //         }
+  //       }
+  //     );
+  //   });
+  // };
+  // getIds()
+  //   .then(videoIds => {
+  //     //res.send(videoIds);
+  //     for (var i of videoIds) {
+  //       setTimeout(() => {
+  //         youtubedl.getInfo(i, (err, info) => {
+  //           if (err) res.send(err);
+  //           else {
+  //             console.log(info.url);
+  //           }
+  //         });
+  //       }, 1000);
+  //     }
+  //   })
+  //   .catch(err => {
+  //     res.send(err);
+  //   });
   // youtubedl.getInfo("https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr", (err, info)=>{
   //   if (err) res.send(err); else res.send(info)
   // })
