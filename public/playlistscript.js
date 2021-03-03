@@ -18,19 +18,17 @@ for (var i of query) {
 //     }
 // };
 var playlistURL;
-if (queryParams.list.includes("youtu" && "http" && "?list=" && "/playlist")) playlistURL = queryParams.list; 
-else if (queryParams.list.indexOf("PL") === 0) playlistURL = "https://www.youtube.com/playlist?list=" + queryParams.list; 
-else if (queryParams.list.includes("youtu" && "http" && "&list=" && "/watch")) playlistURL = "https://www.youtube.com/playlist?list=" + queryParams.list.split("&list=")[1]
+if (queryParams.list.includes("youtu" && "http" && "?list=" && "/playlist")) playlistURL = "/playlisttest"+queryParams.list.split("/playlist")[1]; 
+else if (queryParams.list.indexOf("PL") === 0) playlistURL = "/playlisttest?list=" + queryParams.list; 
+else if (queryParams.list.includes("youtu" && "http" && "&list=" && "/watch")) playlistURL = "/playlisttest?list=" + queryParams.list.split("&list=")[1]
 window.fetch(playlistURL).then((res) => {
-  res.json()
-}).then((data) => {
-  alert(JSON.stringify(data))
+  alert(JSON.stringify(res.body))
 }).catch((err) => {
   alert(typeof err)
   alert(err)
   alert(JSON.stringify(err))
 })
-//alert("playlistURL: "+playlistURL)
+alert("playlistURL: "+playlistURL)
 //playlistIdsRequest.open("get", playlistURL)
 //playlistIdsRequest.send();
 function loadPlaylist(playlistTitle, playlistIds) {
