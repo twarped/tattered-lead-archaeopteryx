@@ -22,7 +22,7 @@ if (queryParams.list.includes("youtu" && "http" && "?list=" && "/playlist")) pla
 else if (queryParams.list.indexOf("PL") === 0) playlistURL = "/playlisttest?list=" + queryParams.list; 
 else if (queryParams.list.includes("youtu" && "http" && "&list=" && "/watch")) playlistURL = "/playlisttest?list=" + queryParams.list.split("&list=")[1]
 window.fetch(playlistURL).then((res) => {
-  alert(JSON.stringify(res.body))
+  alert(JSON.stringify(res))
 }).catch((err) => {
   alert(typeof err)
   alert(err)
