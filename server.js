@@ -45,7 +45,9 @@ app.get("/playlist", (req, res) => {
   //req.pipe(request("http://www.youtube.com/get_video_info?video_id=L6rK3e7mwcI&html5=1")).pipe(res);
   request.get("https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr", (err, body) => {
     res.setHeader("Content-Type", "text/plain")
-    res.send(body.body)
+    var parsedBody = JSON.parse(body.body.split(`var ytInitialData = `)[1].split(`;</script><link rel="alternate" media="handheld" href="https://m.youtube.com/playlist?list=`)[0]);
+    res.send(parsedBody)
+    console.log(parsedBody.length)
   })
   // var placeholder = "PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr";
   // var pageToken = "";
