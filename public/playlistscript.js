@@ -1,12 +1,12 @@
 var query = window.location.search.split("?");
 var queryFirst = query.shift();
-alert(JSON.stringify(query))
+//alert(JSON.stringify(query))
 var queryParams = {}
 for (var i of query) {
   var o = i.split("=")
   queryParams[o[0]] = o[1]
 }
-alert("list: "+queryParams.list)
+//alert("list: "+queryParams.list)
 // var playlistIdsRequest = new XMLHttpRequest();
 // playlistIdsRequest.onreadystatechange = function() {
 //     if (this.readyState == 4 && this.status == 200) {
@@ -21,12 +21,16 @@ var playlistURL;
 if (queryParams.list.includes("youtu" && "http" && "?list=" && "/playlist")) playlistURL = queryParams.list; 
 else if (queryParams.list.indexOf("PL") === 0) playlistURL = "https://www.youtube.com/playlist?list=" + queryParams.list; 
 else if (queryParams.list.includes("youtu" && "http" && "&list=" && "/watch")) playlistURL = "https://www.youtube.com/playlist?list=" + queryParams.list.split("&list=")[1]
-window.fetch(playlistURL).then((data) => {
-  alert(data)
+window.fetch(playlistURL).then((res) => {
+  res.json()
+}).then((data) => {
+  alert(JSON.stringify(data))
 }).catch((err) => {
+  alert(typeof err)
   alert(err)
+  alert(JSON.stringify(err))
 })
-alert("playlistURL: "+playlistURL)
+//alert("playlistURL: "+playlistURL)
 //playlistIdsRequest.open("get", playlistURL)
 //playlistIdsRequest.send();
 function loadPlaylist(playlistTitle, playlistIds) {
