@@ -46,7 +46,10 @@ app.get("/playlist", (req, res) => {
   request.get("https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr", (err, body) => {
     res.setHeader("Content-Type", "text/plain")
     var parsedBody = JSON.parse(body.body.split(`var ytInitialData = `)[1].split(`;</script><link rel="alternate" media="handheld" href="https://m.youtube.com/playlist?list=`)[0]);
-    res.send(parsedBody.contents.twoColumnBrowseResultsRenderer.tabs[0].tabRenderer.content.sectionListRenderer.contents[0])
+    var playlistTitle = parsedBody.metadata.playlistMetadataRenderer.title
+    console.log(playlistTitle)
+    //res.send(parsedBody)
+    res.send(parsedBody.contents.twoColumnBrowseResultsRenderer.tabs[0].tabRenderer.content.sectionListRenderer.contents[0].itemSectionRenderer.contents[0].playlistVideoListRenderer.contents[0])
     //console.log(parsedBody)
   })
   // var placeholder = "PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr";
