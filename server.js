@@ -32,11 +32,11 @@ app.get("/watch", (req, res) => {
   });
 });
 
-app.get("/test", (req, res) => {
-  request.get("http://10youtube.com/").pipe(res)
+app.get("/playlist", (req, res) => {
+  res.sendFile(__dirname+"/views/playlist.html")
 })
 
-app.get("/playlist", (req, res) => {
+app.get("/playlisttest", (req, res) => {
   // axios({
   //   method: "get",
   //   url:"http://www.youtube.com/get_video_info?video_id=L6rK3e7mwcI&html5=1",
