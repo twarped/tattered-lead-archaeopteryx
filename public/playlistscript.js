@@ -13,7 +13,9 @@ playlistIdsRequest.onreadystatechange = function() {
       alert(this.responseText)
       var playlistIds = JSON.parse(playlistIdsRequest.responseText.split(`var ytInitialData = `)[1].split(`;</script><link rel="alternate" media="handheld" href="https://m.youtube.com/playlist?list=`)[0]);
       var playlistTitle = playlistIds.metadata.playlistMetadataRenderer.title;
-    } else if (this.)
+    } else if (this.readyState == 4 && this.status != 200) {
+      alert("error? : "+this.status)
+    }
 };
 var playlistURL;
 if (queryParams.list.includes("youtu" && "http" && "?list=" && "/playlist")) playlistURL = queryParams.list; 
