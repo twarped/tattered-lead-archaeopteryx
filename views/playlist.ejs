@@ -23,7 +23,7 @@
       <% contents.contents.forEach((playlistContent) => { %>
         <div class="playlistContentContainer" style="width: 100%;">
           <img src=<%= playlistContent.playlistVideoRenderer.thumbnail.thumbnails[0].url %> class="playlistContentThumbnail" />
-          <p class="playlistContentVideoTitle" style="width: calc(100% - 175px); float: right">
+          <p class="playlistContentVideoTitle" style="width: fit-content; float: right; overflow-x: scroll;">
             <%= playlistContent.playlistVideoRenderer.title.runs[0].text %>
           </p>
         </div>
