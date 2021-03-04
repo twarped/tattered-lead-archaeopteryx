@@ -42,7 +42,7 @@ app.get("/playlist", (req, res) => {
     playlistURL = "https://www.youtube.com/playlist?list=" + req.query.list;
   else if (req.query.list.includes("youtu" && "http" && "&list=" && "/watch"))
     playlistURL = "https://www.youtube.com/playlist?list=" + req.query.list.split("&list=")[1];
-  console.log(playlistURL)
+  //console.log(playlistURL)
   request.get(
     playlistURL,
     (err, body) => {
