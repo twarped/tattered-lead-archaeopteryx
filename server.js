@@ -8,12 +8,14 @@ const events = require("events");
 const contentdisposition = require("content-disposition");
 const archiver = require("archiver");
 const axios = require("axios");
+//const ejs = require("ejs");
 const apikey = process.env.api_key;
 
 app.use(express.static("public"));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.set('view engine', 'ejs');
 
 app.get("/", (request, response) => {
   response.sendFile(__dirname + "/views/index.html");
@@ -45,7 +47,6 @@ app.get("/playlist", (req, res) => {
     playlistURL,
     (err, body) => {
       //"https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr"
-      res.setHeader("Content-Type", "application/json");
       var parsedBody = JSON.parse(
         body.body
           .split(`var ytInitialData = `)[1]
@@ -59,7 +60,8 @@ app.get("/playlist", (req, res) => {
           .content.sectionListRenderer.contents[0].itemSectionRenderer
           .contents[0].playlistVideoListRenderer;
       contents.playlistTitle = playlistTitle;
-      res.render(__dirname + "/views/playlist.ejs", {contents: contents});
+      res.render(__dirname + "/views/playlist", {contents: contents});
+      console.log(__dirname)
       console.log(playlistTitle);
     }
   );
