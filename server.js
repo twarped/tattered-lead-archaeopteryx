@@ -104,7 +104,7 @@ app.get("/playlisttest", (req, res) => {
       contents.playlistTitle = playlistTitle;
       console.log(playlistTitle);
       //res.send(parsedBody)
-      //res.send(contents)
+      res.send(contents)
       //console.log(parsedBody)
     }
   );
