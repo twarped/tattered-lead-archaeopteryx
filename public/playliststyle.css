@@ -45,3 +45,12 @@ h3 {
   position: relative;
   margin: auto;
 }
+
+.playlistContentContainer {
+  cursor: pointer;
+  border-top: 1px solid grey;
+  border-bottom: 1px solid grey;
+  box-shadow: 1px 1px 6px grey;
+  border-radius: 6px;
+  margin: 2px;
+}
