@@ -60,9 +60,15 @@ app.get("/playlist", (req, res) => {
           .content.sectionListRenderer.contents[0].itemSectionRenderer
           .contents[0].playlistVideoListRenderer;
       contents.playlistTitle = playlistTitle;
+      for (var i in contents.contents) {
+        //console.info(contents.contents)
+        if (contents.contents[i].playlistVideoRenderer.thumbnail.thumbnails[0].url == "https://i.ytimg.com/img/no_thumbnail.jpg")
+          delete contents.contents[i]
+      }
+      //res.send(contents)
       res.render(__dirname + "/views/playlist", {contents: contents});
-      console.log(__dirname)
-      console.log(playlistTitle);
+      //console.log(__dirname)
+      //console.log(playlistTitle);
     }
   );
 });
