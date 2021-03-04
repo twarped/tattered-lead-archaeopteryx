@@ -15,15 +15,15 @@
         with <a href="/">tattered-lead-archaeopteryx.glitch.me</a>
       </h3>
     </h1>
-    <div id="playlistContainer">
+    <div id="playlistContainer" style="width: 100%;">
       <br>
       <%= contents.playlistTitle %>
       <br>
       <!--<img id="initialLoading" src="https://wpamelia.com/wp-content/uploads/2018/11/loading-hourglass.gif"/>-->
       <% contents.contents.forEach((playlistContent) => { %>
-        <div class="playlistContentContainer">
+        <div class="playlistContentContainer" style="width: 100%;">
           <img src=<%= playlistContent.playlistVideoRenderer.thumbnail.thumbnails[0].url %> class="playlistContentThumbnail" />
-          <p class="playlistContentVideoTitle" style="position:relative; left: 175px; margin-bottom: 70px;">
+          <p class="playlistContentVideoTitle" style="position:static; margin-right: calc(100% - 175px); float: right;">
             <%= playlistContent.playlistVideoRenderer.title.runs[0].text %>
           </p>
         </div>
