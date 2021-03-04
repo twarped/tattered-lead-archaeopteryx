@@ -28,13 +28,42 @@ app.get("/watch", (req, res) => {
     if (!req.query.inbrowser)
       res.header("Content-Disposition", contentdisposition(title));
     request.get(info.url).pipe(res);
-    console.log(info.url)
+    console.log(info.url);
   });
 });
 
 app.get("/playlist", (req, res) => {
-  res.sendFile(__dirname+"/views/playlist.html")
-})
+  var playlistURL;
+  if (req.query.list.includes("youtu" && "http" && "?list=" && "/playlist"))
+    playlistURL = "https://www.youtube.com/playlist" + req.query.list.split("/playlist")[1];
+  else if (req.query.list.indexOf("PL") === 0)
+    playlistURL = "https://www.youtube.com/playlist?list=" + req.query.list;
+  else if (req.query.list.includes("youtu" && "http" && "&list=" && "/watch"))
+    playlistURL = "https://www.youtube.com/playlist?list=" + req.query.list.split("&list=")[1];
+  console.log(playlistURL)
+  request.get(
+    playlistURL,
+    (err, body) => {
+      //"https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr"
+      res.setHeader("Content-Type", "application/json");
+      var parsedBody = JSON.parse(
+        body.body
+          .split(`var ytInitialData = `)[1]
+          .split(
+            `;</script><link rel="alternate" media="handheld" href="https://m.youtube.com/playlist?list=`
+          )[0]
+      );
+      var playlistTitle = parsedBody.metadata.playlistMetadataRenderer.title;
+      var contents =
+        parsedBody.contents.twoColumnBrowseResultsRenderer.tabs[0].tabRenderer
+          .content.sectionListRenderer.contents[0].itemSectionRenderer
+          .contents[0].playlistVideoListRenderer;
+      contents.playlistTitle = playlistTitle;
+      res.render(__dirname + "/views/playlist.ejs", {contents: contents});
+      console.log(playlistTitle);
+    }
+  );
+});
 
 app.get("/playlisttest", (req, res) => {
   // axios({
@@ -47,17 +76,30 @@ app.get("/playlisttest", (req, res) => {
   //   res.send(err)
   // })
   //req.pipe(request("http://www.youtube.com/get_video_info?video_id=L6rK3e7mwcI&html5=1")).pipe(res);
-  request.get("https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr", (err, body) => {//"https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr"
-    res.setHeader("Content-Type", "application/json")
-    var parsedBody = JSON.parse(body.body.split(`var ytInitialData = `)[1].split(`;</script><link rel="alternate" media="handheld" href="https://m.youtube.com/playlist?list=`)[0]);
-    var playlistTitle = parsedBody.metadata.playlistMetadataRenderer.title
-    var contents = parsedBody.contents.twoColumnBrowseResultsRenderer.tabs[0].tabRenderer.content.sectionListRenderer.contents[0].itemSectionRenderer.contents[0].playlistVideoListRenderer;
-    contents.playlistTitle = playlistTitle
-    console.log(playlistTitle)
-    //res.send(parsedBody)
-    res.send(contents)
-    //console.log(parsedBody)
-  })
+  request.get(
+    "https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr",
+    (err, body) => {
+      //"https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr"
+      res.setHeader("Content-Type", "application/json");
+      var parsedBody = JSON.parse(
+        body.body
+          .split(`var ytInitialData = `)[1]
+          .split(
+            `;</script><link rel="alternate" media="handheld" href="https://m.youtube.com/playlist?list=`
+          )[0]
+      );
+      var playlistTitle = parsedBody.metadata.playlistMetadataRenderer.title;
+      var contents =
+        parsedBody.contents.twoColumnBrowseResultsRenderer.tabs[0].tabRenderer
+          .content.sectionListRenderer.contents[0].itemSectionRenderer
+          .contents[0].playlistVideoListRenderer;
+      contents.playlistTitle = playlistTitle;
+      console.log(playlistTitle);
+      //res.send(parsedBody)
+      //res.send(contents)
+      //console.log(parsedBody)
+    }
+  );
   // var placeholder = "PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr";
   // var pageToken = "";
   // const getIds = () => {
