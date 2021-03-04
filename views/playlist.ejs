@@ -17,8 +17,13 @@
     </h1>
     <input id="playlistURLContainer"/>
     <div id="playlistContainer">
+      <%= JSON.stringify(contents.playlistTitle)%>
       <!--<img id="initialLoading" src="https://wpamelia.com/wp-content/uploads/2018/11/loading-hourglass.gif"/>-->
-      <%= JSON.stringify(contents) %>
+      <% contents.contents.forEach((playlistContent) => { %>
+        <div class="playlistContentContainer">
+          <img src=<% playlistContent[0].playlistVideoRenderer.thumbnail.thumbnails[0].url %> class="playlistContentThumbnail"/>
+        </div>
+      <% }); %>
     </div>
     <!--<script src="playlistscript.js"></script>-->
   </body>
