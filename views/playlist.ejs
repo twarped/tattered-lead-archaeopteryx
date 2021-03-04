@@ -21,9 +21,9 @@
       <br>
       <!--<img id="initialLoading" src="https://wpamelia.com/wp-content/uploads/2018/11/loading-hourglass.gif"/>-->
       <% contents.contents.forEach((playlistContent) => { %>
-        <div class="playlistContentContainer" style="width: 100%;" onclick="alert(this.style.width)">
+        <div class="playlistContentContainer">
           <img src=<%= playlistContent.playlistVideoRenderer.thumbnail.thumbnails[0].url %> class="playlistContentThumbnail" />
-          <p class="playlistContentVideoTitle" style="width: fit-content; float: right; overflow-x: scroll;">
+          <p class="playlistContentVideoTitle" style="width: calc(100% - 175px); float: right; overflow-x: scroll; background-color: #42f578">
             <%= playlistContent.playlistVideoRenderer.title.runs[0].text %>
           </p>
         </div>
