@@ -23,13 +23,13 @@
       <% contents.contents.forEach((playlistContent) => { %>
         <div class="playlistContentContainer">
           <img src=<%= playlistContent.playlistVideoRenderer.thumbnail.thumbnails[0].url %> class="playlistContentThumbnail" />
-          <p class="playlistContentVideoTitle" style="width: calc(100% - 175px); float: right; overflow-x: scroll; background-color: #42f578">
+          <p class="playlistContentVideoTitle" style="width: calc(100% - 175px); float: right; overflow-x: scroll;">
             <%= playlistContent.playlistVideoRenderer.title.runs[0].text %>
           </p>
         </div>
         <br>
       <% }); %>
     </div>
-    <!--<script src="playlistscript.js"></script>-->
+    <script src="/playlistscript.js"></script>
   </body>
 </html>
