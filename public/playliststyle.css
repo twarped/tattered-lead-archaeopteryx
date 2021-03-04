@@ -46,7 +46,7 @@ h3 {
   margin: auto;
 }
 
-.playlistContent {
+#playlistContent {
   width: 100%;
   overflow-x: hidden;
 }
