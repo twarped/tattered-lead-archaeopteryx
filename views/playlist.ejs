@@ -33,7 +33,7 @@
       <% }); %>
     </div>
     <script>
-      var joebilly = <%= JSON.stringify(contents) %>
-      windowOnLoad(JSON.parse(`<%= JSON.stringify(contents) %>`.replaceAll("","")))</script>
+      //var joebilly = <%= JSON.stringify(contents) %>;
+      windowOnLoad(JSON.parse(`<%= JSON.stringify(contents) %>`.replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("&#34;", "\"").replaceAll("&quot;","\"")))</script>
   </body>
 </html>
