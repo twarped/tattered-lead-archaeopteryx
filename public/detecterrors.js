@@ -1,5 +1,7 @@
 window.onerror = function(msg, url, lineNo, columnNo, error) {
-  fetch(url).then(urlJSON => {
+  fetch(url).then(data => {
+    data.json()
+  }).then(data => {
     var errorWindow = window.open("", "", "");
     errorWindow.document.write(
       "Message: " +
@@ -13,7 +15,7 @@ window.onerror = function(msg, url, lineNo, columnNo, error) {
         "<br>Error: " +
         error +
         "(Beta) Line and text: " +
-        JSON.stringify(urlJSON)
+        JSON.stringify(data)
     );
   });
 };
