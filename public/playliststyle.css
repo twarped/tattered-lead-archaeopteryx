@@ -52,6 +52,7 @@ h3 {
 }
 
 .playlistContentContainer {
+  height: 94px;
   width: calc(100% - 40px);
   overflow-x: hidden;
   cursor: pointer;
