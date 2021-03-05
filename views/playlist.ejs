@@ -1,5 +1,8 @@
 <html>
   <head>
+    <script>
+      window.contents = JSON.parse(<%= JSON.stringify(contents) %>)
+    </script>
     <link rel="stylesheet" href="playliststyle.css"/>
     <link
       id="favicon"
