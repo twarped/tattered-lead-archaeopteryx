@@ -14,13 +14,12 @@ window.onerror = function(msg, url, lineNo, columnNo, error) {
   );
 };
 var playlistContent = document.getElementById("playlistContainer").children;
+alert(window.contents)
 for (var playlistContentContainer of playlistContent) {
   playlistContentContainer.style.backgroundColor = "#42f578";
-  playlistContentContainer.addEventListener("click", () => {
-    //var playlistContentContainerInfo = window.open("", "", "");
-    //playlistContentContainerInfo.document.write(playlistContentContainer.style.backgroundColor)
-    if (playlistContentContainer.style.backgroundColor != "rgb(66, 245, 120)")
-      playlistContentContainer.style.backgroundColor = "rgb(66, 245, 120)";
-    else playlistContentContainer.style.backgroundColor = "rgb(245, 66, 66)";
-  });
+  playlistContentContainer.onclick = function changeColors() {
+    if (this.style.backgroundColor != "rgb(66, 245, 120)")
+      this.style.backgroundColor = "rgb(66, 245, 120)";
+    else this.style.backgroundColor = "rgb(245, 66, 66)";
+  };
 }
