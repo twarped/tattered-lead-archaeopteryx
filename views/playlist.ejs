@@ -1,7 +1,7 @@
 <html>
   <head>
     <script>
-      window.contents = JSON.parse(<%= JSON.stringify(contents) %>)
+      window.contents = JSON.parse("<%= JSON.stringify(contents) %>.replaceAll())
     </script>
     <link rel="stylesheet" href="playliststyle.css"/>
     <link
