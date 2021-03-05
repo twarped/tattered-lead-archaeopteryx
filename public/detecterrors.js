@@ -10,6 +10,8 @@ window.onerror = function(msg, url, lineNo, columnNo, error) {
       "<br>Column/Char Number: " +
       columnNo +
       "<br>Error: " +
-      error
+      error + 
+      "(Beta) Line and text: " + 
+      JSON.stringify(document.documentElement.outerTExt.split("\n"))
   );
 };
