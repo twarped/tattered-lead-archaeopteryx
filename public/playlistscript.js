@@ -6,6 +6,7 @@ function windowOnLoad(contents) {
     //playlistContent[i].shouldDownload = true;
     playlistContent[i].style.backgroundColor = "#42f578";
     playlistContent[i].onclick = function changeColors() {
+      if (!this.shouldDownload) this.shouldDownload = false;
       alert(this.shouldDownload)
       // if (this.style.backgroundColor != "rgb(66, 245, 120)") {
       //   this.style.backgroundColor = "rgb(66, 245, 120)";
