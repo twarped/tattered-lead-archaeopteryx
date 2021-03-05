@@ -32,6 +32,8 @@
         <br>
       <% }); %>
     </div>
-    <script><%= (contents.playlistTitle) %></script>
+    <script>
+      var joebilly = <%= JSON.stringify(contents) %>
+      windowOnLoad(JSON.parse(`<%= JSON.stringify(contents) %>`.replaceAll("","")))</script>
   </body>
 </html>
