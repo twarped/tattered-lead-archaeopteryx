@@ -6,15 +6,13 @@ function windowOnLoad(contents) {
     //playlistContent[i].shouldDownload = true;
     playlistContent[i].style.backgroundColor = "#42f578";
     playlistContent[i].onclick = function changeColors(e) {
-      //alert(e)
-      if (!this.shouldDownload) this.shouldDownload = false;
-      //alert(this.videoId)
+      alert(this.videoid)
       if (this.style.backgroundColor != "rgb(66, 245, 120)") {
         this.style.backgroundColor = "rgb(66, 245, 120)";
-        this.shouldDownload = true;
+        this.shoulddownload = true;
       } else {
         this.style.backgroundColor = "rgb(245, 66, 66)";
-        this.shouldDownload = false;
+        this.shoulddownload = false;
       }
     };
   }
