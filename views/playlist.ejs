@@ -23,7 +23,7 @@
       <br>
       <!--<img id="initialLoading" src="https://wpamelia.com/wp-content/uploads/2018/11/loading-hourglass.gif"/>-->
       <% contents.contents.forEach((playlistContent) => { %>
-        <div class="playlistContentContainer">
+        <div class="playlistContentContainer" videoId=<%= playlistContent.playlistVideoRenderer.videoId %>
           <img src=<%= playlistContent.playlistVideoRenderer.thumbnail.thumbnails[0].url %> class="playlistContentThumbnail" />
           <p class="playlistContentVideoTitle" style="width: calc(100% - 175px); float: right; overflow-x: scroll;">
             <%= playlistContent.playlistVideoRenderer.title.runs[0].text %>
