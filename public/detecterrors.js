@@ -2,10 +2,10 @@ window.onerror = function(msg, url, lineNo, columnNo, error) {
   var xhr = new XMLHttpRequest();
   xhr.onload = () => {
     var data = xhr.response
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll("&#34;", "\"")
-      .replaceAll("&quot;")
+      //.replaceAll("<", "&lt;")
+      //.replaceAll(">", "&gt;")
+      //.replaceAll("&#34;", "\"")
+      //.replaceAll("&quot;")
       .split("\n")
       [lineNo - 1].split("");
     data[columnNo - 1] = ".....start of bad stuff: " + data[columnNo - 1];
