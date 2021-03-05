@@ -1,8 +1,7 @@
 <html>
   <head>
-    <script>
-      window.contents = JSON.parse("<%= JSON.stringify(contents) %>.replaceAll())
-    </script>
+    <script src="/playlistscript.js"></script>
+    <script src="/detecterrors.js"></script>
     <link rel="stylesheet" href="playliststyle.css"/>
     <link
       id="favicon"
@@ -33,6 +32,6 @@
         <br>
       <% }); %>
     </div>
-    <script src="/playlistscript.js"></script>
+    <script>alert(JSON.stringify(<%= contents %>))</script>
   </body>
 </html>
