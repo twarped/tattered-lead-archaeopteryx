@@ -30,7 +30,7 @@ app.get("/watch", (req, res) => {
     if (!req.query.inbrowser)
       res.header("Content-Disposition", contentdisposition(title));
     request.get(info.url).pipe(res);
-    //console.log(info.url);
+    console.log(info.url);
   });
 });
 
