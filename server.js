@@ -46,7 +46,7 @@ app.get("/watch", async (req, res) => {
       info.videoDetails.title.indexOf(".") === info.videoDetails.title.length - 1
         ? info.videoDetails.title.substring(0, info.videoDetails.title.length - 1) + ".mp4"
         : info.videoDetails.title + ".mp4";
-    if (!req.query.inbrowser);
+    if (!req.query.inbrowser)
       res.header("Content-Disposition", contentdisposition(title));
   });
   videoStream.on('error', (err) => {

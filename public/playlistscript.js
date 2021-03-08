@@ -5,9 +5,7 @@ function windowOnLoad(contents) {
     //playlistContent[i].videoId = window.contents.contents[i].playlistVideoRenderer.videoId;
     //playlistContent[i].shouldDownload = true;
     playlistContent[i].style.backgroundColor = "#42f578";
-    playlistContent[i].onclick = function changeColors(e) {
-      var attributes = window.open("","","");
-      attributes.document.write(JSON.parse(this.attributes));
+    playlistContent[i].onclick = function changeColors() {
       if (this.style.backgroundColor != "rgb(66, 245, 120)") {
         this.style.backgroundColor = "rgb(66, 245, 120)";
         this.shoulddownload = true;

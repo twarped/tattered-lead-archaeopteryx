@@ -2,7 +2,7 @@
   <head>
     <script src="/playlistscript.js"></script>
     <script src="/detecterrors.js"></script>
-    <link rel="stylesheet" href="playliststyle.css"/>
+    <link rel="stylesheet" href="/playliststyle.css"/>
     <link
       id="favicon"
       rel="icon"
@@ -12,9 +12,9 @@
   </head>
   <body>
     <h1>
-      f df wfdetsds
+      Download Youtube Playlists
       <h3>
-        with <a href="/">tattered-lead-archaesdfe3tdsdgdfgsdfopteryx.glitch.me</a>
+        with <a href="/">tattered-lead-archaeopteryx.glitch.me</a>
       </h3>
     </h1>
     <div id="playlistContainer" style="width: 100%;">
@@ -23,7 +23,7 @@
       <br>
       <!--<img id="initialLoading" src="https://wpamelia.com/wp-content/uploads/2018/11/loading-hourglass.gif"/>-->
       <% contents.contents.forEach((playlistContent) => { %>
-        <div class="playlistContentContainer" videoId=<%= playlistContent.playlistVideoRenderer.videoId %> shouldDownload=true>
+        <div class="playlistContentContainer" videoId=<%= playlistContent.playlistVideoRenderer.videoId %> shouldDownload="true">
           <img src=<%= playlistContent.playlistVideoRenderer.thumbnail.thumbnails[0].url %> class="playlistContentThumbnail" />
           <p class="playlistContentVideoTitle" style="width: calc(100% - 175px); float: right; word-wrap: break-word;">
             <%= playlistContent.playlistVideoRenderer.title.runs[0].text %>
