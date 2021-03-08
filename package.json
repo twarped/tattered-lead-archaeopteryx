@@ -20,7 +20,7 @@
     "got": "^11.8.2",
     "request": "^2.88.2",
     "youtube-dl": "^3.5.0",
-    "ytdl-core": "https://github.com/twarped/node-ytdl-core.git#patch-3"
+    "ytdl-core": "git+https://github.com/twarped/node-ytdl-core.git#patch-3"
   },
   "engines": {
     "node": "12.x"
