@@ -3,6 +3,7 @@ let app = express();
 const cors = require("cors");
 const got = require("got");
 const youtubedl = require("youtube-dl");
+const ytdl = require("ytdl-core");
 const request = require("request");
 const events = require("events");
 const contentdisposition = require("content-disposition");
@@ -33,6 +34,18 @@ app.get("/watch", (req, res) => {
     console.log(info.url);
   });
 });
+
+app.get("/testwatch", async (req, res) => {
+  var videoStream = await ytdl(req.query.v);
+  videoStream.on('info', (info) => {
+    var title =
+      info.videoDetails.title.indexOf(".") === info.videoDetails.title.length - 1
+        ? info.videoDetails.title.substring(0, info.videoDetails.title.length - 1) + ".mp4"
+        : info.videoDetails.title + ".mp4";
+    //res.send(info.videoDetails.title)
+    res.header("Content-Disposition", contentdisposition(title))
+  })
+})
 
 app.get("/playlist", (req, res) => {
   var playlistURL;
