@@ -44,12 +44,12 @@ app.get("/testwatch", async (req, res) => {
     //     : info.videoDetails.title + ".mp4";
     // res.header("Content-Disposition", contentdisposition(title))
     //console.log(info.formats[2].qualityLabel + "\n" + info.formats[2].url)
-    res.send(info.formats)
+    //res.send(info.formats)
   })
   videoStream.on('error', (err) => {
     console.log(err)
   })
-  //videoStream.pipe(res);
+  videoStream.pipe(res);
 })
 
 app.get("/playlist", (req, res) => {
