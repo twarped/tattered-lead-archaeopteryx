@@ -39,7 +39,7 @@ app.get("/", (request, response) => {
 //New solution:
 app.get("/watch", async (req, res) => {
   //console.log(req.query);
-  var videoStream = await ytdl(req.query.v);
+  //var videoStream = await ytdl(req.query.v);
   // videoStream.on("info", info => {
   //   if (!req.query.inbrowser) {
   //     var title =
@@ -56,7 +56,8 @@ app.get("/watch", async (req, res) => {
   // videoStream.on("error", err => {
   //   res.send(err);
   // });
-  videoStream.pipe(res);
+  //videoStream.pipe(res);
+  ytdl(req.query.v).pipe(res);
 });
 
 //not working playlist downloader
