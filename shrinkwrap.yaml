@@ -9,6 +9,7 @@ dependencies:
   got: 11.8.2
   request: 2.88.2
   youtube-dl: 3.5.0
+  ytdl-core: github.com/twarped/node-ytdl-core/e8ecdef520fadf014e09d3f296569913b6967c7e
 packages:
   /@sindresorhus/is/4.0.0:
     dev: false
@@ -1078,6 +1079,15 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-tqNXrS78oMOE73NMxK4EMLQsQowWf8jKooH9g7xPavRT706R6bkQJ6DY2Te7QukaZsulxa30wQ7bk0pm4XiHmA==
+  /m3u8stream/0.8.3:
+    dependencies:
+      miniget: 4.2.0
+      sax: 1.2.4
+    dev: false
+    engines:
+      node: '>=10'
+    resolution:
+      integrity: sha512-0nAcdrF8YJKUkb6PzWdvGftTPyCVWgoiot1AkNVbPKTeIGsWs6DrOjifrJ0Zi8WQfQmD2SuVCjkYIOip12igng==
   /map-obj/1.0.1:
     dev: false
     engines:
@@ -1165,6 +1175,12 @@ packages:
       node: '>=10'
     resolution:
       integrity: sha512-z0yWI+4FDrrweS8Zmt4Ej5HdJmky15+L2e6Wgn3+iK5fWzb6T3fhNFq2+MeTRb064c6Wr4N/wv0DzQTjNzHNGQ==
+  /miniget/4.2.0:
+    dev: false
+    engines:
+      node: '>=10'
+    resolution:
+      integrity: sha512-IzTOaNgBw/qEpzkPTE7X2cUVXQfSKbG8w52Emi93zb+Zya2ZFrbmavpixzebuDJD9Ku4ecbaFlC7Y1cEESzQtQ==
   /minimatch/3.0.4:
     dependencies:
       brace-expansion: 1.1.11
@@ -1564,6 +1580,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
+  /sax/1.2.4:
+    dev: false
+    resolution:
+      integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
   /semver-regex/2.0.0:
     dev: false
     engines:
@@ -1909,6 +1929,18 @@ packages:
       node: '>= 10'
     resolution:
       integrity: sha512-zshzwQW7gG7hjpBlgeQP9RuyPGNxvJdzR8SUM3QhxCnLjWN2E7j3dOvpeDcQoETfHx0urRS7EtmVToql7YpU4A==
+  github.com/twarped/node-ytdl-core/e8ecdef520fadf014e09d3f296569913b6967c7e:
+    dependencies:
+      m3u8stream: 0.8.3
+      miniget: 4.2.0
+      sax: 1.2.4
+    dev: false
+    engines:
+      node: '>=10'
+    name: ytdl-core
+    resolution:
+      tarball: 'https://codeload.github.com/twarped/node-ytdl-core/tar.gz/e8ecdef520fadf014e09d3f296569913b6967c7e'
+    version: 0.0.0-development
 registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
@@ -1923,3 +1955,4 @@ specifiers:
   got: ^11.8.2
   request: ^2.88.2
   youtube-dl: ^3.5.0
+  ytdl-core: 'git+https://github.com/twarped/node-ytdl-core.git#patch-3'
