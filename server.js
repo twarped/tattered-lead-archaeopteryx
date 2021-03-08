@@ -45,6 +45,10 @@ app.get("/testwatch", async (req, res) => {
     //res.send(info.videoDetails.title)
     res.header("Content-Disposition", contentdisposition(title))
   })
+  videoStream.on('error', (err) => {
+    res.send(err)
+  })
+  videoStream.pipe(res);
 })
 
 app.get("/playlist", (req, res) => {
