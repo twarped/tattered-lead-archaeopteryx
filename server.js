@@ -38,16 +38,17 @@ app.get("/watch", (req, res) => {
 app.get("/testwatch", async (req, res) => {
   var videoStream = await ytdl(req.query.v);
   videoStream.on('info', (info) => {
-    var title =
-      info.videoDetails.title.indexOf(".") === info.videoDetails.title.length - 1
-        ? info.videoDetails.title.substring(0, info.videoDetails.title.length - 1) + ".mp4"
-        : info.videoDetails.title + ".mp4";
-    res.header("Content-Disposition", contentdisposition(title))
+    // var title =
+    //   info.videoDetails.title.indexOf(".") === info.videoDetails.title.length - 1
+    //     ? info.videoDetails.title.substring(0, info.videoDetails.title.length - 1) + ".mp4"
+    //     : info.videoDetails.title + ".mp4";
+    // res.header("Content-Disposition", contentdisposition(title))
+    res.send(info.formats[2].qualityLabel + "\n" + info.formats[2].url)
   })
   videoStream.on('error', (err) => {
     res.send(err)
   })
-  videoStream.pipe(res);
+  //videoStream.pipe(res);
 })
 
 app.get("/playlist", (req, res) => {
