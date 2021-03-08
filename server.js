@@ -2,7 +2,7 @@ const express = require("express");
 let app = express();
 const cors = require("cors");
 const got = require("got");
-const youtubedl = require("youtube-dl");
+//const youtubedl = require("youtube-dl");
 const ytdl = require("ytdl-core");
 const request = require("request");
 const events = require("events");
@@ -22,35 +22,40 @@ app.get("/", (request, response) => {
   response.sendFile(__dirname + "/views/index.html");
 });
 
-app.get("/watch", (req, res) => {
-  youtubedl.getInfo(req.query.v, function(err, info) {
-    var title =
-      info.title.indexOf(".") === info.title.length - 1
-        ? info.title.substring(0, info.title.length - 1) + ".mp4"
-        : info.title + ".mp4";
-    if (!req.query.inbrowser)
-      res.header("Content-Disposition", contentdisposition(title));
-    request.get(info.url).pipe(res);
-    console.log(info.url);
-  });
-});
 
-app.get("/testwatch", async (req, res) => {
+//Old Solution:
+// app.get("/watch", (req, res) => {
+//   youtubedl.getInfo(req.query.v, function(err, info) {
+//     var title =
+//       info.title.indexOf(".") === info.title.length - 1
+//         ? info.title.substring(0, info.title.length - 1) + ".mp4"
+//         : info.title + ".mp4";
+//     if (!req.query.inbrowser)
+//       res.header("Content-Disposition", contentdisposition(title));
+//     request.get(info.url).pipe(res);
+//     console.log(info.url);
+//   });
+// });
+
+
+//New solution:
+app.get("/watch", async (req, res) => {
   var videoStream = await ytdl(req.query.v);
   videoStream.on('info', (info) => {
-    // var title =
-    //   info.videoDetails.title.indexOf(".") === info.videoDetails.title.length - 1
-    //     ? info.videoDetails.title.substring(0, info.videoDetails.title.length - 1) + ".mp4"
-    //     : info.videoDetails.title + ".mp4";
-    // res.header("Content-Disposition", contentdisposition(title))
-    res.send(info.formats[2].qualityLabel + "\n" + info.formats[2].url)
-  })
+    var title =
+      info.videoDetails.title.indexOf(".") === info.videoDetails.title.length - 1
+        ? info.videoDetails.title.substring(0, info.videoDetails.title.length - 1) + ".mp4"
+        : info.videoDetails.title + ".mp4";
+    if (!req.query.inbrowser);
+      res.header("Content-Disposition", contentdisposition(title));
+  });
   videoStream.on('error', (err) => {
-    res.send(err)
-  })
-  //videoStream.pipe(res);
-})
+    res.send(err);
+  });
+  videoStream.pipe(res);
+});
 
+//not working playlist downloader
 app.get("/playlist", (req, res) => {
   var playlistURL;
   if (req.query.list.includes("youtu" && "http" && "?list=" && "/playlist"))
