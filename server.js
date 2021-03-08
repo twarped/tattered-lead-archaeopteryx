@@ -38,24 +38,24 @@ app.get("/", (request, response) => {
 
 //New solution:
 app.get("/watch", async (req, res) => {
-  console.log(req.query);
+  //console.log(req.query);
   var videoStream = await ytdl(req.query.v);
-  videoStream.on("info", info => {
-    if (!req.query.inbrowser) {
-      var title =
-        info.videoDetails.title.indexOf(".") ===
-        info.videoDetails.title.length - 1
-          ? info.videoDetails.title.substring(
-              0,
-              info.videoDetails.title.length - 1
-            ) + ".mp4"
-          : info.videoDetails.title + ".mp4";
-      res.header("Content-Disposition", contentdisposition(title));
-    }
-  });
-  videoStream.on("error", err => {
-    res.send(err);
-  });
+  // videoStream.on("info", info => {
+  //   if (!req.query.inbrowser) {
+  //     var title =
+  //       info.videoDetails.title.indexOf(".") ===
+  //       info.videoDetails.title.length - 1
+  //         ? info.videoDetails.title.substring(
+  //             0,
+  //             info.videoDetails.title.length - 1
+  //           ) + ".mp4"
+  //         : info.videoDetails.title + ".mp4";
+  //     res.header("Content-Disposition", contentdisposition(title));
+  //   }
+  // });
+  // videoStream.on("error", err => {
+  //   res.send(err);
+  // });
   videoStream.pipe(res);
 });
 
