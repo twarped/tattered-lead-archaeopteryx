@@ -2,7 +2,7 @@ const express = require("express");
 let app = express();
 const cors = require("cors");
 const got = require("got");
-//const youtubedl = require("youtube-dl");
+const youtubedl = require("youtube-dl");
 const ytdl = require("ytdl-core");
 const request = require("request");
 const events = require("events");
@@ -16,91 +16,78 @@ app.use(express.static("public"));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.set("view engine", "ejs");
+app.set('view engine', 'ejs');
 
 app.get("/", (request, response) => {
   response.sendFile(__dirname + "/views/index.html");
 });
 
-//Old Solution:
-// app.get("/watch", (req, res) => {
-//   youtubedl.getInfo(req.query.v, function(err, info) {
-//     var title =
-//       info.title.indexOf(".") === info.title.length - 1
-//         ? info.title.substring(0, info.title.length - 1) + ".mp4"
-//         : info.title + ".mp4";
-//     if (!req.query.inbrowser)
-//       res.header("Content-Disposition", contentdisposition(title));
-//     request.get(info.url).pipe(res);
-//     console.log(info.url);
-//   });
-// });
-
-//New solution:
-app.get("/watch", async (req, res) => {
-  //console.log(req.query);
-  //var videoStream = await ytdl(req.query.v);
-  // videoStream.on("info", info => {
-  //   if (!req.query.inbrowser) {
-  //     var title =
-  //       info.videoDetails.title.indexOf(".") ===
-  //       info.videoDetails.title.length - 1
-  //         ? info.videoDetails.title.substring(
-  //             0,
-  //             info.videoDetails.title.length - 1
-  //           ) + ".mp4"
-  //         : info.videoDetails.title + ".mp4";
-  //     res.header("Content-Disposition", contentdisposition(title));
-  //   }
-  // });
-  // videoStream.on("error", err => {
-  //   res.send(err);
-  // });
-  //videoStream.pipe(res);
-  ytdl(req.query.v).pipe(res);
+app.get("/watch", (req, res) => {
+  youtubedl.getInfo(req.query.v, function(err, info) {
+    var title =
+      info.title.indexOf(".") === info.title.length - 1
+        ? info.title.substring(0, info.title.length - 1) + ".mp4"
+        : info.title + ".mp4";
+    if (!req.query.inbrowser)
+      res.header("Content-Disposition", contentdisposition(title));
+    request.get(info.url).pipe(res);
+    console.log(info.url);
+  });
 });
 
-//not working playlist downloader
+app.get("/testwatch", async (req, res) => {
+  var videoStream = await ytdl(req.query.v);
+  videoStream.on('info', (info) => {
+    // var title =
+    //   info.videoDetails.title.indexOf(".") === info.videoDetails.title.length - 1
+    //     ? info.videoDetails.title.substring(0, info.videoDetails.title.length - 1) + ".mp4"
+    //     : info.videoDetails.title + ".mp4";
+    // res.header("Content-Disposition", contentdisposition(title))
+    res.send(info.formats[2].qualityLabel + "\n" + info.formats[2].url)
+  })
+  videoStream.on('error', (err) => {
+    res.send(err)
+  })
+  //videoStream.pipe(res);
+})
+
 app.get("/playlist", (req, res) => {
   var playlistURL;
   if (req.query.list.includes("youtu" && "http" && "?list=" && "/playlist"))
-    playlistURL =
-      "https://www.youtube.com/playlist" + req.query.list.split("/playlist")[1];
+    playlistURL = "https://www.youtube.com/playlist" + req.query.list.split("/playlist")[1];
   else if (req.query.list.indexOf("PL") === 0)
     playlistURL = "https://www.youtube.com/playlist?list=" + req.query.list;
   else if (req.query.list.includes("youtu" && "http" && "&list=" && "/watch"))
-    playlistURL =
-      "https://www.youtube.com/playlist?list=" +
-      req.query.list.split("&list=")[1];
+    playlistURL = "https://www.youtube.com/playlist?list=" + req.query.list.split("&list=")[1];
   //console.log(playlistURL)
-  request.get(playlistURL, (err, body) => {
-    //"https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr"
-    var parsedBody = JSON.parse(
-      body.body
-        .split(`var ytInitialData = `)[1]
-        .split(
-          `;</script><link rel="alternate" media="handheld" href="https://m.youtube.com/playlist?list=`
-        )[0]
-    );
-    var playlistTitle = parsedBody.metadata.playlistMetadataRenderer.title;
-    var contents =
-      parsedBody.contents.twoColumnBrowseResultsRenderer.tabs[0].tabRenderer
-        .content.sectionListRenderer.contents[0].itemSectionRenderer.contents[0]
-        .playlistVideoListRenderer;
-    contents.playlistTitle = playlistTitle;
-    for (var i in contents.contents) {
-      //console.info(contents.contents)
-      if (
-        contents.contents[i].playlistVideoRenderer.thumbnail.thumbnails[0]
-          .url == "https://i.ytimg.com/img/no_thumbnail.jpg"
-      )
-        delete contents.contents[i];
+  request.get(
+    playlistURL,
+    (err, body) => {
+      //"https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr"
+      var parsedBody = JSON.parse(
+        body.body
+          .split(`var ytInitialData = `)[1]
+          .split(
+            `;</script><link rel="alternate" media="handheld" href="https://m.youtube.com/playlist?list=`
+          )[0]
+      );
+      var playlistTitle = parsedBody.metadata.playlistMetadataRenderer.title;
+      var contents =
+        parsedBody.contents.twoColumnBrowseResultsRenderer.tabs[0].tabRenderer
+          .content.sectionListRenderer.contents[0].itemSectionRenderer
+          .contents[0].playlistVideoListRenderer;
+      contents.playlistTitle = playlistTitle;
+      for (var i in contents.contents) {
+        //console.info(contents.contents)
+        if (contents.contents[i].playlistVideoRenderer.thumbnail.thumbnails[0].url == "https://i.ytimg.com/img/no_thumbnail.jpg")
+          delete contents.contents[i]
+      }
+      //res.send(contents)
+      res.render(__dirname + "/views/playlist", {contents: contents});
+      //console.log(__dirname)
+      //console.log(playlistTitle);
     }
-    //res.send(contents)
-    res.render(__dirname + "/views/playlist", { contents: contents });
-    //console.log(__dirname)
-    //console.log(playlistTitle);
-  });
+  );
 });
 
 app.get("/playlisttest", (req, res) => {
@@ -134,7 +121,7 @@ app.get("/playlisttest", (req, res) => {
       contents.playlistTitle = playlistTitle;
       console.log(playlistTitle);
       //res.send(parsedBody)
-      res.send(contents);
+      res.send(contents)
       //console.log(parsedBody)
     }
   );
