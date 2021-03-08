@@ -1,8 +1,104 @@
 <html>
   <head>
-    <script src="/playlistscript.js"></script>
+    <script>
+    function windowOnLoad(contents) {
+  window.contents = contents;
+  var playlistContent = document.getElementById("playlistContainer").children;
+  for (var i in playlistContent) {
+    //playlistContent[i].videoId = window.contents.contents[i].playlistVideoRenderer.videoId;
+    //playlistContent[i].shouldDownload = true;
+    playlistContent[i].style.backgroundColor = "#42f578";
+    playlistContent[i].onclick = function changeColors(e) {
+      var attributes = window.open("","","");
+      attributes.document.write(JSON.parse(this.attributes));
+      if (this.style.backgroundColor != "rgb(66, 245, 120)") {
+        this.style.backgroundColor = "rgb(66, 245, 120)";
+        this.shoulddownload = true;
+      } else {
+        this.style.backgroundColor = "rgb(245, 66, 66)";
+        this.shoulddownload = false;
+      }
+    };
+  }
+}
+
+    </script>
+    
     <script src="/detecterrors.js"></script>
     <link rel="stylesheet" href="playliststyle.css"/>
+    <style>
+    body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+h1 {
+  -ms-transform: translate(0%, -50%);
+  transform: translate(0%, -50%);
+  top: 15;
+  background-color: white;
+  border-bottom: 1px solid grey;
+  width: 100%;
+  text-shadow: 3px 1px 4px grey;
+  text-align: center;
+  font-size: 40px;
+  height: 80px;
+  box-shadow: 1px 1px 18px grey;
+  position: absolute;
+}
+
+h3 {
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  position: absolute;
+  left: 50%;
+  top: 40px;
+  text-decoration: none;
+}
+
+#playlistContainer {
+  margin-top: 80px;
+  height: calc(100% - 80px);
+  width: 100%;
+  overflow-y: scroll;
+  word-wrap: break-word;
+  background-color: white;
+}
+
+#initialLoading {
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  position: relative;
+  margin: auto;
+}
+
+#playlistContent {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.playlistContentContainer {
+  height: 94px;
+  width: calc(100% - 40px);
+  overflow-x: hidden;
+  cursor: pointer;
+  border-top: 1px solid grey;
+  border-bottom: 1px solid grey;
+  box-shadow: 1px 1px 6px grey;
+  border-radius: 6px;
+  margin-right: 20px;
+  margin-left: 20px;
+  background-color: #42f578;
+}
+
+.playlistContentThumbnail {
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+    </style>
     <link
       id="favicon"
       rel="icon"
@@ -12,9 +108,9 @@
   </head>
   <body>
     <h1>
-      f df wfdetsds
+      Download Youtube Playlists
       <h3>
-        with <a href="/">tattered-lead-archaesdfe3tdsdgdfgsdfopteryx.glitch.me</a>
+        with <a href="/">tattered-lead-archaeopteryx.glitch.me</a>
       </h3>
     </h1>
     <div id="playlistContainer" style="width: 100%;">
