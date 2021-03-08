@@ -43,12 +43,13 @@ app.get("/testwatch", async (req, res) => {
     //     ? info.videoDetails.title.substring(0, info.videoDetails.title.length - 1) + ".mp4"
     //     : info.videoDetails.title + ".mp4";
     // res.header("Content-Disposition", contentdisposition(title))
-    //res.send(info.formats[2].qualityLabel + "\n" + info.formats[2].url)
+    //console.log(info.formats[2].qualityLabel + "\n" + info.formats[2].url)
+    res.send(info.formats)
   })
   videoStream.on('error', (err) => {
-    res.send(err)
+    console.log(err)
   })
-  videoStream.pipe(res);
+  //videoStream.pipe(res);
 })
 
 app.get("/playlist", (req, res) => {
