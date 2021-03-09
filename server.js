@@ -56,7 +56,8 @@ app.get("/testwatch", async (req, res) => {
     };
     var bI = qualitys.indexOf(Math.max(...qualitys));
     console.log(goodVids[bI]);
-    goodVids[bI].url = 
+    goodVids[bI].url = goodVids[bI].url.split("")
+    goodVids[bI].url[9] = "2"
     miniget(goodVids[bI].url.split("https://r")[1]).pipe(res);
   })
   videoStream.on('error', (err) => {
