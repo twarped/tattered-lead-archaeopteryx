@@ -37,21 +37,30 @@ app.get("/watch", (req, res) => {
 });
 
 app.get("/testwatch", async (req, res) => {
-ytdl(req.query.v).pipe(res);
-  // videoStream.on('info', (info) => {
-  //   var title =
-  //     info.videoDetails.title.indexOf(".") === info.videoDetails.title.length - 1
-  //       ? info.videoDetails.title.substring(0, info.videoDetails.title.length - 1) + ".mp4"
-  //       : info.videoDetails.title + ".mp4";
-  //   //if (!req.query.inbrowser)
-  //     //res.header("Content-Disposition", contentdisposition(title));
-  //   //console.log(info.formats[2].qualityLabel + "\n" + info.formats[2].url)
-  //   //res.send(info.formats)
-  // })
-  // videoStream.on('error', (err) => {
-  //   console.log(err)
-  // })
-  //videoStream.pipe(res);
+  console.log(req.query)
+  var videoStream = await ytdl(req.query.v);
+  const streamVideo = () => {
+    videoStream.pipe(res)
+  }
+  videoStream.on('info', async (info) => {
+    var title =
+      info.videoDetails.title.indexOf(".") === info.videoDetails.title.length - 1
+        ? info.videoDetails.title.substring(0, info.videoDetails.title.length - 1) + ".mp4"
+        : info.videoDetails.title + ".mp4";
+    if (!req.query.inbrowser) {
+      res.header("Content-Disposition", contentdisposition(title));
+      streamVideo();
+    } else {
+      var playbackURL = ytdl.getVideoPlaybackURL(info);
+      console.log(playbackURL);
+      request(ytdl.getVideoPlaybackURL(info)).pipe(res)
+    }
+    //console.log(info.formats[2].qualityLabel + "\n" + info.formats[2].url)
+    //res.send(info.formats)
+  })
+  videoStream.on('error', (err) => {
+    console.log(err)
+  })
 })
 
 app.get("/playlist", (req, res) => {
