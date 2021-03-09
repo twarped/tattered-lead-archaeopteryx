@@ -18,6 +18,7 @@
     "express": "^4.17.1",
     "fs": "0.0.2",
     "got": "^11.8.2",
+    "miniget": "^4.2.0",
     "request": "^2.88.2",
     "youtube-dl": "^3.5.0",
     "ytdl-core": "git+https://github.com/twarped/node-ytdl-core.git#patch-3"

@@ -9,6 +9,7 @@ const events = require("events");
 const contentdisposition = require("content-disposition");
 const archiver = require("archiver");
 const axios = require("axios");
+const miniget = require("miniget");
 //const ejs = require("ejs");
 const apikey = process.env.api_key;
 
@@ -45,11 +46,23 @@ app.get("/testwatch", async (req, res) => {
     // res.header("Content-Disposition", contentdisposition(title))
     //console.log(info.formats[2].qualityLabel + "\n" + info.formats[2].url)
     //res.send(info.formats)
+        var goodVids = [];
+    var qualitys = [];
+    for (var i in info.formats) {
+      if (info.formats[i].hasVideo == true && info.formats[i].hasAudio == true) {
+        goodVids.push(info.formats[i]);
+        qualitys.push(parseInt(info.formats[i].qualityLabel.split("p")[0],10));
+      }
+    };
+    var bI = qualitys.indexOf(Math.max(...qualitys));
+    console.log(goodVids[bI]);
+    goodVids[bI].url = 
+    miniget(goodVids[bI].url.split("https://r")[1]).pipe(res);
   })
   videoStream.on('error', (err) => {
     console.log(err)
   })
-  videoStream.pipe(res);
+  //videoStream.pipe(res);
 })
 
 app.get("/playlist", (req, res) => {
