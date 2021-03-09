@@ -23,21 +23,24 @@ app.get("/", (request, response) => {
   response.sendFile(__dirname + "/views/index.html");
 });
 
-app.get("/watch", (req, res) => {
-  youtubedl.getInfo(req.query.v, function(err, info) {
-    var title =
-      info.title.indexOf(".") === info.title.length - 1
-        ? info.title.substring(0, info.title.length - 1) + ".mp4"
-        : info.title + ".mp4";
-    if (!req.query.inbrowser)
-      res.header("Content-Disposition", contentdisposition(title));
-    request.get(info.url).pipe(res);
-    console.log(info.url);
-  });
-});
 
-app.get("/testwatch", async (req, res) => {
-  console.log(req.query)
+//Old:
+// app.get("/watch", (req, res) => {
+//   youtubedl.getInfo(req.query.v, function(err, info) {
+//     var title =
+//       info.title.indexOf(".") === info.title.length - 1
+//         ? info.title.substring(0, info.title.length - 1) + ".mp4"
+//         : info.title + ".mp4";
+//     if (!req.query.inbrowser)
+//       res.header("Content-Disposition", contentdisposition(title));
+//     request.get(info.url).pipe(res);
+//     console.log(info.url);
+//   });
+// });
+
+
+//New:
+app.get("/watch", async (req, res) => {
   var videoStream = await ytdl(req.query.v);
   const streamVideo = () => {
     videoStream.pipe(res)
@@ -51,12 +54,9 @@ app.get("/testwatch", async (req, res) => {
       res.header("Content-Disposition", contentdisposition(title));
       streamVideo();
     } else {
-      var playbackURL = ytdl.getVideoPlaybackURL(info);
-      console.log(playbackURL);
-      request(ytdl.getVideoPlaybackURL(info)).pipe(res)
+      var playbackURL = await ytdl.getVideoPlaybackURL(info);
+      request(playbackURL).pipe(res)
     }
-    //console.log(info.formats[2].qualityLabel + "\n" + info.formats[2].url)
-    //res.send(info.formats)
   })
   videoStream.on('error', (err) => {
     console.log(err)
