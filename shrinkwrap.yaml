@@ -7,8 +7,10 @@ dependencies:
   express: 4.17.1
   fs: 0.0.2
   got: 11.8.2
+  miniget: 4.2.0
   request: 2.88.2
   youtube-dl: 3.5.0
+  ytdl-core: github.com/twarped/node-ytdl-core/4eab25432b1ba210787f303ada3e6466663100b8
 packages:
   /@sindresorhus/is/4.0.0:
     dev: false
@@ -28,7 +30,7 @@ packages:
     dependencies:
       '@types/http-cache-semantics': 4.0.0
       '@types/keyv': 3.1.1
-      '@types/node': 14.14.32
+      '@types/node': 14.14.33
       '@types/responselike': 1.0.0
     dev: false
     resolution:
@@ -39,17 +41,17 @@ packages:
       integrity: sha512-c3Xy026kOF7QOTn00hbIllV1dLR9hG9NkSrLQgCVs8NF6sBU+VGWjD3wLPhmh1TYAc7ugCFsvHYMN4VcBN1U1A==
   /@types/keyv/3.1.1:
     dependencies:
-      '@types/node': 14.14.32
+      '@types/node': 14.14.33
     dev: false
     resolution:
       integrity: sha512-MPtoySlAZQ37VoLaPcTHCu1RWJ4llDkULYZIzOYxlhxBqYPB0RsRlmMU0R6tahtFe27mIdkHV+551ZWV4PLmVw==
-  /@types/node/14.14.32:
+  /@types/node/14.14.33:
     dev: false
     resolution:
-      integrity: sha512-/Ctrftx/zp4m8JOujM5ZhwzlWLx22nbQJiVqz8/zE15gOeEW+uly3FSX4fGFpcfEvFzXcMCJwq9lGVWgyARXhg==
+      integrity: sha512-oJqcTrgPUF29oUP8AsUqbXGJNuPutsetaa9kTQAQce5Lx5dTYWV02ScBiT/k1BX/Z7pKeqedmvp39Wu4zR7N7g==
   /@types/responselike/1.0.0:
     dependencies:
-      '@types/node': 14.14.32
+      '@types/node': 14.14.33
     dev: false
     resolution:
       integrity: sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==
@@ -776,7 +778,7 @@ packages:
       decompress-response: 6.0.0
       http2-wrapper: 1.0.3
       lowercase-keys: 2.0.0
-      p-cancelable: 2.0.0
+      p-cancelable: 2.1.0
       responselike: 2.0.0
     dev: false
     engines:
@@ -1078,6 +1080,15 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-tqNXrS78oMOE73NMxK4EMLQsQowWf8jKooH9g7xPavRT706R6bkQJ6DY2Te7QukaZsulxa30wQ7bk0pm4XiHmA==
+  /m3u8stream/0.8.3:
+    dependencies:
+      miniget: 4.2.0
+      sax: 1.2.4
+    dev: false
+    engines:
+      node: '>=10'
+    resolution:
+      integrity: sha512-0nAcdrF8YJKUkb6PzWdvGftTPyCVWgoiot1AkNVbPKTeIGsWs6DrOjifrJ0Zi8WQfQmD2SuVCjkYIOip12igng==
   /map-obj/1.0.1:
     dev: false
     engines:
@@ -1165,6 +1176,12 @@ packages:
       node: '>=10'
     resolution:
       integrity: sha512-z0yWI+4FDrrweS8Zmt4Ej5HdJmky15+L2e6Wgn3+iK5fWzb6T3fhNFq2+MeTRb064c6Wr4N/wv0DzQTjNzHNGQ==
+  /miniget/4.2.0:
+    dev: false
+    engines:
+      node: '>=10'
+    resolution:
+      integrity: sha512-IzTOaNgBw/qEpzkPTE7X2cUVXQfSKbG8w52Emi93zb+Zya2ZFrbmavpixzebuDJD9Ku4ecbaFlC7Y1cEESzQtQ==
   /minimatch/3.0.4:
     dependencies:
       brace-expansion: 1.1.11
@@ -1274,12 +1291,12 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-kbpaSSGJTWdAY5KPVeMOKXSrPtr8C8C7wodJbcsd51jRnmD+GZu8Y0VoU6Dm5Z4vWr0Ig/1NKuWRKf7j5aaYSg==
-  /p-cancelable/2.0.0:
+  /p-cancelable/2.1.0:
     dev: false
     engines:
       node: '>=8'
     resolution:
-      integrity: sha512-wvPXDmbMmu2ksjkB4Z3nZWTSkJEb9lqVdMaCKpZUGJG9TMiNp9XcbG3fn9fPKjem04fJMJnXoyFPk2FmgiaiNg==
+      integrity: sha512-HAZyB3ZodPo+BDpb4/Iu7Jv4P6cSazBz9ZM0ChhEXp70scx834aWCEjQRwgt41UzzejUAPdbqqONfRWTPYrPAQ==
   /p-finally/1.0.0:
     dev: false
     engines:
@@ -1564,6 +1581,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
+  /sax/1.2.4:
+    dev: false
+    resolution:
+      integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
   /semver-regex/2.0.0:
     dev: false
     engines:
@@ -1909,6 +1930,19 @@ packages:
       node: '>= 10'
     resolution:
       integrity: sha512-zshzwQW7gG7hjpBlgeQP9RuyPGNxvJdzR8SUM3QhxCnLjWN2E7j3dOvpeDcQoETfHx0urRS7EtmVToql7YpU4A==
+  github.com/twarped/node-ytdl-core/4eab25432b1ba210787f303ada3e6466663100b8:
+    dependencies:
+      m3u8stream: 0.8.3
+      miniget: 4.2.0
+      request: 2.88.2
+      sax: 1.2.4
+    dev: false
+    engines:
+      node: '>=10'
+    name: ytdl-core
+    resolution:
+      tarball: 'https://codeload.github.com/twarped/node-ytdl-core/tar.gz/4eab25432b1ba210787f303ada3e6466663100b8'
+    version: 0.0.0-development
 registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
@@ -1921,5 +1955,7 @@ specifiers:
   express: ^4.17.1
   fs: 0.0.2
   got: ^11.8.2
+  miniget: ^4.2.0
   request: ^2.88.2
   youtube-dl: ^3.5.0
+  ytdl-core: 'git+https://github.com/twarped/node-ytdl-core.git#patch-3'
