@@ -1,4 +1,3 @@
-var stylecss = 
 var downloadbutton = document.getElementById("downloadbutton");
 var ytbrowser = document.getElementById("ytbrowser")
 var watchInBrowser = false;
