@@ -6,15 +6,11 @@
     ]
   },
   "restart": {
-    "exclude": [
-      "^public/",
-      "^dist/"
-    ],
     "include": [
       "\\.js$",
       "\\.coffee$",
       "\\.json"
     ]
   },
-  "throttle": 100
+  "throttle": 10000
 }

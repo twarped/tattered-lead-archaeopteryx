@@ -11,7 +11,7 @@
 #ytbrowser {
   
 }
-button {
+downloadbutton {
   padding: 15px;
   width: 100px;
   border-radius: 6px;
@@ -57,7 +57,7 @@ button {
     padding: 15px;
     margin-right: 2px;
   }
-  button {
+  downloadbutton {
     padding: 15px;
     border-radius: 6px;
     border-top-left-radius: 0px;
