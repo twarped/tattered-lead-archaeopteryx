@@ -1,130 +1,122 @@
 <html>
   <head>
     <script>
-    function windowOnLoad(contents) {
-  window.contents = contents;
-  var playlistContent = document.getElementById("playlistContainer").children;
-  for (var i in playlistContent) {
-    //playlistContent[i].videoId = window.contents.contents[i].playlistVideoRenderer.videoId;
-    //playlistContent[i].shouldDownload = true;
-    playlistContent[i].style.backgroundColor = "#42f578";
-    playlistContent[i].onclick = function changeColors(e) {
-      if (this.style.backgroundColor != "rgb(66, 245, 120)") {
-        this.style.backgroundColor = "rgb(66, 245, 120)";
-        this.shoulddownload = true;
-      } else {
-        this.style.backgroundColor = "rgb(245, 66, 66)";
-        this.shoulddownload = false;
+      function windowOnLoad(contents) {
+      window.contents = contents;
+      var playlistContent = document.getElementById("playlistContainer").children;
+      for (var i in playlistContent) {
+      //playlistContent[i].videoId = window.contents.contents[i].playlistVideoRenderer.videoId;
+      //playlistContent[i].shouldDownload = true;
+      playlistContent[i].style.backgroundColor = "#42f578";
+      playlistContent[i].onclick = function changeColors(e) {
+        if (this.style.backgroundColor != "rgb(66, 245, 120)") {
+          this.style.backgroundColor = "rgb(66, 245, 120)";
+          this.shoulddownload = true;
+        } else {
+          this.style.backgroundColor = "rgb(245, 66, 66)";
+          this.shoulddownload = false;
+        }
+      };
       }
-    };
-  }
-}
-      function getQueryStringValue (key) {  
-  return decodeURIComponent(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURIComponent(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));  
-}  
-
+      }
     </script>
-    
     <!-- <link rel="stylesheet" href="playliststyle.css"/> -->
     <style>
-body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-}
-      
-a {
-  text-decoration        
-}
-
-h1 {
-  -ms-transform: translate(0%, -50%);
-  transform: translate(0%, -50%);
-  top: 15;
-  background-color: white;
-  border-bottom: 1px solid grey;
-  width: 100%;
-  text-shadow: 3px 1px 4px grey;
-  text-align: center;
-  font-size: 40px;
-  height: 100px;
-  padding-top: 20px;
-  box-shadow: 1px 1px 18px grey;
-  position: absolute;
-}
-
-h3 {
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  position: absolute;
-  left: 50%;
-  top: 40px;
-  text-decoration: none;
-}
-
-h4 {
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  position: absolute;
-  left: 50%;
-  top: 65px;
-  text-decoration: none;
-  font-weight: 400;
-  background-color: rgba(255, 35, 35, .7);
-  width: 35%;
-  text-align: center;
-  border-radius: 6px;
-  padding: 2px;
-}
-      
-#playlistContainer {
-  margin-top: 125px;
-  height: calc(100% - 125px);
-  width: 100%;
-  overflow-y: scroll;
-  word-wrap: break-word;
-  background-color: white;
-}
-
-#initialLoading {
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  top: 50%;
-  left: 50%;
-  position: relative;
-  margin: auto;
-}
-
-#playlistContent {
-  width: 100%;
-  overflow-x: hidden;
-}
-
-.playlistContentContainer {
-  height: 94px;
-  width: calc(100% - 40px);
-  overflow-x: hidden;
-  cursor: pointer;
-  border-top: 1px solid grey;
-  border-bottom: 1px solid grey;
-  box-shadow: 1px 1px 6px grey;
-  border-radius: 6px;
-  margin-right: 20px;
-  margin-left: 20px;
-  background-color: #42f578;
-}
-
-.playlistContentThumbnail {
-  border-top-left-radius: 6px;
-  border-bottom-left-radius: 6px;
-}
+      body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      }
+      a {
+      text-decoration: none;
+      color: black;
+      }
+      h1 {
+      -ms-transform: translate(0%, -50%);
+      transform: translate(0%, -50%);
+      top: 15;
+      background-color: white;
+      border-bottom: 1px solid grey;
+      width: 100%;
+      text-shadow: 3px 1px 4px grey;
+      text-align: center;
+      font-size: 40px;
+      height: 100px;
+      padding-top: 20px;
+      box-shadow: 1px 1px 18px grey;
+      position: absolute;
+      }
+      h3 {
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      position: absolute;
+      left: 50%;
+      top: 40px;
+      text-decoration: none;
+      }
+      h4 {
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      position: absolute;
+      left: 50%;
+      top: 65px;
+      text-decoration: none;
+      font-weight: 400;
+      background-color: rgba(255, 35, 35, .7);
+      width: 35%;
+      text-align: center;
+      border-radius: 6px;
+      padding: 2px;
+      }
+      #playlistContainer {
+      margin-top: 125px;
+      height: calc(100% - 125px);
+      width: 100%;
+      overflow-y: scroll;
+      word-wrap: break-word;
+      background-color: white;
+      }
+      #initialLoading {
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      top: 50%;
+      left: 50%;
+      position: relative;
+      margin: auto;
+      }
+      #playlistContent {
+      width: 100%;
+      overflow-x: hidden;
+      }
+      .playlistContentContainer {
+      height: 94px;
+      width: calc(100% - 40px);
+      overflow-x: hidden;
+      cursor: pointer;
+      border-top: 1px solid grey;
+      border-bottom: 1px solid grey;
+      box-shadow: 1px 1px 6px grey;
+      border-radius: 6px;
+      margin-right: 20px;
+      margin-left: 20px;
+      background-color: #42f578;
+      }
+      .playlistContentThumbnail {
+      border-top-left-radius: 6px;
+      border-bottom-left-radius: 6px;
+      }
+      #download {
+        border: solid 1px grey;
+        position: absolute;
+        
+      }
     </style>
     <link
       id="favicon"
       rel="icon"
       href="https://i.ibb.co/WW98p14/Project-Drawing-16310933759254199759.png"
       type="image/x-icon"
-    />
+      />
   </head>
   <body>
     <h1>
@@ -132,7 +124,7 @@ h4 {
       <h3>
         with <a href="/">tattered-lead-archaeopteryx.glitch.me</a>
       </h3>
-      <a href="javascript:window.open('https://youtube.com/playlist?list='+getQueryStringValue('list'));">
+      <a href="https://youtube.com/playlist?list=<%= contents.playlistId %>" target="_blank">
         <h4 style="cursor: pointer;">
           <%= contents.playlistTitle %>
         </h4>
@@ -141,21 +133,20 @@ h4 {
         
       </div>
     </h1>
-    
     <div id="playlistContainer" style="width: 100%;">
       <!--<img id="initialLoading" src="https://wpamelia.com/wp-content/uploads/2018/11/loading-hourglass.gif"/>-->
       <% contents.contents.forEach((playlistContent) => { %>
-        <div class="playlistContentContainer" videoId=<%= playlistContent.playlistVideoRenderer.videoId %> shouldDownload=true>
-          <img src=<%= playlistContent.playlistVideoRenderer.thumbnail.thumbnails[0].url %> class="playlistContentThumbnail" />
-          <p class="playlistContentVideoTitle" style="width: calc(100% - 175px); float: right; word-wrap: break-word;">
-            <%= playlistContent.playlistVideoRenderer.title.runs[0].text %>
-          </p>
-        </div>
-        <br>
+      <div class="playlistContentContainer" videoId=<%= playlistContent.playlistVideoRenderer.videoId %> shouldDownload=true>
+        <img src=<%= playlistContent.playlistVideoRenderer.thumbnail.thumbnails[0].url %> class="playlistContentThumbnail" />
+        <p class="playlistContentVideoTitle" style="width: calc(100% - 175px); float: right; word-wrap: break-word;">
+          <%= playlistContent.playlistVideoRenderer.title.runs[0].text %>
+        </p>
+      </div>
+      <br>
       <% }); %>
     </div>
     <script>
-      //var joebilly = <%= JSON.stringify(contents) %>;
-      windowOnLoad(JSON.parse(`<%= JSON.stringify(contents) %>`.replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("&#34;", "\"").replaceAll("&quot;","\"")))</script>
+      windowOnLoad(JSON.parse(`<%= JSON.stringify(contents) %>`.replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("&#34;", "\"").replaceAll("&quot;","\"")))
+    </script>
   </body>
 </html>
