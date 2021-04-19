@@ -19,6 +19,9 @@
     };
   }
 }
+      function getQueryStringValue (key) {  
+  return decodeURIComponent(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURIComponent(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));  
+}  
 
     </script>
     
@@ -28,6 +31,10 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+}
+      
+a {
+  text-decoration        
 }
 
 h1 {
@@ -125,7 +132,7 @@ h4 {
       <h3>
         with <a href="/">tattered-lead-archaeopteryx.glitch.me</a>
       </h3>
-      <a href="javascript:window.open(window)">
+      <a href="javascript:window.open('https://youtube.com/playlist?list='+getQueryStringValue('list'));">
         <h4 style="cursor: pointer;">
           <%= contents.playlistTitle %>
         </h4>
