@@ -41,7 +41,8 @@ h1 {
   text-shadow: 3px 1px 4px grey;
   text-align: center;
   font-size: 40px;
-  height: 80px;
+  height: 100px;
+  padding-top: 20px;
   box-shadow: 1px 1px 18px grey;
   position: absolute;
 }
@@ -55,8 +56,23 @@ h3 {
   text-decoration: none;
 }
 
+h4 {
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  position: absolute;
+  left: 50%;
+  top: 65px;
+  text-decoration: none;
+  font-weight: 400;
+  background-color: rgba(255, 35, 35, .7);
+  width: 40%;
+  text-align: center;
+  border-radius: 6px;
+  padding: 2px;
+}
+      
 #playlistContainer {
-  margin-top: 90px;
+  margin-top: 85px;
   height: calc(100% - 80px);
   width: 100%;
   overflow-y: scroll;
@@ -110,12 +126,12 @@ h3 {
       <h3>
         with <a href="/">tattered-lead-archaeopteryx.glitch.me</a>
       </h3>
+      <h4>
+        <%= contents.playlistTitle %>
+      </h4>
     </h1>
     
     <div id="playlistContainer" style="width: 100%;">
-      <div style="background-color: white; height: 10px; width: 100%;">
-        <%= contents.playlistTitle %>
-      </div>
       <!--<img id="initialLoading" src="https://wpamelia.com/wp-content/uploads/2018/11/loading-hourglass.gif"/>-->
       <% contents.contents.forEach((playlistContent) => { %>
         <div class="playlistContentContainer" videoId=<%= playlistContent.playlistVideoRenderer.videoId %> shouldDownload=true>
