@@ -62,6 +62,7 @@ h3 {
   overflow-y: scroll;
   word-wrap: break-word;
   background-color: white;
+  text-align: center;
 }
 
 #initialLoading {
@@ -111,11 +112,10 @@ h3 {
         with <a href="/">tattered-lead-archaeopteryx.glitch.me</a>
       </h3>
     </h1>
+    
     <div id="playlistContainer" style="width: 100%;">
       <br>
-      <h4>
-        <%= contents.playlistTitle %>
-      </h4>
+      <%= contents.playlistTitle %>
       <br>
       <!--<img id="initialLoading" src="https://wpamelia.com/wp-content/uploads/2018/11/loading-hourglass.gif"/>-->
       <% contents.contents.forEach((playlistContent) => { %>
