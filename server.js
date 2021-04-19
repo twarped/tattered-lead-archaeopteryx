@@ -23,23 +23,6 @@ app.get("/", (request, response) => {
   response.sendFile(__dirname + "/views/index.html");
 });
 
-
-//Old:
-// app.get("/watch", (req, res) => {
-//   youtubedl.getInfo(req.query.v, function(err, info) {
-//     var title =
-//       info.title.indexOf(".") === info.title.length - 1
-//         ? info.title.substring(0, info.title.length - 1) + ".mp4"
-//         : info.title + ".mp4";
-//     if (!req.query.inbrowser)
-//       res.header("Content-Disposition", contentdisposition(title));
-//     request.get(info.url).pipe(res);
-//     console.log(info.url);
-//   });
-// });
-
-
-//New:
 app.get("/watch", async (req, res) => {
   var videoStream = await ytdl(req.query.v);
   const streamVideo = () => {
@@ -71,6 +54,7 @@ app.get("/playlist", (req, res) => {
     playlistURL = "https://www.youtube.com/playlist?list=" + req.query.list;
   else if (req.query.list.includes("youtu" && "http" && "&list=" && "/watch"))
     playlistURL = "https://www.youtube.com/playlist?list=" + req.query.list.split("&list=")[1];
+  else res.redirect("/");
   //console.log(playlistURL)
   request.get(
     playlistURL,
