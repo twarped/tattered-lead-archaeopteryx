@@ -22,10 +22,10 @@
 
     </script>
     
-    <script src="/detecterrors.js"></script>
-    <link rel="stylesheet" href="playliststyle.css"/>
+<!--     <script src="/detecterrors.js"></script>
+    <link rel="stylesheet" href="playliststyle.css"/> -->
     <style>
-    body {
+body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
@@ -56,13 +56,12 @@ h3 {
 }
 
 #playlistContainer {
-  margin-top: 80px;
+  margin-top: 90px;
   height: calc(100% - 80px);
   width: 100%;
   overflow-y: scroll;
   word-wrap: break-word;
   background-color: white;
-  text-align: center;
 }
 
 #initialLoading {
@@ -114,9 +113,9 @@ h3 {
     </h1>
     
     <div id="playlistContainer" style="width: 100%;">
-      <br>
-      <%= contents.playlistTitle %>
-      <br>
+      <div style="background-color: white; height: 10px; width: 100%;">
+        <%= contents.playlistTitle %>
+      </div>
       <!--<img id="initialLoading" src="https://wpamelia.com/wp-content/uploads/2018/11/loading-hourglass.gif"/>-->
       <% contents.contents.forEach((playlistContent) => { %>
         <div class="playlistContentContainer" videoId=<%= playlistContent.playlistVideoRenderer.videoId %> shouldDownload=true>
