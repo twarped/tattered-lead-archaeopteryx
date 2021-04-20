@@ -9,8 +9,7 @@ const events = require("events");
 const contentdisposition = require("content-disposition");
 const archiver = require("archiver");
 const axios = require("axios");
-const miniget = require("miniget");
-//const ejs = require("ejs");
+const fs = require("graceful-fs");
 const apikey = process.env.api_key;
 
 app.use(express.static("public"));
@@ -93,6 +92,10 @@ app.get("/playlist", (req, res) => {
     //console.log(playlistTitle);
   });
 });
+
+app.post("/playlist", (req, res) => {
+  fs.createReadStream('README')
+})
 
 app.get("/playlisttest", (req, res) => {
   // axios({

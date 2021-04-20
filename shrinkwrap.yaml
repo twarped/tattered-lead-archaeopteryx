@@ -7,6 +7,7 @@ dependencies:
   express: 4.17.1
   fs: 0.0.2
   got: 11.8.2
+  graceful-fs: 4.2.6
   miniget: 4.2.0
   request: 2.88.2
   youtube-dl: 3.5.0
@@ -1941,6 +1942,7 @@ packages:
       node: '>=10'
     name: ytdl-core
     resolution:
+      registry: 'https://registry.npmjs.org/'
       tarball: 'https://codeload.github.com/twarped/node-ytdl-core/tar.gz/4eab25432b1ba210787f303ada3e6466663100b8'
     version: 0.0.0-development
 registry: 'https://registry.npmjs.org/'
@@ -1955,6 +1957,7 @@ specifiers:
   express: ^4.17.1
   fs: 0.0.2
   got: ^11.8.2
+  graceful-fs: ^4.2.6
   miniget: ^4.2.0
   request: ^2.88.2
   youtube-dl: ^3.5.0
