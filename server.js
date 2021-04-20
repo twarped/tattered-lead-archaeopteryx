@@ -17,7 +17,7 @@ app.use(express.static("public"));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 
 app.get("/", (request, response) => {
   response.sendFile(__dirname + "/views/index.html");
@@ -26,39 +26,46 @@ app.get("/", (request, response) => {
 app.get("/watch", async (req, res) => {
   var videoStream = await ytdl(req.query.v);
   const streamVideo = () => {
-    videoStream.pipe(res)
-  }
-  videoStream.on('info', async (info) => {
+    videoStream.pipe(res);
+  };
+  videoStream.on("info", async info => {
     var title =
-      info.videoDetails.title.indexOf(".") === info.videoDetails.title.length - 1
-        ? info.videoDetails.title.substring(0, info.videoDetails.title.length - 1) + ".mp4"
+      info.videoDetails.title.indexOf(".") ===
+      info.videoDetails.title.length - 1
+        ? info.videoDetails.title.substring(
+            0,
+            info.videoDetails.title.length - 1
+          ) + ".mp4"
         : info.videoDetails.title + ".mp4";
     if (!req.query.inbrowser) {
       res.header("Content-Disposition", contentdisposition(title));
       streamVideo();
     } else {
       var playbackURL = await ytdl.getVideoPlaybackURL(info);
-      request(playbackURL).pipe(res)
+      request(playbackURL).pipe(res);
     }
-  })
-  videoStream.on('error', (err) => {
-    console.log(err)
-  })
-})
+  });
+  videoStream.on("error", err => {
+    console.log(err);
+  });
+});
 
 app.get("/playlist", (req, res) => {
-  var playlistURL;
-  if (req.query.list.includes("youtu" && "http" && "?list=" && "/playlist"))
-    playlistURL = "https://www.youtube.com/playlist" + req.query.list.split("/playlist")[1];
-  else if (req.query.list.indexOf("PL") === 0)
-    playlistURL = "https://www.youtube.com/playlist?list=" + req.query.list;
-  else if (req.query.list.includes("youtu" && "http" && "&list=" && "/watch"))
-    playlistURL = "https://www.youtube.com/playlist?list=" + req.query.list.split("&list=")[1];
-  else res.redirect("/");
-  //console.log(playlistURL)
-  request.get(
-    playlistURL,
-    (err, body) => {
+  if (!req.query.download) {
+    var playlistURL;
+    if (req.query.list.includes("youtu" && "http" && "?list=" && "/playlist"))
+      playlistURL =
+        "https://www.youtube.com/playlist" +
+        req.query.list.split("/playlist")[1];
+    else if (req.query.list.indexOf("PL") === 0)
+      playlistURL = "https://www.youtube.com/playlist?list=" + req.query.list;
+    else if (req.query.list.includes("youtu" && "http" && "&list=" && "/watch"))
+      playlistURL =
+        "https://www.youtube.com/playlist?list=" +
+        req.query.list.split("&list=")[1];
+    else res.redirect("/");
+    //console.log(playlistURL)
+    request.get(playlistURL, (err, body) => {
       //"https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr"
       var parsedBody = JSON.parse(
         body.body
@@ -75,15 +82,20 @@ app.get("/playlist", (req, res) => {
       contents.playlistTitle = playlistTitle;
       for (var i in contents.contents) {
         //console.info(contents.contents)
-        if (contents.contents[i].playlistVideoRenderer.thumbnail.thumbnails[0].url == "https://i.ytimg.com/img/no_thumbnail.jpg")
-          delete contents.contents[i]
+        if (
+          contents.contents[i].playlistVideoRenderer.thumbnail.thumbnails[0]
+            .url == "https://i.ytimg.com/img/no_thumbnail.jpg"
+        )
+          delete contents.contents[i];
       }
       //res.send(contents)
-      res.render(__dirname + "/views/playlist", {contents: contents});
+      res.render(__dirname + "/views/playlist", { contents: contents });
       //console.log(__dirname)
       //console.log(playlistTitle);
-    }
-  );
+    });
+  } else {
+    
+  }
 });
 
 app.get("/playlisttest", (req, res) => {
@@ -117,7 +129,7 @@ app.get("/playlisttest", (req, res) => {
       contents.playlistTitle = playlistTitle;
       console.log(playlistTitle);
       //res.send(parsedBody)
-      res.send(contents)
+      res.send(contents);
       //console.log(parsedBody)
     }
   );

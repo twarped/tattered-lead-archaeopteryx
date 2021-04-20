@@ -4,6 +4,7 @@
       function windowOnLoad(contents) {
       window.contents = contents;
       var playlistContent = document.getElementById("playlistContainer").children;
+      var downloadButton = document.getElementById("download");
       for (var i in playlistContent) {
       //playlistContent[i].videoId = window.contents.contents[i].playlistVideoRenderer.videoId;
       //playlistContent[i].shouldDownload = true;
@@ -18,9 +19,11 @@
         }
       };
       }
+      downloadButton.addEventListener("click", () => {
+        
+      })
       }
     </script>
-    <!-- <link rel="stylesheet" href="playliststyle.css"/> -->
     <style>
       body {
       margin: 0;
