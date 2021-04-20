@@ -93,8 +93,9 @@ app.get("/playlist", (req, res) => {
   });
 });
 
-app.post("/playlist", (req, res) => {
-  fs.createReadStream('README')
+app.get("/dl", (req, res) => {
+  res.setHeader("Content-Type", "text/plain")
+  fs.createReadStream('README.md').pipe(res);
 })
 
 app.get("/playlisttest", (req, res) => {
