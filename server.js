@@ -94,7 +94,7 @@ app.get("/playlist", (req, res) => {
 });
 
 app.get("/dl", (req, res) => {
-  res.setHeader("Content-Type", "text/plain")
+  res.setHeader("Content-Disposition", contentdisposition("README.md"))
   fs.createReadStream('README.md').pipe(res);
 })
 
