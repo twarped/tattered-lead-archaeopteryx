@@ -93,10 +93,25 @@ app.get("/playlist", (req, res) => {
   });
 });
 
-app.get("/dl", (req, res) => {
-  res.setHeader("Content-Disposition", contentdisposition("README.md"))
-  fs.createReadStream('README.md').pipe(res);
-})
+app.get("/dl", async (req, res) => {
+  var video_ids = req.query.video_ids;
+  res.setHeader("Content-Disposition", )
+  var playlist = archiver('zip');
+  playlist.pipe(res);
+  for (var i in video_ids) {
+    var videoStream = await ytdl(video_ids[i]);
+    videoStream.on("info", async info => {
+      var title = info.videoDetails.title + ".mp4";
+      playlist.append(videoStream, { name: title });
+    });
+    videoStream.on("error", err => {
+      res.send(err);
+      console.log(err);
+    });
+  }
+  res.setHeader("Content-Disposition", contentdisposition("README.md"));
+  fs.createReadStream("README.md").pipe(res);
+});
 
 app.get("/playlisttest", (req, res) => {
   // axios({
