@@ -95,10 +95,12 @@ app.get("/playlist", (req, res) => {
 
 app.get("/dl", async (req, res) => {
   var video_ids = req.query.video_ids;
-  res.setHeader("Content-Disposition", )
+  var playlist_name = req.query.playlist_name;
   var playlist = archiver('zip');
+  res.setHeader("Content-Disposition", contentdisposition((playlist_name != "" ? playlist_name : "playlist")+".zip"));
   playlist.pipe(res);
   for (var i in video_ids) {
+    console.log(video_ids[i])
     var videoStream = await ytdl(video_ids[i]);
     videoStream.on("info", async info => {
       var title = info.videoDetails.title + ".mp4";
@@ -109,8 +111,8 @@ app.get("/dl", async (req, res) => {
       console.log(err);
     });
   }
-  res.setHeader("Content-Disposition", contentdisposition("README.md"));
-  fs.createReadStream("README.md").pipe(res);
+  // res.setHeader("Content-Disposition", contentdisposition("README.md"));
+  // fs.createReadStream("README.md").pipe(res);
 });
 
 app.get("/playlisttest", (req, res) => {
