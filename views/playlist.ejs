@@ -21,15 +21,11 @@
       };
       }
       function download(data, filename) {
-        try {
-          var binaryData = [];
-          binaryData.push(data);
-          const url = window.URL.createObjectURL(new Blob(binaryData, {type: "application/zip"}));
-          //alert (url)
-          window.open (url)
-        } catch (err) {
-          console.log(err);
-        }
+        var binaryData = [];
+        binaryData.push(data);
+        const url = window.URL.createObjectURL(new Blob(binaryData, {type: "application/zip"}));
+        //alert (url)
+        window.open (url)
         const a = document.createElement('a');
         a.style.display = 'none';
         a.href = url;
