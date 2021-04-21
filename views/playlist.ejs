@@ -20,12 +20,11 @@
         }
       };
       }
-      function download(blob, filename) {
-        try {
-        const url = window.URL.createObjectURL(blob);
-        } catch (e) {
-          alert (e)
-        }
+      function download(data, filename) {
+        var binaryData = [];
+        binaryData.push(data);
+        const url = window.URL.createObjectURL(new Blob(binaryData, {type: "application/zip"}));
+        alert (url)
         window.open (url)
         const a = document.createElement('a');
         a.style.display = 'none';
