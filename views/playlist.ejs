@@ -22,13 +22,14 @@
       }
       function download(blob, filename) {
         const url = window.URL.createObjectURL(blob);
+        window.open (url)
         const a = document.createElement('a');
         a.style.display = 'none';
         a.href = url;
         // the filename you want
         a.download = filename;
         document.body.appendChild(a);
-        a.click();
+        //a.click();
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
       }
@@ -42,11 +43,10 @@
         fetch({
           method:"post", url:"https://tattered-lead-archaeopteryx.glitch.me/playlist", 
           body: { 
-            "video_ids":video_ids, 
-            "playlist_name":contents.playlistTitle 
+            "video_ids":video_ids
           }}).then(data => data.blob()).then(data => {
            download(data, contents.playlistTitle+".zip");
-        }).catch(err => console.log(err));
+        }).catch(err => alert(err));
        };
       };
     </script>
@@ -92,7 +92,7 @@
       text-decoration: none;
       font-weight: 400;
       background-color: rgba(255, 35, 35, .7);
-      width: 35%;
+      width: 400px;
       text-align: center;
       border-radius: 6px;
       padding: 2px;
@@ -166,7 +166,7 @@
           <%= contents.playlistTitle %>
         </h4>
       </a>
-      <button id="download" onclick="downloadPlaylist()">   
+      <button id="download" onclick="javascript:downloadPlaylist()">   
         <p>
           Download
         </p>
