@@ -94,10 +94,10 @@ app.get("/playlist", (req, res) => {
 });
 
 app.get("/dl", async (req, res) => {
-  var video_ids = req.query.video_ids;
+  res.setHeader("Content-Disposition", contentdisposition((playlist_name != "" ? playlist_name : "playlist")+".zip"));
+  var video_ids = JSON.parse(req.query.video_ids);
   var playlist_name = req.query.playlist_name;
   var playlist = archiver('zip');
-  res.setHeader("Content-Disposition", contentdisposition((playlist_name != "" ? playlist_name : "playlist")+".zip"));
   playlist.pipe(res);
   for (var i in video_ids) {
     console.log(video_ids[i])
@@ -111,6 +111,7 @@ app.get("/dl", async (req, res) => {
       console.log(err);
     });
   }
+  playlist.finalize();
   // res.setHeader("Content-Disposition", contentdisposition("README.md"));
   // fs.createReadStream("README.md").pipe(res);
 });
