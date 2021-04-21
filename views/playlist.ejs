@@ -19,6 +19,18 @@
         }
       };
       }
+      function download(blob, filename) {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        // the filename you want
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      }
       function downloadPlaylist() {
         var video_ids = [];
         for (var i of playlistContent) {
@@ -31,13 +43,7 @@
             "video_ids":video_ids, 
             "playlist_name":contents.playlistTitle 
           }}).then(data => data.blob()).then(data => {
-           const url = window.URL.createObjectURL(new Blob([blob]));
-           const link = document.createElement('a');
-           link.href = url;
-           link.setAttribute('download', `${contents.playlistTitle}.zip`);
-           document.body.appendChild(link);
-           link.click();
-           link.parentNode.removeChild(link);
+           download
         }).catch(err => console.log(err));
        };
       };
