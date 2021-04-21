@@ -94,16 +94,15 @@ app.get("/playlist", (req, res) => {
   });
 });
 
-app.post("/playlist", async (req, res) => {
-  var video_ids = JSON.parse(req.body.video_ids);
-  var playlist_name = req.body.playlist_name;
+app.get("/dlplaylist", async (req, res) => {
+  console.log("pending...")
+  var video_ids = JSON.parse(req.query.video_ids);
+  var playlist_name = req.query.playlist_name;
   var playlist = archiver("zip");
   res.setHeader(
     "Content-Disposition",
     contentdisposition(playlist_name + ".zip")
   );
-  var blobURL = await toBlobURL(playlist)
-  console.log(blobURL)
   playlist.pipe(res);
   for (var i in video_ids) {
     console.log(video_ids[i]);

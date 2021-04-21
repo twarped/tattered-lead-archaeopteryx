@@ -29,7 +29,7 @@
         // the filename you want
         a.download = filename;
         document.body.appendChild(a);
-        //a.click();
+        a.click();
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
       }
@@ -37,16 +37,10 @@
         //alert ("pending...")
         var video_ids = [];
         for (var i of playlistContent) {
-          if (i.shoulddownload)
+          //if (i.shoulddownload)
             video_ids.append(i.videoid);
         }
-        fetch({
-          method:"post", url:"https://tattered-lead-archaeopteryx.glitch.me/playlist", 
-          body: { 
-            "video_ids":video_ids
-          }}).then(data => data.blob()).then(data => {
-           download(data, contents.playlistTitle+".zip");
-        }).catch(err => alert(err));
+        window.open("/dlplaylist?video_ids="+JSON.stringify(video_ids)+"&playlist_name="+contents.playlistTitle);
        };
       };
     </script>
