@@ -10,6 +10,7 @@
       //playlistContent[i].shouldDownload = true;
       playlistContent[i].style.backgroundColor = "#42f578";
       playlistContent[i].onclick = function changeColors(e) {
+        downloadPlaylist();
         if (this.style.backgroundColor != "rgb(66, 245, 120)") {
           this.style.backgroundColor = "rgb(66, 245, 120)";
           this.shoulddownload = true;
@@ -32,6 +33,7 @@
         window.URL.revokeObjectURL(url);
       }
       function downloadPlaylist() {
+        alert ("pending...")
         var video_ids = [];
         for (var i of playlistContent) {
           if (i.shoulddownload)
@@ -43,7 +45,7 @@
             "video_ids":video_ids, 
             "playlist_name":contents.playlistTitle 
           }}).then(data => data.blob()).then(data => {
-           download
+           download(data, contents.playlistTitle+".zip");
         }).catch(err => console.log(err));
        };
       };
