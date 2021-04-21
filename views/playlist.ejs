@@ -22,31 +22,24 @@
       downloadButton.addEventListener("click", () => {
         var video_ids = [];
         for (var i of playlistContent) {
-          if ()
-          video_ids.append(i.videoid)
+          if (i.shoulddownload);
+          video_ids.append(i.videoid);
         }
         fetch({
           method:"post", url:"https://tattered-lead-archaeopteryx.glitch.me/playlist", 
           body: { 
-            "video_ids":["ZevEW7zwslA"], 
-            "playlist_name":"jerrythesnail" 
-          }}).then(data => console.log(data)).catch(err => console.log(err));
+            "video_ids":video_ids, 
+            "playlist_name":contents.playlistTitle 
+          }}).then(data => data.blob()).then(data => {
+           const url = window.URL.createObjectURL(new Blob([blob]));
+           const link = document.createElement('a');
+           link.href = url;
+           link.setAttribute('download', `${contents.playlistTitle}.zip`);
+           document.body.appendChild(link);
+           link.click();
+           link.parentNode.removeChild(link);
+        }).catch(err => console.log(err));
        })
-.then((response) => response.blob())
-.then((blob) => {
-// 2. Create blob link to download
- const url = window.URL.createObjectURL(new Blob([blob]));
-const link = document.createElement('a');
-link.href = url;
-link.setAttribute('download', `sample.xlsx`);
- // 3. Append to html page
- document.body.appendChild(link);
- // 4. Force download
- link.click();
- // 5. Clean up and remove the link
- link.parentNode.removeChild(link);
-})
-      })
       }
     </script>
     <style>
@@ -144,6 +137,7 @@ link.setAttribute('download', `sample.xlsx`);
         height: 50px;
         border: solid 1px grey;
         border-radius: 6px;
+        background-color: white;
       }
     </style>
     <link
@@ -164,11 +158,11 @@ link.setAttribute('download', `sample.xlsx`);
           <%= contents.playlistTitle %>
         </h4>
       </a>
-      <div id="download">   
+      <button id="download">   
         <p>
           Download
         </p>
-      </div>
+      </button>
     </h1>
     <div id="playlistContainer" style="width: 100%;">
       <!--<img id="initialLoading" src="https://wpamelia.com/wp-content/uploads/2018/11/loading-hourglass.gif"/>-->
