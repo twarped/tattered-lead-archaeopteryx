@@ -21,7 +21,11 @@
       };
       }
       function download(blob, filename) {
+        try {
         const url = window.URL.createObjectURL(blob);
+        } catch (e) {
+          alert (e)
+        }
         window.open (url)
         const a = document.createElement('a');
         a.style.display = 'none';
@@ -29,7 +33,7 @@
         // the filename you want
         a.download = filename;
         document.body.appendChild(a);
-        //a.click();
+        a.click();
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
       }
@@ -38,15 +42,17 @@
         var video_ids = [];
         for (var i of playlistContent) {
           if (i.shoulddownload)
-            video_ids.append(i.videoid);
+            video_ids.push(i.videoid);
         }
         fetch({
-          url: "https://tattered-lead-archaeopteryx.glitch.me/playlist?don",
+          url: "https://tattered-lead-archaeopteryx.glitch.me/playlist?download=true",
           body: {
             "video_ids": video_ids,
             "playlist_name": contents.playlistTitle
           }
-        })
+        }).then( data => {
+          download(data.body, "hello.zip")
+        });
         // fetch({
         //   method:"post", url:"https://tattered-lead-archaeopteryx.glitch.me/playlist", 
         //   body: { 
