@@ -10,7 +10,6 @@ const contentdisposition = require("content-disposition");
 const archiver = require("archiver");
 const axios = require("axios");
 const fs = require("graceful-fs");
-const toBlobURL = require("stream-to-blob-url");
 const apikey = process.env.api_key;
 
 app.use(express.static("public"));
@@ -51,78 +50,71 @@ app.get("/watch", async (req, res) => {
   });
 });
 
-app.get("/playlist", async (req, res) => {
-  if (!req.query.download) {
-    var playlistURL;
-    if (req.query.list.includes("youtu" && "http" && "?list=" && "/playlist"))
-      playlistURL =
-        "https://www.youtube.com/playlist" +
-        req.query.list.split("/playlist")[1];
-    else if (req.query.list.indexOf("PL") === 0)
-      playlistURL = "https://www.youtube.com/playlist?list=" + req.query.list;
-    else if (req.query.list.includes("youtu" && "http" && "&list=" && "/watch"))
-      playlistURL =
-        "https://www.youtube.com/playlist?list=" +
-        req.query.list.split("&list=")[1];
-    else res.redirect("/");
-    //console.log(playlistURL)
-    request.get(playlistURL, (err, body) => {
-      //"https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr"
-      var parsedBody = JSON.parse(
-        body.body
-          .split(`var ytInitialData = `)[1]
-          .split(
-            `;</script><link rel="alternate" media="handheld" href="https://m.youtube.com/playlist?list=`
-          )[0]
-      );
-      var playlistTitle = parsedBody.metadata.playlistMetadataRenderer.title;
-      var contents =
-        parsedBody.contents.twoColumnBrowseResultsRenderer.tabs[0].tabRenderer
-          .content.sectionListRenderer.contents[0].itemSectionRenderer
-          .contents[0].playlistVideoListRenderer;
-      contents.playlistTitle = playlistTitle;
-      for (var i in contents.contents) {
-        //console.info(contents.contents)
-        if (
-          contents.contents[i].playlistVideoRenderer.thumbnail.thumbnails[0]
-            .url == "https://i.ytimg.com/img/no_thumbnail.jpg"
-        )
-          delete contents.contents[i];
-      }
-      //res.send(contents)
-      res.render(__dirname + "/views/playlist", { contents: contents });
-      //console.log(__dirname)
-      //console.log(playlistTitle);
-    });
-  } else {
-    var video_ids = JSON.parse(req.body.video_ids);
-    var playlist_name = req.body.playlist_name;
-    var playlist = archiver("zip");
-    res.setHeader(
-      "Content-Disposition",
-      contentdisposition(playlist_name + ".zip")
+app.get("/playlist", (req, res) => {
+  var playlistURL;
+  if (req.query.list.includes("youtu" && "http" && "?list=" && "/playlist"))
+    playlistURL =
+      "https://www.youtube.com/playlist" + req.query.list.split("/playlist")[1];
+  else if (req.query.list.indexOf("PL") === 0)
+    playlistURL = "https://www.youtube.com/playlist?list=" + req.query.list;
+  else if (req.query.list.includes("youtu" && "http" && "&list=" && "/watch"))
+    playlistURL =
+      "https://www.youtube.com/playlist?list=" +
+      req.query.list.split("&list=")[1];
+  else res.redirect("/");
+  //console.log(playlistURL)
+  request.get(playlistURL, (err, body) => {
+    //"https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr"
+    var parsedBody = JSON.parse(
+      body.body
+        .split(`var ytInitialData = `)[1]
+        .split(
+          `;</script><link rel="alternate" media="handheld" href="https://m.youtube.com/playlist?list=`
+        )[0]
     );
-    playlist.pipe(res);
-    for (var i in video_ids) {
-      console.log(video_ids[i]);
-      var videoStream = await ytdl(video_ids[i]);
-      videoStream.on("info", async info => {
-        var title = info.videoDetails.title + ".mp4";
-        playlist.append(videoStream, { name: title });
-        if (i == video_ids.length - 1) playlist.finalize();
-      });
-      videoStream.on("error", err => {
-        res.send(err);
-        console.log(err);
-      });
+    var playlistTitle = parsedBody.metadata.playlistMetadataRenderer.title;
+    var contents =
+      parsedBody.contents.twoColumnBrowseResultsRenderer.tabs[0].tabRenderer
+        .content.sectionListRenderer.contents[0].itemSectionRenderer.contents[0]
+        .playlistVideoListRenderer;
+    contents.playlistTitle = playlistTitle;
+    for (var i in contents.contents) {
+      //console.info(contents.contents)
+      if (
+        contents.contents[i].playlistVideoRenderer.thumbnail.thumbnails[0]
+          .url == "https://i.ytimg.com/img/no_thumbnail.jpg"
+      )
+        delete contents.contents[i];
     }
-  }
+    //res.send(contents)
+    res.render(__dirname + "/views/playlist", { contents: contents });
+    //console.log(__dirname)
+    //console.log(playlistTitle);
+  });
 });
 
-// app.get("/playlist", async (req, res) => {
-//   // res.setHeader("Content-Disposition", contentdisposition("README.md"));
-//   // fs.createReadStream("README.md").pipe(res);
-// });
+app.post("/playlist", async (req, res) => {
+  var video_ids = JSON.parse(req.body.video_ids);
+  var playlist_name = req.body.playlist_name;
+  var playlist = archiver('zip');
+  res.setHeader("Content-Disposition", contentdisposition(playlist_name+".zip"));
+  playlist.pipe(res);
+  for (var i in video_ids) {
+    console.log(video_ids[i])
+    var videoStream = await ytdl(video_ids[i]);
+    videoStream.on("info", async info => {
+      var title = info.videoDetails.title + ".mp4";
+      playlist.append(videoStream, { name: title });
+      if (i == video_ids.length - 1) playlist.finalize();
+    });
+    videoStream.on("error", err => {
+      res.send(err);
+      console.log(err);
+    });
+  }
+  // res.setHeader("Content-Disposition", contentdisposition("README.md"));
+  // fs.createReadStream("README.md").pipe(res);
+});
 
 app.get("/playlisttest", (req, res) => {
   // axios({
