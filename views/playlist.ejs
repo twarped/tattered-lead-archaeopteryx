@@ -4,7 +4,7 @@
       function windowOnLoad(contents) {
       window.contents = contents;
       var playlistContent = document.getElementById("playlistContainer").children;
-      var downloadButton = document.getElementById("download");
+      var downloadButton = document.querySelector("download");
       for (var i in playlistContent) {
       //playlistContent[i].videoId = window.contents.contents[i].playlistVideoRenderer.videoId;
       //playlistContent[i].shouldDownload = true;
