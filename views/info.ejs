@@ -3,13 +3,31 @@
     
   </head>
   <body>
+    <% function formatContents(content) {
+      
+    } %>
+    <% function getType(item) {
+      if (typeof item == "object") {
+        if (item.isArray()) {
+          item.forEach( item => {
+            formatContents(item)
+          })
+        } else {
+          Object.keys(item).forEach( item )
+        }
+      } else { %>
+        <p>
+          <%= item %>
+        </p>
+    <% }
+    } %>
     <% Object.keys(contents).forEach( item => { %>
-    <h2>
+    <h1>
       <%= item %>
-    </h2>
-    <p>
+    </h1>
+    <div>
       <%= JSON.stringify(contents[item]) %>
-    </p>
+    </div>
     <% }) %>
   </body>
 </html>
