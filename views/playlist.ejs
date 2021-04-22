@@ -24,12 +24,12 @@
         alert ("pending...");
         var video_ids = [];
         for (var i of playlistContent) {
-          //if (i.shoulddownload)
-          alert (i.videoid)
+          if (i.getAttribute("data-shoulddownload"))
+            video_ids.push(i.getAttribute("data-videoid"));
         };
         var downloadURL = "https://tattered-lead-archaeopteryx.glitch.me/dlplaylist?video_ids="+JSON.stringify(video_ids)+"&playlist_name="+contents.playlistTitle;
         alert (downloadURL);
-        //window.open(downloadURL);
+        window.open(downloadURL);
       };
       downloadPlaylist();
       };
@@ -159,7 +159,7 @@
     <div id="playlistContainer" style="width: 100%;">
       <!--<img id="initialLoading" src="https://wpamelia.com/wp-content/uploads/2018/11/loading-hourglass.gif"/>-->
       <% contents.contents.forEach((playlistContent) => { %>
-      <div class="playlistContentContainer" videoid="<%= playlistContent.playlistVideoRenderer.videoId %>" shoulddownload="true">
+      <div class="playlistContentContainer" data-videoid="<%= playlistContent.playlistVideoRenderer.videoId %>" data-shoulddownload="true">
         <img src="<%= playlistContent.playlistVideoRenderer.thumbnail.thumbnails[0].url %>"" class="playlistContentThumbnail" />
         <p class="playlistContentVideoTitle" style="width: calc(100% - 175px); float: right; word-wrap: break-word;">
           <%= playlistContent.playlistVideoRenderer.title.runs[0].text %>
