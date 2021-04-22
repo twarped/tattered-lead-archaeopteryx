@@ -176,7 +176,7 @@ app.get("/playlist", async (req, res) => {
 });
 
 app.get("/videoinfo", async (req, res) => {
-  res.send(JSON.stringify(await ytdl.getInfo(req.query.v)));
+  res.render(__dirname+"/views/info.ejs", { contents: await ytdl.getInfo(req.query.v) });
 })
 
 var listener = app.listen(process.env.PORT);
