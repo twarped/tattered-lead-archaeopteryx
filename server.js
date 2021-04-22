@@ -11,7 +11,8 @@ const archiver = require("archiver");
 const axios = require("axios");
 const fs = require("graceful-fs");
 const toBlobURL = require("stream-to-blob-url");
-const { PassThrough } = require('stream')
+const { PassThrough } = require("stream");
+const packer = require("zip-stream");
 const apikey = process.env.api_key;
 
 app.use(express.static("public"));
@@ -99,7 +100,7 @@ app.get("/dlplaylist", async (req, res) => {
   console.log("pending...");
   var video_ids = JSON.parse(req.query.video_ids);
   var playlist_name = req.query.playlist_name;
-  var playlist = archiver("zip");
+  var playlist = new packer();
   res.setHeader(
     "Content-Disposition",
     contentdisposition(playlist_name + ".zip")
@@ -110,9 +111,16 @@ app.get("/dlplaylist", async (req, res) => {
     var videoStream = ytdl(video_ids[i]);
     videoStream.on("info", info => {
       var title = info.videoDetails.title + ".mp4";
-      playlist.append(videoStream.pipe( new PassThrough() ), { name: title });
+      //playlist.append(videoStream.pipe( new PassThrough() ), { name: title });
+      playlist.entry(videoStream, { name: title }, (error, result) => {
+        if (!error) {
+          console.log(`File : ${title} appended.`);
+        } else {
+          console.log(error);
+        }
+      });
       if (i == video_ids.length - 1) {
-        playlist.finalize();
+        playlist.finish();
       }
     });
     videoStream.on("error", err => {

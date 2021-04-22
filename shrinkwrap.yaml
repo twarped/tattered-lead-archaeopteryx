@@ -14,6 +14,7 @@ dependencies:
   stream-to-blob-url: 3.0.2
   youtube-dl: 3.5.0
   ytdl-core: github.com/twarped/node-ytdl-core/4eab25432b1ba210787f303ada3e6466663100b8
+  zip-stream: 4.1.0
 packages:
   /@sindresorhus/is/4.0.0:
     dev: false
@@ -1988,3 +1989,4 @@ specifiers:
   stream-to-blob-url: ^3.0.1
   youtube-dl: ^3.5.0
   ytdl-core: 'git+https://github.com/twarped/node-ytdl-core.git#patch-3'
+  zip-stream: ^4.1.0
