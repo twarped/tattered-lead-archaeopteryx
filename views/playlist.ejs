@@ -1,25 +1,6 @@
 <html>
   <head>
     <script>
-      function windowOnLoad(contents) {
-      window.contents = contents;
-      var playlistContent = document.getElementById("playlistContainer").children;
-      var downloadButton = document.getElementById("download");
-      for (var i in playlistContent) {
-      //playlistContent[i].videoId = window.contents.contents[i].playlistVideoRenderer.videoId;
-      //playlistContent[i].shouldDownload = true;
-      playlistContent[i].style.backgroundColor = "#42f578";
-      playlistContent[i].onclick = function changeColors(e) {
-        downloadPlaylist();
-        if (this.style.backgroundColor != "rgb(66, 245, 120)") {
-          this.style.backgroundColor = "rgb(66, 245, 120)";
-          this.shoulddownload = true;
-        } else {
-          this.style.backgroundColor = "rgb(245, 66, 66)";
-          this.shoulddownload = false;
-        }
-      };
-      }
       function downloadPlaylist() {
         alert ("pending...");
         var video_ids = [];
@@ -31,7 +12,24 @@
         alert (downloadURL);
         window.open(downloadURL);
       };
-      downloadPlaylist();
+      function windowOnLoad(contents) {
+      window.contents = contents;
+      var playlistContent = document.getElementById("playlistContainer").children;
+      var downloadButton = document.getElementById("download");
+      for (var i in playlistContent) {
+      //playlistContent[i].videoId = window.contents.contents[i].playlistVideoRenderer.videoId;
+      //playlistContent[i].shouldDownload = true;
+      playlistContent[i].style.backgroundColor = "#42f578";
+      playlistContent[i].onclick = function changeColors(e) {
+        if (this.style.backgroundColor != "rgb(66, 245, 120)") {
+          this.style.backgroundColor = "rgb(66, 245, 120)";
+          this.shoulddownload = true;
+        } else {
+          this.style.backgroundColor = "rgb(245, 66, 66)";
+          this.shoulddownload = false;
+        }
+      };
+      }
       };
     </script>
     <style>
