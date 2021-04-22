@@ -82,7 +82,7 @@ app.get("/watch", async (req, res) => {
   });
 });
 
-app.get("/playlist", (req, res) => {
+app.get("/playlistsetup", (req, res) => {
   var playlistURL;
   if (req.query.list.includes("youtu" && "http" && "?list=" && "/playlist"))
     playlistURL =
@@ -126,7 +126,7 @@ app.get("/playlist", (req, res) => {
 });
 
 
-app.get("/dlplaylist", async (req, res) => {
+app.get("/playlist", async (req, res) => {
   console.log("pending...");
   var pausableStream = new PausablePassThrough();
   var video_ids = JSON.parse(req.query.video_ids);
