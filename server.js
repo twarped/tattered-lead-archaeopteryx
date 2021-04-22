@@ -105,28 +105,34 @@ app.get("/dlplaylist", async (req, res) => {
     "Content-Disposition",
     contentdisposition(playlist_name + ".zip")
   );
-  for (var i in video_ids) {
-    if (i == 0) playlist.pipe(res);
-    //console.log(video_ids[i]);
-    var videoStream = ytdl(video_ids[i]);
-    videoStream.on("info", info => {
-      var title = info.videoDetails.title + ".mp4";
-      //playlist.append(videoStream.pipe( new PassThrough() ), { name: title });
-      playlist.entry(videoStream, { name: title }, (error, result) => {
+  const handleEntries = (elem, videoStream, fileName) => {
+    return new Promise((resolve, reject) => {
+      videoStream.on("info", (info) => {
+        console.log("Downloading : ", info.videoDetails.title);
+      playlist.entry(videoStream, { name: fileName }, (error, result) => {
         if (!error) {
-          console.log(`File : ${title} appended.`);
+          console.log(`File : ${fileName} appended.`);
+          resolve(result);
         } else {
-          console.log(error);
+          console.error(`Error appending file : ${fileName}`);
+          reject(error);
         }
       });
-      if (i == video_ids.length - 1) {
-        playlist.finish();
-      }
-    });
-    videoStream.on("error", err => {
+      });
+      videoStream.on("end", () => {
+        console.log("Int : closed ,", fileName);
+      });
+          videoStream.on("error", err => {
       //res.send(err);
       console.log(err);
     });
+    });
+  };
+  playlist.pipe(res);
+  for (var i in video_ids) {
+    //console.log(video_ids[i]);
+    var videoStream = ytdl(video_ids[i]);
+    await handleEntries(videoStream);
   }
   // res.setHeader("Content-Disposition", contentdisposition("README.md"));
   // fs.createReadStream("README.md").pipe(res);
