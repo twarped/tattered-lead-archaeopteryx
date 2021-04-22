@@ -20,28 +20,18 @@
         }
       };
       }
-      function download(blob, filename) {
-        const url = window.URL.createObjectURL(blob);
-        window.open (url)
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-        // the filename you want
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      }
       function downloadPlaylist() {
-        //alert ("pending...")
+        alert ("pending...");
         var video_ids = [];
         for (var i of playlistContent) {
           //if (i.shoulddownload)
-            video_ids.append(i.videoid);
-        }
-        window.open("/dlplaylist?video_ids="+JSON.stringify(video_ids)+"&playlist_name="+contents.playlistTitle);
-       };
+          alert (i.videoid)
+        };
+        var downloadURL = "https://tattered-lead-archaeopteryx.glitch.me/dlplaylist?video_ids="+JSON.stringify(video_ids)+"&playlist_name="+contents.playlistTitle;
+        alert (downloadURL);
+        //window.open(downloadURL);
+      };
+      downloadPlaylist();
       };
     </script>
     <style>
@@ -169,8 +159,8 @@
     <div id="playlistContainer" style="width: 100%;">
       <!--<img id="initialLoading" src="https://wpamelia.com/wp-content/uploads/2018/11/loading-hourglass.gif"/>-->
       <% contents.contents.forEach((playlistContent) => { %>
-      <div class="playlistContentContainer" videoId=<%= playlistContent.playlistVideoRenderer.videoId %> shouldDownload=true>
-        <img src=<%= playlistContent.playlistVideoRenderer.thumbnail.thumbnails[0].url %> class="playlistContentThumbnail" />
+      <div class="playlistContentContainer" videoid="<%= playlistContent.playlistVideoRenderer.videoId %>" shoulddownload="true">
+        <img src="<%= playlistContent.playlistVideoRenderer.thumbnail.thumbnails[0].url %>"" class="playlistContentThumbnail" />
         <p class="playlistContentVideoTitle" style="width: calc(100% - 175px); float: right; word-wrap: break-word;">
           <%= playlistContent.playlistVideoRenderer.title.runs[0].text %>
         </p>
