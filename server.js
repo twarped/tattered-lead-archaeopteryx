@@ -105,27 +105,32 @@ app.get("/dlplaylist", async (req, res) => {
     "Content-Disposition",
     contentdisposition(playlist_name + ".zip")
   );
-  const handleEntries = (elem, videoStream, fileName) => {
+  const handleEntries = videoStream => {
     return new Promise((resolve, reject) => {
-      videoStream.on("info", (info) => {
-        console.log("Downloading : ", info.videoDetails.title);
-      playlist.entry(videoStream, { name: fileName }, (error, result) => {
-        if (!error) {
-          console.log(`File : ${fileName} appended.`);
-          resolve(result);
-        } else {
-          console.error(`Error appending file : ${fileName}`);
-          reject(error);
-        }
-      });
+      videoStream.on("info", info => {
+        var title = info.videoDetails.title;
+        console.log("Downloading : ", title);
+        playlist.entry(
+          videoStream,
+          { name: title + ".mp4" },
+          (error, result) => {
+            if (!error) {
+              console.log(`File : ${title} appended.`);
+              resolve(result);
+            } else {
+              console.error(`Error appending file : ${title}`);
+              reject(error);
+            }
+          }
+        );
       });
       videoStream.on("end", () => {
-        console.log("Int : closed ,", fileName);
+        console.log("finished downloading");
       });
-          videoStream.on("error", err => {
-      //res.send(err);
-      console.log(err);
-    });
+      videoStream.on("error", err => {
+        //res.send(err);
+        console.log(err);
+      });
     });
   };
   playlist.pipe(res);
@@ -134,6 +139,7 @@ app.get("/dlplaylist", async (req, res) => {
     var videoStream = ytdl(video_ids[i]);
     await handleEntries(videoStream);
   }
+  playlist.finish();
   // res.setHeader("Content-Disposition", contentdisposition("README.md"));
   // fs.createReadStream("README.md").pipe(res);
 });
