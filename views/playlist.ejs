@@ -23,10 +23,10 @@
       playlistContent[i].onclick = function changeColors(e) {
         if (this.style.backgroundColor != "rgb(66, 245, 120)") {
           this.style.backgroundColor = "rgb(66, 245, 120)";
-          this.shoulddownload = true;
+          this.setAttribute("data-shoulddownload", "true");
         } else {
           this.style.backgroundColor = "rgb(245, 66, 66)";
-          this.shoulddownload = false;
+          this.setAttribute("data-shoulddownload", "false");
         }
       };
       }
