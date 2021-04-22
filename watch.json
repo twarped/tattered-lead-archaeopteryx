@@ -10,6 +10,9 @@
       "\\.js$",
       "\\.coffee$",
       "\\.json"
+    ],
+    "exclude": [
+      "^public/"
     ]
   }
 }
