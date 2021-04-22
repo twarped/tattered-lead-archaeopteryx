@@ -11,9 +11,11 @@ const archiver = require("archiver");
 const axios = require("axios");
 const fs = require("graceful-fs");
 const toBlobURL = require("stream-to-blob-url");
-const { PassThrough } = require("stream");
+const stream = require("stream");
 const packer = require("zip-stream");
+var util = require('util');
 const apikey = process.env.api_key;
+
 
 app.use(express.static("public"));
 app.use(cors());
@@ -25,10 +27,37 @@ app.get("/", (request, response) => {
   response.sendFile(__dirname + "/views/index.html");
 });
 
+util.inherits(PausablePassThrough, stream.Transform);
+function PausablePassThrough(options) {
+  stream.Transform.call(this, options);
+  this.paused = false;
+  this.queuedCallbacks = [];
+}
+
+PausablePassThrough.prototype.togglePause = function(paused) {
+  this.paused = paused;
+  if (!this.paused) {
+    while (this.queuedCallbacks.length) {
+      this.queuedCallbacks.shift()();
+    }
+  }
+};
+
+PausablePassThrough.prototype._transform = function(chunk, encoding, cb) {
+  this.push(chunk);
+  if (this.paused) {
+    this.queuedCallbacks.push(cb);
+  } else {
+    cb();
+  }
+};
+
+var pausableStream = new PausablePassThrough();
+
 app.get("/watch", async (req, res) => {
   var videoStream = await ytdl(req.query.v);
   const streamVideo = () => {
-    videoStream.pipe(res);
+    videoStream.pipe(pausableStream).pipe(res);
   };
   videoStream.on("info", async info => {
     var title =
@@ -95,6 +124,7 @@ app.get("/playlist", (req, res) => {
     //console.log(playlistTitle);
   });
 });
+
 
 app.get("/dlplaylist", async (req, res) => {
   console.log("pending...");
