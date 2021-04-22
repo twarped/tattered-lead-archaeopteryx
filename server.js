@@ -52,10 +52,10 @@ PausablePassThrough.prototype._transform = function(chunk, encoding, cb) {
   }
 };
 
-var pausableStream = new PausablePassThrough();
 
 app.get("/watch", async (req, res) => {
   var videoStream = await ytdl(req.query.v);
+  var pausableStream = new PausablePassThrough();
   const streamVideo = () => {
     videoStream.pipe(pausableStream).pipe(res);
   };
@@ -128,6 +128,7 @@ app.get("/playlist", (req, res) => {
 
 app.get("/dlplaylist", async (req, res) => {
   console.log("pending...");
+  var pausableStream = new PausablePassThrough();
   var video_ids = JSON.parse(req.query.video_ids);
   var playlist_name = req.query.playlist_name;
   var playlist = new packer();
@@ -163,7 +164,7 @@ app.get("/dlplaylist", async (req, res) => {
       });
     });
   };
-  playlist.pipe(res);
+  playlist.pipe(pausableStream).pipe(res);
   for (var i in video_ids) {
     //console.log(video_ids[i]);
     var videoStream = ytdl(video_ids[i]);
