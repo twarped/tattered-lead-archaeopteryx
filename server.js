@@ -11,6 +11,7 @@ const archiver = require("archiver");
 const axios = require("axios");
 const fs = require("graceful-fs");
 const toBlobURL = require("stream-to-blob-url");
+const { PassThrough } = require('stream')
 const apikey = process.env.api_key;
 
 app.use(express.static("public"));
@@ -103,19 +104,19 @@ app.get("/dlplaylist", async (req, res) => {
     "Content-Disposition",
     contentdisposition(playlist_name + ".zip")
   );
-  playlist.pipe(res);
   for (var i in video_ids) {
+    if (i == 0) playlist.pipe(res);
     //console.log(video_ids[i]);
     var videoStream = ytdl(video_ids[i]);
     videoStream.on("info", info => {
       var title = info.videoDetails.title + ".mp4";
-      playlist.append(videoStream, { name: title });
+      playlist.append(videoStream.pipe( new PassThrough() ), { name: title });
       if (i == video_ids.length - 1) {
         playlist.finalize();
       }
     });
     videoStream.on("error", err => {
-      res.send(err);
+      //res.send(err);
       console.log(err);
     });
   }

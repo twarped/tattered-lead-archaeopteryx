@@ -10,6 +10,7 @@ dependencies:
   graceful-fs: 4.2.6
   miniget: 4.2.0
   request: 2.88.2
+  stream: 0.0.2
   stream-to-blob-url: 3.0.2
   youtube-dl: 3.5.0
   ytdl-core: github.com/twarped/node-ytdl-core/4eab25432b1ba210787f303ada3e6466663100b8
@@ -515,6 +516,10 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-9lt9Zse4hPucPkoP7FHDF0LQAlGyF9JVpnClFLFH3aSSbxmyoqINRpp/9wePWJTUl4KOQwRL72Iw3InHPDkoGw==
+  /emitter-component/1.1.1:
+    dev: false
+    resolution:
+      integrity: sha1-Bl4tvtaVm/RwZ57avq95gdEAOrY=
   /encodeurl/1.0.2:
     dev: false
     engines:
@@ -1730,6 +1735,12 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-GXlqXt3svqwIVWoICenix5Poxi4KbCF0BdXXUbpU1X4vq1V8wmjiEIU3aFJzCGNFpKxfbnG0uoowS3nKUgSPYg==
+  /stream/0.0.2:
+    dependencies:
+      emitter-component: 1.1.1
+    dev: false
+    resolution:
+      integrity: sha1-f1Nj8Ff2WSxVlfALyAon9c7B8O8=
   /streamify/1.0.0:
     dev: false
     engines:
@@ -1973,6 +1984,7 @@ specifiers:
   graceful-fs: ^4.2.6
   miniget: ^4.2.0
   request: ^2.88.2
+  stream: ^0.0.2
   stream-to-blob-url: ^3.0.1
   youtube-dl: ^3.5.0
   ytdl-core: 'git+https://github.com/twarped/node-ytdl-core.git#patch-3'

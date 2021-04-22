@@ -23,7 +23,8 @@
     "youtube-dl": "^3.5.0",
     "ytdl-core": "git+https://github.com/twarped/node-ytdl-core.git#patch-3",
     "graceful-fs": "^4.2.6",
-    "stream-to-blob-url": "^3.0.1"
+    "stream-to-blob-url": "^3.0.1",
+    "stream": "^0.0.2"
   },
   "engines": {
     "node": "12.x"
