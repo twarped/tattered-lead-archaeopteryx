@@ -3,7 +3,13 @@
     
   </head>
   <body>
-    <% var i = 0 %>
-    <%= JSON.stringify(contents) %>
+    <% Object.keys(contents).forEach( item => { %>
+    <h4>
+      <%= item %>
+    </h4>
+    <div>
+      <%= JSON.stringify(contents[item]) %>
+    </div>
+    <% }) %>
   </body>
 </html>
