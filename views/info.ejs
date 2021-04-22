@@ -4,12 +4,12 @@
   </head>
   <body>
     <% Object.keys(contents).forEach( item => { %>
-    <h4>
+    <h2>
       <%= item %>
-    </h4>
-    <div>
+    </h2>
+    <p>
       <%= JSON.stringify(contents[item]) %>
-    </div>
+    </p>
     <% }) %>
   </body>
 </html>
