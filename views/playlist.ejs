@@ -1,21 +1,9 @@
 <html>
   <head>
     <script>
-      function downloadPlaylist() {
-        alert ("pending...");
-        var video_ids = [];
-        for (var i of playlistContent) {
-          if (i.getAttribute("data-shoulddownload"))
-            video_ids.push(i.getAttribute("data-videoid"));
-        };
-        var downloadURL = "https://tattered-lead-archaeopteryx.glitch.me/dlplaylist?video_ids="+JSON.stringify(video_ids)+"&playlist_name="+contents.playlistTitle;
-        alert (downloadURL);
-        window.open(downloadURL);
-      };
       function windowOnLoad(contents) {
       window.contents = contents;
       var playlistContent = document.getElementById("playlistContainer").children;
-      var downloadButton = document.getElementById("download");
       for (var i in playlistContent) {
       //playlistContent[i].videoId = window.contents.contents[i].playlistVideoRenderer.videoId;
       //playlistContent[i].shouldDownload = true;
@@ -30,6 +18,8 @@
         }
       };
       }
+
+      //document.getElementById("download").setAttribute("href", "javascript:downloadPlaylist();");
       };
     </script>
     <style>
@@ -138,6 +128,19 @@
       />
   </head>
   <body>
+    <script>
+    function downloadPlaylist() {
+      alert ("pending...");
+      var video_ids = [];
+      for (var i of document.getElementById("playlistContainer").children) {
+        if (i.getAttribute("data-shoulddownload"))
+          video_ids.push(i.getAttribute("data-videoid"));
+      };
+      var downloadURL = "https://tattered-lead-archaeopteryx.glitch.me/dlplaylist?video_ids="+JSON.stringify(video_ids)+"&playlist_name="+contents.playlistTitle;
+      //alert (downloadURL);
+      window.open(downloadURL);
+    };
+    </script>
     <h1>
       Download Youtube Playlists
       <h3>
@@ -148,11 +151,11 @@
           <%= contents.playlistTitle %>
         </h4>
       </a>
-      <button id="download" onclick="javascript:downloadPlaylist()">   
+      <a id="download" href="javascript:downloadPlaylist();">   
         <p>
           Download
         </p>
-      </button>
+      </a>
     </h1>
     <div id="playlistContainer" style="width: 100%;">
       <!--<img id="initialLoading" src="https://wpamelia.com/wp-content/uploads/2018/11/loading-hourglass.gif"/>-->
