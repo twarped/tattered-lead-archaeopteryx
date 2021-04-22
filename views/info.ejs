@@ -3,31 +3,23 @@
     
   </head>
   <body>
-    <% function formatContents(content) {
-      
-    } %>
     <% function getType(item) {
       if (typeof item == "object") {
-        if (item.isArray()) {
-          item.forEach( item => {
-            formatContents(item)
-          })
+        if (Array.isArray(item)) {
+          item.forEach( content => {
+            getType(content);
+          });
         } else {
-          Object.keys(item).forEach( item )
-        }
+          Object.keys(item).forEach( content => {
+            getType(item[content]);
+          });
+        };
       } else { %>
         <p>
           <%= item %>
         </p>
-    <% }
-    } %>
-    <% Object.keys(contents).forEach( item => { %>
-    <h1>
-      <%= item %>
-    </h1>
-    <div>
-      <%= JSON.stringify(contents[item]) %>
-    </div>
-    <% }) %>
+    <% };
+    }; %>
+    <% getType(contents) %>
   </body>
 </html>
