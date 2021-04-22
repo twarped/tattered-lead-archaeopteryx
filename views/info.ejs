@@ -4,8 +4,13 @@
   </head>
   <body>
     <% function isArray(obj) {
-      return Array.isArray(obj);
+      Object.keys(obj).forEach( content => { %>
+        <div>
+          <%= content %>:
+          <%= JSON.stringify(obj[content]) %>
+    </div>
+      <%});
     } %>
-    <%= isArray() %>
+    <% isArray(contents) %>
   </body>
 </html>
