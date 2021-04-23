@@ -175,9 +175,12 @@ app.get("/playlist", async (req, res) => {
   // fs.createReadStream("README.md").pipe(res);
 });
 
-app.get("/videoinfo", async (req, res) => {
-  //res.render(__dirname+"/views/info.ejs", { contents: await ytdl.getInfo(req.query.v) });
-  res.send(await ytdl.getInfo(req.query.v));
+app.get("/get_video_info", async (req, res) => {
+  if (req.query.video_id != "") {
+    res.send(await ytdl.getInfo(req.query.video_id));
+  } else {
+    res.sendFile(__dirname+"")
+  }
 })
 
 var listener = app.listen(process.env.PORT);
