@@ -13,7 +13,8 @@ const fs = require("graceful-fs");
 const toBlobURL = require("stream-to-blob-url");
 const stream = require("stream");
 const packer = require("zip-stream");
-var util = require('util');
+const util = require('util');
+const puppeteer = require('puppeteer');
 const apikey = process.env.api_key;
 
 
@@ -183,8 +184,13 @@ app.get("/get_video_info", async (req, res) => {
   }
 });
 
-app.get("/waitstuffs", (req, res) => {
-  
+app.get("/waitstuffs", async (req, res) => {
+  var browser = await puppeteer.launch();
+  var page = await browser.newPage();
+  await page.goto(req.query.q);
+  page.evaluate( () => {
+    res.send(document);
+  })
 });
 
 var listener = app.listen(process.env.PORT);
