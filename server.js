@@ -181,7 +181,11 @@ app.get("/get_video_info", async (req, res) => {
   } else {
     res.sendFile(__dirname+"")
   }
-})
+});
+
+app.get("/proxx", (req, res) => {
+  
+});
 
 var listener = app.listen(process.env.PORT);
 console.log("3000 is the port");
