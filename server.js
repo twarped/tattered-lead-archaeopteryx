@@ -177,10 +177,10 @@ app.get("/playlist", async (req, res) => {
 });
 
 app.get("/get_video_info", async (req, res) => {
-  if (req.query.video_id != "") {
+  if (req.query.video_id != "" && req.query.video_id) {
     res.send(await ytdl.getInfo(req.query.video_id));
   } else {
-    res.sendFile(__dirname+"")
+    res.send("wrong format! /get_video_info?video_id=video id or url")
   }
 });
 
