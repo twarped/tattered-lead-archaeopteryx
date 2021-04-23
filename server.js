@@ -141,16 +141,16 @@ app.get("/playlist", async (req, res) => {
     return new Promise((resolve, reject) => {
       videoStream.on("info", info => {
         var title = info.videoDetails.title;
-        console.log("Downloading : ", title);
+        //console.log("Downloading : ", title);
         playlist.entry(
           videoStream,
           { name: title + ".mp4" },
           (error, result) => {
             if (!error) {
-              console.log(`File : ${title} appended.`);
+              //console.log(`File : ${title} appended.`);
               resolve(result);
             } else {
-              console.error(`Error appending file : ${title}`);
+              //console.error(`Error appending file : ${title}`);
               reject(error);
             }
           }
