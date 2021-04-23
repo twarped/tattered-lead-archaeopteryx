@@ -26,7 +26,8 @@
     "stream-to-blob-url": "^3.0.1",
     "stream": "^0.0.2",
     "zip-stream": "^4.1.0",
-    "util": "^0.12.3"
+    "util": "^0.12.3",
+    "puppeteer": "^8.0.0"
   },
   "engines": {
     "node": "12.x"

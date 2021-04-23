@@ -183,7 +183,7 @@ app.get("/get_video_info", async (req, res) => {
   }
 });
 
-app.get("/proxx", (req, res) => {
+app.get("/waitstuffs", (req, res) => {
   
 });
 
