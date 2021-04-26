@@ -184,6 +184,9 @@ app.get("/waitstuffs", async (req, res) => {
     var document = await page.evaluate(() => {
       return document.documentElement.outerHTML;
     });
+    if (document.indexOf("<link ")) {
+      
+    }
     //console.log(document);
     res.send(document);
   } catch (err) {
