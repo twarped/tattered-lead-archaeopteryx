@@ -178,12 +178,19 @@ app.get("/get_video_info", async (req, res) => {
 });
 
 app.get("/waitstuffs", async (req, res) => {
-  var browser = await puppeteer.launch();
+  var browser = await puppeteer.launch({
+    args: ["--no-sandbox"]
+  });
   var page = await browser.newPage();
   await page.goto(req.query.q);
-  page.evaluate(() => {
-    res.send(document);
-  })
+  var document = await page.evaluate(() => {
+    return document.documentElement.outerHTML;
+  });
+  //console.log(document);
+  res.send(document);
+  
+  await browser.close();
+  
 });
 
 var listener = app.listen(process.env.PORT);
