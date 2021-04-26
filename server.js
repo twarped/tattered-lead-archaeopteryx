@@ -182,9 +182,17 @@ app.get("/waitstuffs", async (req, res) => {
   await page.goto(req.query.q);
   try {
     var document = await page.evaluate(() => {
-      var styles = document.querySelectorAll("link*[rel='stylesheet']");
+      function getLinkBody (href) {
+        var linkBody = new XMLHTTPRequest();
+        linkBody.open("get", href);
+        linkBody.onload = () => {
+          
+        }
+        linkBody.send();
+      }
+      var styles = document.querySelectorAll("link[rel*='stylesheet']");
       for (var style of styles) {
-        style.outerHTML = "<style>"+request(style.href).body+"</style>";
+        style.outerHTML = "<style>"+"</style>";
       }
       return document.documentElement.outerHTML;
     });
