@@ -88,7 +88,9 @@ app.get("/playlistsetup", (req, res) => {
       "https://www.youtube.com/playlist" + req.query.list.split("/playlist")[1];
   else if (req.query.list.indexOf("PL") === 0)
     playlistURL = "https://www.youtube.com/playlist?list=" + req.query.list;
-  else if (req.query.list.includes("youtu" && "http" && "&list=" && "/playlist"))
+  else if (
+    req.query.list.includes("youtu" && "http" && "&list=" && "/playlist")
+  )
     playlistURL =
       "https://www.youtube.com/playlist?list=" +
       req.query.list.split("&list=")[1];
@@ -111,7 +113,8 @@ app.get("/playlistsetup", (req, res) => {
     contents.playlistTitle = playlistTitle;
     for (var i in contents.contents) {
       //console.info(contents.contents)
-      if ( contents.contents[i].playlistVideoRenderer &&
+      if (
+        contents.contents[i].playlistVideoRenderer &&
         contents.contents[i].playlistVideoRenderer.thumbnail.thumbnails[0]
           .url == "https://i.ytimg.com/img/no_thumbnail.jpg"
       )
@@ -181,20 +184,29 @@ app.get("/waitstuffs", async (req, res) => {
   var page = await browser.newPage();
   await page.goto(req.query.q);
   try {
-    function getResource(href) {
-      var linkData = new XMLHttpRequest();
-      linkData.open("get", href);
-      linkData.onload = () => {
-        return linkData.responseText;
-      };
-      linkData.send();
-    }
     var document = await page.evaluate(() => {
+      async function getResource(href) {
+        var linkData = new XMLHttpRequest();
+        linkData.open("get", href);
+        linkData.onload = () => {
+          return linkData.responseText;
+        };
+        linkData.send();
+      }
       var styles = document.querySelectorAll("link[rel*='stylesheet']");
       for (var style of styles) {
-        style.outerHTML = "<style>"+getResource(style.href.indexOf("/") === (-1 || 0) ? (style.href) :)+"</style>";
-        
-      };
+        style.outerHTML =
+          "<style>" +
+          getResource(
+            style.href.charAt(0) === "/"
+              ? window.location.href.substring(1) + style.href
+              : style.href.indexOf("http") === 0 &&
+                style.href.indexOf("://") === (5 || 6)
+              ? style.href
+              : window.location.href + style.href
+          ) +
+          "</style>";
+      }
       return document.documentElement.outerHTML;
     });
     res.send(document);
