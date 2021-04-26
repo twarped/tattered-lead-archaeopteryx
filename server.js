@@ -179,24 +179,14 @@ app.get("/waitstuffs", async (req, res) => {
     args: ["--no-sandbox"]
   });
   var page = await browser.newPage();
+    page.on("console", (msg) => {
+    console.log(msg.text());
+  });
   await page.goto(req.query.q);
   try {
     var document = await page.evaluate(() => {
-      function getLinkBody (href) {
-        var linkBody = new XMLHTTPRequest();
-        linkBody.open("get", href);
-        linkBody.onload = () => {
-          
-        }
-        linkBody.send();
-      }
-      var styles = document.querySelectorAll("link[rel*='stylesheet']");
-      for (var style of styles) {
-        style.outerHTML = "<style>"+"</style>";
-      }
       return document.documentElement.outerHTML;
     });
-    //console.log(document);
     res.send(document);
   } catch (err) {
     res.send(err);
