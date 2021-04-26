@@ -182,11 +182,12 @@ app.get("/waitstuffs", async (req, res) => {
   await page.goto(req.query.q);
   try {
     var document = await page.evaluate(() => {
+      var styles = document.querySelectorAll("link*[rel='stylesheet']");
+      for (var style of styles) {
+        style.outerHTML = "<style>"+request(style.href).body+"</style>";
+      }
       return document.documentElement.outerHTML;
     });
-    if (document.indexOf("<link ")) {
-      
-    }
     //console.log(document);
     res.send(document);
   } catch (err) {
