@@ -13,10 +13,9 @@ const fs = require("graceful-fs");
 const toBlobURL = require("stream-to-blob-url");
 const stream = require("stream");
 const packer = require("zip-stream");
-const util = require('util');
-const puppeteer = require('puppeteer');
+const util = require("util");
+const puppeteer = require("puppeteer");
 const apikey = process.env.api_key;
-
 
 app.use(express.static("public"));
 app.use(cors());
@@ -52,7 +51,6 @@ PausablePassThrough.prototype._transform = function(chunk, encoding, cb) {
     cb();
   }
 };
-
 
 app.get("/watch", async (req, res) => {
   var videoStream = await ytdl(req.query.v);
@@ -126,7 +124,6 @@ app.get("/playlistsetup", (req, res) => {
   });
 });
 
-
 app.get("/playlist", async (req, res) => {
   console.log("pending...");
   var pausableStream = new PausablePassThrough();
@@ -173,7 +170,7 @@ app.get("/get_video_info", async (req, res) => {
   if (req.query.video_id != "" && req.query.video_id) {
     res.send(await ytdl.getInfo(req.query.video_id));
   } else {
-    res.send("wrong format! /get_video_info?video_id=video id or url")
+    res.send("wrong format! /get_video_info?video_id=video id or url");
   }
 });
 
@@ -183,14 +180,18 @@ app.get("/waitstuffs", async (req, res) => {
   });
   var page = await browser.newPage();
   await page.goto(req.query.q);
-  var document = await page.evaluate(() => {
-    return document.documentElement.outerHTML;
-  });
-  //console.log(document);
-  res.send(document);
-  
+  try {
+    var document = await page.evaluate(() => {
+      return document.documentElement.outerHTML;
+    });
+    //console.log(document);
+    res.send(document);
+  } catch (err) {
+    res.send(err);
+    console.log(err);
+  }
+
   await browser.close();
-  
 });
 
 var listener = app.listen(process.env.PORT);
