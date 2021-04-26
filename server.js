@@ -179,12 +179,22 @@ app.get("/waitstuffs", async (req, res) => {
     args: ["--no-sandbox"]
   });
   var page = await browser.newPage();
-    page.on("console", (msg) => {
-    console.log(msg.text());
-  });
   await page.goto(req.query.q);
   try {
+    function getResource(href) {
+      var linkData = new XMLHttpRequest();
+      linkData.open("get", href);
+      linkData.onload = () => {
+        return linkData.responseText;
+      };
+      linkData.send();
+    }
     var document = await page.evaluate(() => {
+      var styles = document.querySelectorAll("link[rel*='stylesheet']");
+      for (var style of styles) {
+        style.outerHTML = "<style>"+getResource(style.href.indexOf("/") === (-1 || 0) ? (style.href) :)+"</style>";
+        
+      };
       return document.documentElement.outerHTML;
     });
     res.send(document);
