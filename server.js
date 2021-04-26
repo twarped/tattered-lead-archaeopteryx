@@ -181,7 +181,7 @@ app.get("/waitstuffs", async (req, res) => {
   var browser = await puppeteer.launch();
   var page = await browser.newPage();
   await page.goto(req.query.q);
-  page.evaluate( () => {
+  page.evaluate(() => {
     res.send(document);
   })
 });
