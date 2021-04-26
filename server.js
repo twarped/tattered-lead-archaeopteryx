@@ -88,7 +88,7 @@ app.get("/playlistsetup", (req, res) => {
       "https://www.youtube.com/playlist" + req.query.list.split("/playlist")[1];
   else if (req.query.list.indexOf("PL") === 0)
     playlistURL = "https://www.youtube.com/playlist?list=" + req.query.list;
-  else if (req.query.list.includes("youtu" && "http" && "&list=" && "/watch"))
+  else if (req.query.list.includes("youtu" && "http" && "&list=" && "/playlist"))
     playlistURL =
       "https://www.youtube.com/playlist?list=" +
       req.query.list.split("&list=")[1];
@@ -111,7 +111,7 @@ app.get("/playlistsetup", (req, res) => {
     contents.playlistTitle = playlistTitle;
     for (var i in contents.contents) {
       //console.info(contents.contents)
-      if (
+      if ( contents.contents[i].playlistVideoRenderer &&
         contents.contents[i].playlistVideoRenderer.thumbnail.thumbnails[0]
           .url == "https://i.ytimg.com/img/no_thumbnail.jpg"
       )
