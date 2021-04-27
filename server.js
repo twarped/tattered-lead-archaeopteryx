@@ -196,24 +196,25 @@ app.get("/waitstuffs", async (req, res) => {
       }
       var styles = document.querySelectorAll("link[rel*='stylesheet']");
       for (var style of styles) {
-        // style.outerHTML =
-        //   "<style>" +
-        //   getResource(
-        //     style.href.charAt(0) === "/"
-        //       ? window.location.href.substring(1) + style.href
-        //       : style.href.indexOf("http") === 0 &&
-        //         style.href.indexOf("://") === (5 || 6)
-        //       ? style.href
-        //       : window.location.href + style.href
-        //   ) +
-        //   "</style>";
-        style.href =
-          style.href.charAt(0) === "/"
-            ? window.location.href.substring(1) + style.href
-            : style.href.indexOf("http") === 0 &&
-              style.href.indexOf("://") === (5 || 6)
-            ? style.href
-            : window.location.href + style.href;
+        var styleAttributes = style.attributes;
+        style.outerHTML =
+          "<style media='screen'>" +
+          getResource(
+            style.href.charAt(0) === "/"
+              ? window.location.href.substring(1) + style.href
+              : style.href.indexOf("http") === 0 &&
+                style.href.indexOf("://") === (5 || 6)
+              ? style.href
+              : window.location.href + style.href
+          ) +
+          "</style>";
+        // style.href =
+        //   style.href.charAt(0) === "/"
+        //     ? window.location.href.substring(1) + style.href
+        //     : style.href.indexOf("http") === 0 &&
+        //       style.href.indexOf("://") === (5 || 6)
+        //     ? style.href
+        //     : window.location.href + style.href;
       }
       return document.documentElement.outerHTML;
     });
