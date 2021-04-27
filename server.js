@@ -185,6 +185,9 @@ app.get("/waitstuffs", async (req, res) => {
   await page.goto(req.query.q);
   try {
     var document = await page.evaluate(() => {
+      var newWindow = window.open(window.location.href);
+      newWindow.document.body.textContent =
+        newWindow.document.documentElement.outerHTML;
       function getResource(href) {
         var linkData = new XMLHttpRequest();
         linkData.open("get", href, false);
@@ -193,17 +196,24 @@ app.get("/waitstuffs", async (req, res) => {
       }
       var styles = document.querySelectorAll("link[rel*='stylesheet']");
       for (var style of styles) {
-        style.outerHTML =
-          "<style>" +
-          getResource(
-            style.href.charAt(0) === "/"
-              ? window.location.href.substring(1) + style.href
-              : style.href.indexOf("http") === 0 &&
-                style.href.indexOf("://") === (5 || 6)
-              ? style.href
-              : window.location.href + style.href
-          ) +
-          "</style>";
+        // style.outerHTML =
+        //   "<style>" +
+        //   getResource(
+        //     style.href.charAt(0) === "/"
+        //       ? window.location.href.substring(1) + style.href
+        //       : style.href.indexOf("http") === 0 &&
+        //         style.href.indexOf("://") === (5 || 6)
+        //       ? style.href
+        //       : window.location.href + style.href
+        //   ) +
+        //   "</style>";
+        style.href =
+          style.href.charAt(0) === "/"
+            ? window.location.href.substring(1) + style.href
+            : style.href.indexOf("http") === 0 &&
+              style.href.indexOf("://") === (5 || 6)
+            ? style.href
+            : window.location.href + style.href;
       }
       return document.documentElement.outerHTML;
     });
