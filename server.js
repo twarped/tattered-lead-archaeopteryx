@@ -196,17 +196,18 @@ app.get("/waitstuffs", async (req, res) => {
       }
       var styles = document.querySelectorAll("link[rel*='stylesheet']");
       for (var style of styles) {
+        var styleText = 
         var styleAttributes = style.attributes;
-        style.outerHTML =
-          "<style>" +
-          getResource(
+        style.outerHTML =           getResource(
             style.href.charAt(0) === "/"
               ? window.location.href.substring(1) + style.href
               : style.href.indexOf("http") === 0 &&
                 style.href.indexOf("://") === (5 || 6)
               ? style.href
               : window.location.href + style.href
-          ).replace( new RegExp("data:image/svg+xml;utf8,.+", "gm")) +
+          );
+          "<style>" +
+styleText.replace( new RegExp("('|\")data:image/svg+xml;utf8,.+('|\")", "gm"), btoa(this)) +
           "</style>";
         // style.href =
         //   style.href.charAt(0) === "/"
