@@ -196,7 +196,7 @@ app.get("/waitstuffs", async (req, res) => {
       }
       var styles = document.querySelectorAll("link[rel*='stylesheet']");
       for (var style of styles) {
-        var styleText = 
+        //var styleText = 
         var styleAttributes = style.attributes;
         style.outerHTML =           getResource(
             style.href.charAt(0) === "/"
