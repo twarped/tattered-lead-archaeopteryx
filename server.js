@@ -195,9 +195,8 @@ app.get("/waitstuffs", async (req, res) => {
         return linkData.responseText;
       }
       var styles = document.querySelectorAll("link[rel*='stylesheet']");
-      document.body.innerHTML = "";
       for (var style of styles) {
-        var styleElement = document.createElement("script");
+        var styleElement = document.createElement("style");
         var styleText = getResource(
           style.href.charAt(0) === "/"
             ? window.location.href.substring(1) + style.href
@@ -206,9 +205,9 @@ app.get("/waitstuffs", async (req, res) => {
             ? style.href
             : window.location.href + style.href
         );
-        styleElement.innerHTML = `var styleContents = window.open("about:blank"); styleContents.document.write(\`${styleText}\`)`;
-        document.body.appendChild(styleElement);
-        //style.remove();
+        styleElement.textContent = styleText;
+        document.head.appendChild(styleElement);
+        style.remove();
         //var styleAttributes = style.attributes;
         // style.outerHTML =
         //   "<style>" +
