@@ -185,13 +185,11 @@ app.get("/waitstuffs", async (req, res) => {
   await page.goto(req.query.q);
   try {
     var document = await page.evaluate(() => {
-      async function getResource(href) {
+      function getResource(href) {
         var linkData = new XMLHttpRequest();
-        linkData.open("get", href);
-        linkData.onload = () => {
-          return linkData.responseText;
-        };
+        linkData.open("get", href, false);
         linkData.send();
+        return linkData.responseText;
       }
       var styles = document.querySelectorAll("link[rel*='stylesheet']");
       for (var style of styles) {
