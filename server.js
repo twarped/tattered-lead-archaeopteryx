@@ -195,6 +195,7 @@ app.get("/waitstuffs", async (req, res) => {
         return linkData.responseText;
       }
       var styles = document.querySelectorAll("link[rel*='stylesheet']");
+      document.body.innerHTML = "";
       for (var style of styles) {
         var divStyle = document.createElement("div");
         var styleText = getResource(
@@ -206,7 +207,7 @@ app.get("/waitstuffs", async (req, res) => {
             : window.location.href + style.href
         );
         divStyle.textContent = styleText;
-        document.body.appendChild
+        document.body.appendChild(styleText);
         
         var styleAttributes = style.attributes;
         // style.outerHTML =
