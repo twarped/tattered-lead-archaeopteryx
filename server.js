@@ -198,7 +198,7 @@ app.get("/waitstuffs", async (req, res) => {
       for (var style of styles) {
         var styleAttributes = style.attributes;
         style.outerHTML =
-          "<style media='screen'>" +
+          "<style>" +
           getResource(
             style.href.charAt(0) === "/"
               ? window.location.href.substring(1) + style.href
@@ -206,7 +206,7 @@ app.get("/waitstuffs", async (req, res) => {
                 style.href.indexOf("://") === (5 || 6)
               ? style.href
               : window.location.href + style.href
-          ) +
+          ).replace( new RegExp("data:image/svg+xml;utf8,.+", "gm")) +
           "</style>";
         // style.href =
         //   style.href.charAt(0) === "/"
