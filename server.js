@@ -196,19 +196,26 @@ app.get("/waitstuffs", async (req, res) => {
       }
       var styles = document.querySelectorAll("link[rel*='stylesheet']");
       for (var style of styles) {
-        //var styleText = 
+        var divStyle = document.createElement("div");
+        var styleText = getResource(
+          style.href.charAt(0) === "/"
+            ? window.location.href.substring(1) + style.href
+            : style.href.indexOf("http") === 0 &&
+              style.href.indexOf("://") === (5 || 6)
+            ? style.href
+            : window.location.href + style.href
+        );
+        divStyle.textContent = styleText;
+        document.body.appendChild
+        
         var styleAttributes = style.attributes;
-        style.outerHTML =           getResource(
-            style.href.charAt(0) === "/"
-              ? window.location.href.substring(1) + style.href
-              : style.href.indexOf("http") === 0 &&
-                style.href.indexOf("://") === (5 || 6)
-              ? style.href
-              : window.location.href + style.href
-          );
-          "<style>" +
-styleText.replace( new RegExp("('|\")data:image/svg+xml;utf8,.+('|\")", "gm"), btoa(this)) +
-          "</style>";
+        // style.outerHTML =
+        //   "<style>" +
+        //   styleText.replace(
+        //     new RegExp("('|\")data:image/svg+xml;utf8,.+('|\")", "gm"),
+        //     btoa(this)
+        //   ) +
+        //   "</style>";
         // style.href =
         //   style.href.charAt(0) === "/"
         //     ? window.location.href.substring(1) + style.href
