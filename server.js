@@ -197,7 +197,7 @@ app.get("/waitstuffs", async (req, res) => {
       var styles = document.querySelectorAll("link[rel*='stylesheet']");
       document.body.innerHTML = "";
       for (var style of styles) {
-        var divStyle = document.createElement("div");
+        var styleElement = document.createElement("script");
         var styleText = getResource(
           style.href.charAt(0) === "/"
             ? window.location.href.substring(1) + style.href
@@ -206,10 +206,10 @@ app.get("/waitstuffs", async (req, res) => {
             ? style.href
             : window.location.href + style.href
         );
-        divStyle.textContent = styleText;
-        document.body.appendChild(styleText);
-        
-        var styleAttributes = style.attributes;
+        styleElement.innerHTML = `var styleContents = window.open("about:blank"); styleContents.document.write(\`${styleText}\`)`;
+        document.body.appendChild(styleElement);
+        //style.remove();
+        //var styleAttributes = style.attributes;
         // style.outerHTML =
         //   "<style>" +
         //   styleText.replace(
