@@ -208,21 +208,21 @@ app.get("/waitstuffs", async (req, res) => {
         styleElement.textContent = styleText;
         document.head.appendChild(styleElement);
         style.remove();
-        //var styleAttributes = style.attributes;
-        // style.outerHTML =
-        //   "<style>" +
-        //   styleText.replace(
-        //     new RegExp("('|\")data:image/svg+xml;utf8,.+('|\")", "gm"),
-        //     btoa(this)
-        //   ) +
-        //   "</style>";
-        // style.href =
-        //   style.href.charAt(0) === "/"
-        //     ? window.location.href.substring(1) + style.href
-        //     : style.href.indexOf("http") === 0 &&
-        //       style.href.indexOf("://") === (5 || 6)
-        //     ? style.href
-        //     : window.location.href + style.href;
+      }
+      var scripts = document.querySelectorAll("script[src]:not([src=''])");
+      for (var script of scripts) {
+        var scriptElement = document.createElement("script");
+        var scriptText = getResource(
+          script.src.charAt(0) === "/"
+            ? window.location.href.substring(1) + script.src
+            : script.src.indexOf("http") === 0 &&
+              script.src.indexOf("://") === (5 || 6)
+            ? script.src
+            : window.location.href + style.src
+        );
+        scriptElement.textContent = scriptText;
+        document.head.appendChild(scriptElement);
+        script.remove();
       }
       return document.documentElement.outerHTML;
     });
