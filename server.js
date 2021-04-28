@@ -209,7 +209,7 @@ app.get("/waitstuffs", async (req, res) => {
         document.head.appendChild(styleElement);
         style.remove();
       }
-      var scripts = document.querySelectorAll("script[src]:not([src='']):not([src='https://www.google-analytics.com/analytics.js']):not([src='https://connect.facebook.net/signals/config/550821025425262?v=2.9.39&r=stable'])");
+      var scripts = document.querySelectorAll("script[src]:not([src='']):not([src='https://www.google-analytics.com/analytics.js']):not([src^='https://connect.facebook.net']):not([src^='https://www.googletagmanager.com']):not([src^='https://ssl.gstatic.com'])");
       for (var script of scripts) {
         var scriptElement = document.createElement("script");
         var scriptText = getResource(
