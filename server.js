@@ -224,7 +224,7 @@ app.get("/waitstuffs", async (req, res) => {
       }
       var scripts = document.querySelectorAll("script[src]:not([src=''])"); //:not([src^='https://www.google-analytics.com']):not([src^='https://connect.facebook.net']):not([src^='https://www.googletagmanager.com']):not([src^='https://ssl.gstatic.com'])");
       for (var script of scripts) {
-        var scriptSrc = new URL(script.src, getQueryStringValue("q"));
+        var scriptSrc = new URL(script.src, window.location.protocol + window.location.hostname);
           // script.src.charAt(0) === "/"
           //   ? getQueryStringValue("q").substring(1) + script.src
           //   : script.src.indexOf("http") === 0 &&
