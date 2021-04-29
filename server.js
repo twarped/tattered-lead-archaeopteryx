@@ -225,31 +225,24 @@ app.get("/waitstuffs", async (req, res) => {
       var scripts = document.querySelectorAll("script[src]:not([src=''])"); //:not([src^='https://www.google-analytics.com']):not([src^='https://connect.facebook.net']):not([src^='https://www.googletagmanager.com']):not([src^='https://ssl.gstatic.com'])");
       for (var script of scripts) {
         var scriptSrc =
-          script.href.charAt(0) === "/"
-            ? getQueryStringValue("q").substring(1) + script.href
-            : script.href.indexOf("http") === 0 &&
-              script.href.indexOf("://") === (5 || 6)
-            ? script.href
-            : getQueryStringValue("q") + script.href;
-        fetch(script.src)
+          script.src.charAt(0) === "/"
+            ? getQueryStringValue("q").substring(1) + script.src
+            : script.src.indexOf("http") === 0 &&
+              script.src.indexOf("://") === (5 || 6)
+            ? script.src
+            : getQueryStringValue("q") + script.src;
+        console.log("scriptSrc = ", scriptSrc)
+        fetch(new Request(scriptSrc))
           .then(data => data.blob())
           .then(data => {
             var scriptBlob = URL.createObjectURL(data);
             script.src = scriptBlob;
           })
-          .catch(err => console.log(err));
-        // var scriptElement = document.createElement("script");
-        // var scriptText = getResource(
-        //   script.src.charAt(0) === "/"
-        //     ? window.location.href.substring(1) + script.src
-        //     : script.src.indexOf("http") === 0 &&
-        //       script.src.indexOf("://") === (5 || 6)
-        //     ? script.src
-        //     : window.location.href + style.src
-        // );
-        // scriptElement.textContent = scriptText;
-        // document.head.appendChild(scriptElement);
-        // script.remove();
+          .catch(err => {
+            var divErr = document.createElement("div");
+            divErr.innerHTML = JSON.stringify(err);
+            document.body.appendChild(divErr);
+          });
       }
       return document.documentElement.outerHTML;
     });
