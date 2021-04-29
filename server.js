@@ -188,6 +188,19 @@ app.get("/waitstuffs", async (req, res) => {
       var newWindow = window.open(window.location.href);
       newWindow.document.body.textContent =
         newWindow.document.documentElement.outerHTML;
+      function getQueryStringValue(key) {
+        return decodeURIComponent(
+          window.location.search.replace(
+            new RegExp(
+              "^(?:.*[&\\?]" +
+                encodeURIComponent(key).replace(/[\.\+\*]/g, "\\$&") +
+                "(?:\\=([^&]*))?)?.*$",
+              "i"
+            ),
+            "$1"
+          )
+        );
+      }
       function getResource(href) {
         var linkData = new XMLHttpRequest();
         linkData.open("get", href, false);
@@ -199,20 +212,32 @@ app.get("/waitstuffs", async (req, res) => {
         var styleElement = document.createElement("style");
         var styleText = getResource(
           style.href.charAt(0) === "/"
-            ? window.location.href.substring(1) + style.href
+            ? getQueryStringValue("q").substring(1) + style.href
             : style.href.indexOf("http") === 0 &&
               style.href.indexOf("://") === (5 || 6)
             ? style.href
-            : window.location.href + style.href
+            : getQueryStringValue("q") + style.href
         );
         styleElement.textContent = styleText;
         document.head.appendChild(styleElement);
         style.remove();
       }
-      var scripts = document.querySelectorAll("script[src]:not([src=''])");//:not([src^='https://www.google-analytics.com']):not([src^='https://connect.facebook.net']):not([src^='https://www.googletagmanager.com']):not([src^='https://ssl.gstatic.com'])");
+      var scripts = document.querySelectorAll("script[src]:not([src=''])"); //:not([src^='https://www.google-analytics.com']):not([src^='https://connect.facebook.net']):not([src^='https://www.googletagmanager.com']):not([src^='https://ssl.gstatic.com'])");
       for (var script of scripts) {
-        var scriptBlob = URL.createObjectURL(script.src);
-        script.src = scriptBlob;
+        var scriptSrc =
+          script.href.charAt(0) === "/"
+            ? getQueryStringValue("q").substring(1) + script.href
+            : script.href.indexOf("http") === 0 &&
+              script.href.indexOf("://") === (5 || 6)
+            ? script.href
+            : getQueryStringValue("q") + script.href;
+        fetch(script.src)
+          .then(data => data.blob())
+          .then(data => {
+            var scriptBlob = URL.createObjectURL(data);
+            script.src = scriptBlob;
+          })
+          .catch(err => console.log(err));
         // var scriptElement = document.createElement("script");
         // var scriptText = getResource(
         //   script.src.charAt(0) === "/"
@@ -225,7 +250,7 @@ app.get("/waitstuffs", async (req, res) => {
         // scriptElement.textContent = scriptText;
         // document.head.appendChild(scriptElement);
         // script.remove();
-      };
+      }
       return document.documentElement.outerHTML;
     });
     res.send(document);
