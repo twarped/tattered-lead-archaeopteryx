@@ -15,7 +15,7 @@ downloadbutton.addEventListener("click", () => {
         "https://tattered-lead-archaeopteryx.glitch.me/watch?v=" + url + (ytbrowser.checked ? "&inbrowser=true" : "")
       );
     }
-  } else if (url.match(urlcheckerplaylist) || (url.match(idcheckerb) && url.length > 12)) {
+  } else if (url.match(urlcheckerplaylist) || (url.match(idcheckerb) && url.length > 12 && url.length < 14)) {
     var wantstodownload = confirm("Download the playlist with the video/id of: \n" + url + "?");
     if (wantstodownload == true) {
       window.open(
