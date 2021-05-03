@@ -27,17 +27,17 @@ app.set("view engine", "ejs");
 app.use(function(req, res, next) {
   res.status(404);
 
-  if (req.accepts('html')) {
-    res.sendFile(__dirname+'/views/404.html', { url: req.url });
+  if (req.accepts("html")) {
+    res.sendFile(__dirname + "/views/404.html", { url: req.url });
     return;
   }
 
-  if (req.accepts('json')) {
-    res.json({ error: 'Not found' });
+  if (req.accepts("json")) {
+    res.json({ error: "Not found" });
     return;
   }
 
-  res.type('txt').send('Not found');
+  res.type("txt").send("Not found");
 });
 
 app.get("/", (request, response) => {
@@ -238,6 +238,24 @@ app.get("/waitstuffs", async (req, res) => {
         linkData.open("get", href, false);
         linkData.send();
         return linkData.responseText;
+      }
+      function getBlobURL(hrefSrc) {
+        try {
+          var request = new XMLHttpRequest();
+          request.open("GET", hrefSrc, true);
+          request.responseType = "blob";
+          request.onload = function() {
+            var reader = new FileReader();
+            reader.readAsDataURL(request.response);
+            reader.onload = function(e) {
+              console.log("DataURL:", e.target.result);
+            };
+          };
+          request.send();
+        } catch (err) {
+          console.log(err);
+          return err;
+        }
       }
       var styles = document.querySelectorAll("link[rel*='stylesheet']");
       for (var style of styles) {
