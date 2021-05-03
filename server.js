@@ -24,22 +24,6 @@ app.use(express.urlencoded({ extended: false }));
 app.set("view engine", "ejs");
 //app.use(app.router);
 
-app.use(function(req, res, next) {
-  res.status(404);
-
-  if (req.accepts("html")) {
-    res.sendFile(__dirname + "/views/404.html", { url: req.url });
-    return;
-  }
-
-  if (req.accepts("json")) {
-    res.json({ error: "Not found" });
-    return;
-  }
-
-  res.type("txt").send("Not found");
-});
-
 app.get("/", (request, response) => {
   response.sendFile(__dirname + "/views/index.html");
 });
@@ -201,14 +185,17 @@ app.get("/waitstuffs", async (req, res) => {
   var page = await browser.newPage();
   await page.goto(req.query.q);
   page
-    .on("console", message =>
+    .on("console", msg => {
       console.log(
-        `${message
+        `${msg
           .type()
           .substr(0, 3)
-          .toUpperCase()} ${message.text()}`
-      )
-    )
+          .toUpperCase()} ${msg.text()}`
+      );
+      for (let i = 0; i < msg.args().length; i++) {
+        console.log(msg.args()[i]);
+      }
+    })
     .on("pageerror", ({ message }) => console.log(message))
     .on("response", response =>
       console.log(`${response.status()} ${response.url()}`)
@@ -326,6 +313,19 @@ app.get("/waitstuffs", async (req, res) => {
   }
 
   await browser.close();
+});
+
+app.use(function(req, res, next) {
+  res.status(404);
+  if (req.accepts("html")) {
+    res.sendFile(__dirname + "/views/404.html", { url: req.url });
+    return;
+  }
+  if (req.accepts("json")) {
+    res.json({ error: "Not found" });
+    return;
+  }
+  res.type("txt").send("Not found");
 });
 
 var listener = app.listen(process.env.PORT);
