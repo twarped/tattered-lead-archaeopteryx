@@ -192,9 +192,6 @@ app.get("/waitstuffs", async (req, res) => {
           .substr(0, 3)
           .toUpperCase()} ${msg.text()}`
       );
-      for (let i = 0; i < msg.args().length; i++) {
-        console.log(msg.args()[i]);
-      }
     })
     .on("pageerror", ({ message }) => console.log(message))
     .on("response", response =>
@@ -291,12 +288,12 @@ app.get("/waitstuffs", async (req, res) => {
         //     script.src.indexOf("://") === (5 || 6)
         //   ? script.src
         //   : getQueryStringValue("q") + script.src;
-        console.log("scriptSrc = ", scriptSrc);
+        console.log("scriptSrc:" + scriptSrc);
         fetch(new Request(scriptSrc))
-          .then(data => data.blob())
           .then(data => {
-            var scriptBlob = URL.createObjectURL(data);
+            var scriptBlob = URL.createObjectURL(data.blob());
             script.src = scriptBlob;
+            console.log("scriptBlob:" + scriptBlob)
           })
           .catch(err => {
             var divErr = document.createElement("div");
