@@ -296,6 +296,7 @@ app.get("/waitstuffs", async (req, res) => {
             console.log("scriptBlob:" + scriptBlob)
           })
           .catch(err => {
+            console.log("fetchError:" + err);
             var divErr = document.createElement("div");
             divErr.innerHTML = JSON.stringify(err);
             document.body.appendChild(divErr);
