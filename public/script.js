@@ -3,20 +3,20 @@ var ytbrowser = document.getElementById("ytbrowser")
 var watchInBrowser = false;
 downloadbutton.addEventListener("click", () => {
   var url = document.getElementById("yturl").value;
-  var idcheckerb = /[a-zA-Z0-9]+/g;
-  var urlcheckervideo = /http(s|):\/\/(www\.|)youtu(be\.com|\.be)\/watch\?v=[a-zA-Z0-9]+/g;
-  var urlcheckerplaylist = /http(s|):\/\/(www\.|)youtu(be\.com|\.be)\/playlist\?list=[a-zA-Z0-9]+/g;
+  var idcheckerb = /[A-Za-z0-9_-]+/g;
+  var urlcheckervideo = /http(s|):\/\/(www\.|)youtu(be\.com|\.be)\/watch\?v=[A-Za-z0-9_-]+/g;
+  var urlcheckerplaylist = /http(s|):\/\/(www\.|)youtu(be\.com|\.be)\/playlist\?list=[A-Za-z0-9_-]+/g;
   if (url.match(urlcheckervideo) || (url.match(idcheckerb) && url.length == (11 || 12))) {
     var wantstodownload = confirm(
-      "Download the video with the video/id of: \n" + url + "?"
+      "Download the video with the video url/id of:\n" + url + "?"
     );
     if (wantstodownload == true) {
       window.open(
         "https://tattered-lead-archaeopteryx.glitch.me/watch?v=" + url + (ytbrowser.checked ? "&inbrowser=true" : "")
       );
     }
-  } else if (url.match(urlcheckerplaylist) || (url.match(idcheckerb) && url.length > 12 && url.length < 14)) {
-    var wantstodownload = confirm("Download the playlist with the video/id of: \n" + url + "?");
+  } else if (url.match(urlcheckerplaylist) || (url.match(idcheckerb) && url.length > 30 && url.length < 40)) {
+    var wantstodownload = confirm("Download the playlist with the id of: \n" + url + "?");
     if (wantstodownload == true) {
       window.open(
         "https://tattered-lead-archaeopteryx.glitch.me/playlistsetup?list=" + url
