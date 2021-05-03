@@ -185,6 +185,21 @@ app.get("/waitstuffs", async (req, res) => {
   await page.goto(req.query.q);
   try {
     var document = await page.evaluate(() => {
+      window.onerror = (msg, src, ln, cn, err) => {
+        var errorDiv = document.createElement("div");
+        errorDiv.textContent =
+          "message: " +
+          msg +
+          "\nsource: " +
+          src +
+          "\nlinenumber: " +
+          ln +
+          "\ncolumnnumber: " +
+          cn +
+          "\nerror: " +
+          err;
+        document.body.appendChild(errorDiv);
+      };
       var newWindow = window.open(window.location.href);
       newWindow.document.body.textContent =
         newWindow.document.documentElement.outerHTML;
