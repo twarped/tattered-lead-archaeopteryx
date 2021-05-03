@@ -200,6 +200,22 @@ app.get("/waitstuffs", async (req, res) => {
   });
   var page = await browser.newPage();
   await page.goto(req.query.q);
+  page
+    .on("console", message =>
+      console.log(
+        `${message
+          .type()
+          .substr(0, 3)
+          .toUpperCase()} ${message.text()}`
+      )
+    )
+    .on("pageerror", ({ message }) => console.log(message))
+    .on("response", response =>
+      console.log(`${response.status()} ${response.url()}`)
+    )
+    .on("requestfailed", request =>
+      console.log(`${request.failure().errorText} ${request.url()}`)
+    );
   try {
     var document = await page.evaluate(() => {
       window.onerror = (msg, src, ln, cn, err) => {
@@ -242,7 +258,7 @@ app.get("/waitstuffs", async (req, res) => {
       function getBlobURL(hrefSrc) {
         try {
           var request = new XMLHttpRequest();
-          request.open("GET", hrefSrc, true);
+          request.open("GET", hrefSrc, false);
           request.responseType = "blob";
           request.onload = function() {
             var reader = new FileReader();
