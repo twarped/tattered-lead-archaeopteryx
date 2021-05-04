@@ -239,6 +239,21 @@ app.get("/waitstuffs", async (req, res) => {
         linkData.send();
         return linkData.responseText;
       }
+      async function fileRead(data) {
+        return new Promise((resolve, reject) => {
+          let content = "";
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            content = e.target.result;
+            console.log(content);
+            resolve(content);
+          };
+          reader.onerror = function(e) {
+            reject(e);
+          };
+          reader.readAsText(data);
+        });
+      }
       async function getBlobURL(hrefSrc) {
         try {
           var request = new XMLHttpRequest();
@@ -248,6 +263,7 @@ app.get("/waitstuffs", async (req, res) => {
           var reader = new FileReader();
           reader.readAsDataURL(request.response);
           reader.onload = function(e) {
+            return e.target.result;
             console.log("DataURL:", e.target.result);
           };
         } catch (err) {
@@ -288,7 +304,7 @@ app.get("/waitstuffs", async (req, res) => {
         //   : getQueryStringValue("q") + script.src;
         console.log("scriptSrc:" + scriptSrc);
         var blobScriptSrc = getBlobURL(scriptSrc);
-        console.log(blobScriptSrc)
+        console.log(blobScriptSrc);
         script.src = blobScriptSrc;
         // fetch(scriptSrc)
         //   .then(data => {
