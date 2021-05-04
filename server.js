@@ -287,18 +287,21 @@ app.get("/waitstuffs", async (req, res) => {
         //   ? script.src
         //   : getQueryStringValue("q") + script.src;
         console.log("scriptSrc:" + scriptSrc);
-        fetch(new Request(scriptSrc))
-          .then(data => {
-            var scriptBlob = URL.createObjectURL(data.blob());
-            script.src = scriptBlob;
-            console.log("scriptBlob:" + scriptBlob)
-          })
-          .catch(err => {
-            console.log("fetchError:" + err);
-            var divErr = document.createElement("div");
-            divErr.innerHTML = JSON.stringify(err);
-            document.body.appendChild(divErr);
-          });
+        var blobScriptSrc = getBlobURL(scriptSrc);
+        console.log(blobScriptSrc)
+        script.src = blobScriptSrc;
+        // fetch(scriptSrc)
+        //   .then(data => {
+        //     var scriptBlob = URL.createObjectURL(data.blob());
+        //     script.src = scriptBlob;
+        //     console.log("scriptBlob:" + scriptBlob)
+        //   })
+        //   .catch(err => {
+        //     console.log("fetchError:" + err);
+        //     var divErr = document.createElement("div");
+        //     divErr.innerHTML = JSON.stringify(err);
+        //     document.body.appendChild(divErr);
+        //   });
       }
       return document.documentElement.outerHTML;
     });
