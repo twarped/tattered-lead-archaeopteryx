@@ -239,19 +239,17 @@ app.get("/waitstuffs", async (req, res) => {
         linkData.send();
         return linkData.responseText;
       }
-      function getBlobURL(hrefSrc) {
+      async function getBlobURL(hrefSrc) {
         try {
           var request = new XMLHttpRequest();
           request.open("GET", hrefSrc, false);
           request.responseType = "blob";
-          request.onload = function() {
-            var reader = new FileReader();
-            reader.readAsDataURL(request.response);
-            reader.onload = function(e) {
-              console.log("DataURL:", e.target.result);
-            };
+          await request.send();
+          var reader = new FileReader();
+          reader.readAsDataURL(request.response);
+          reader.onload = function(e) {
+            console.log("DataURL:", e.target.result);
           };
-          request.send();
         } catch (err) {
           console.log(err);
           return err;
