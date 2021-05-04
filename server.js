@@ -241,17 +241,16 @@ app.get("/waitstuffs", async (req, res) => {
       }
       async function fileRead(data) {
         return new Promise((resolve, reject) => {
-          let content = "";
           const reader = new FileReader();
-          reader.onload = function(e) {
-            content = e.target.result;
-            console.log(content);
+          reader.onload = function() {
+            var content = reader.result;
+            console.log("content: " + content);
             resolve(content);
           };
           reader.onerror = function(e) {
             reject(e);
           };
-          reader.readAsText(data);
+          reader.readAsDataURL(data);
         });
       }
       async function getBlobURL(hrefSrc) {
@@ -260,12 +259,7 @@ app.get("/waitstuffs", async (req, res) => {
           request.open("GET", hrefSrc, false);
           request.responseType = "blob";
           await request.send();
-          var reader = new FileReader();
-          reader.readAsDataURL(request.response);
-          reader.onload = function(e) {
-            return e.target.result;
-            console.log("DataURL:", e.target.result);
-          };
+          return fileRead(request.response);
         } catch (err) {
           console.log(err);
           return err;
