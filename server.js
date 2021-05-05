@@ -163,10 +163,12 @@ app.get("/playlist", async (req, res) => {
     });
   };
   playlist.pipe(pausableStream).pipe(res);
+  console.log("downloading playlist, plz don't touch...");
   for (var i in video_ids) {
     var videoStream = ytdl(video_ids[i]);
     await handleEntries(videoStream);
   }
+  console.log("done...");
   playlist.finish();
 });
 
@@ -180,7 +182,17 @@ app.get("/get_video_info", async (req, res) => {
 
 app.get("/waitstuffs", async (req, res) => {
   var browser = await puppeteer.launch({
-    args: ["--no-sandbox"]
+    args: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage",
+      "--disable-accelerated-2d-canvas",
+      "--no-first-run",
+      "--no-zygote",
+      "--single-process",
+      "--disable-gpu"
+    ],
+    headless: true
   });
   var page = await browser.newPage();
   await page.goto(req.query.q);
@@ -239,19 +251,19 @@ app.get("/waitstuffs", async (req, res) => {
       }
       async function getBlobURL(hrefSrc) {
         return new Promise((resolve, reject) => {
-        try {
-          var request = new XMLHttpRequest();
-          request.open("GET", hrefSrc);
-          request.responseType = "blob";
-          request.onload = async () => {
-            resolve(await fileRead(request.response))
-          };
-          request.send();
-        } catch (err) {
-          console.log("getBlobURl err: " + err);
-          reject(err);
-        }
-        })
+          try {
+            var request = new XMLHttpRequest();
+            request.open("GET", hrefSrc);
+            request.responseType = "blob";
+            request.onload = async () => {
+              resolve(await fileRead(request.response));
+            };
+            request.send();
+          } catch (err) {
+            console.log("getBlobURl err: " + err);
+            reject(err);
+          }
+        });
       }
       var styles = document.querySelectorAll("link[rel*='stylesheet']");
       for (var style of styles) {
