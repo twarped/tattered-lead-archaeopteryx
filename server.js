@@ -279,18 +279,21 @@ app.get("/waitstuffs", async (req, res) => {
           request.open("GET", scriptSrc, true);
           request.responseType = "blob";
           request.onload = () => {
-            console.log(request.response);
-            const reader = new FileReader();
-            reader.onload = function() {
-              var content = reader.result;
-              console.log("content: " + content);
-              resolve(content);
-            };
-            reader.onerror = function(e) {
-              console.log("filereader err: " + e);
-              reject(e);
-            };
-            reader.readAsDataURL(request.response);
+            var content = URL.createObjectURL(request.response);
+            console.log("content: " + content);
+            resolve(content);
+            // console.log(request.response);
+            // const reader = new FileReader();
+            // reader.onload = function() {
+            //   var content = reader.result;
+            //   console.log("content: " + content);
+            //   resolve(content);
+            // };
+            // reader.onerror = function(e) {
+            //   console.log("filereader err: " + e);
+            //   reject(e);
+            // };
+            // reader.readAsDataURL(request.response);
           };
           request.send();
           console.log("scriptSrc:" + scriptSrc);
