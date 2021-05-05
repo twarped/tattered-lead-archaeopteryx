@@ -277,11 +277,12 @@ app.get("/waitstuffs", async (req, res) => {
           console.log("called getBlobURL...");
           var request = new XMLHttpRequest();
           request.open("GET", scriptSrc, true);
-          request.responseType = "blob";
           request.onload = () => {
-            var content = URL.createObjectURL(request.response);
-            console.log("content: " + content);
-            resolve(content);
+            console.log("loaded...")
+            var blob = new Blob([this.responseText], {type: "text/plain"});
+            var blobURL = URL.createObjectURL(blob);
+            console.log("blobURL: " + blobURL);
+            resolve(blobURL);
             // console.log(request.response);
             // const reader = new FileReader();
             // reader.onload = function() {
