@@ -274,29 +274,25 @@ app.get("/waitstuffs", async (req, res) => {
             hrefSrc,
             window.location.protocol + window.location.hostname
           );
-          try {
-            console.log("called getBlobURL...");
-            var request = new XMLHttpRequest();
-            request.open("GET", scriptSrc, true);
-            request.responseType = "blob";
-            request.onload = () => {
-              const reader = new FileReader();
-              reader.onload = function() {
-                var content = reader.result;
-                console.log("content: " + content);
-                resolve(content);
-              };
-              reader.onerror = function(e) {
-                reject(e);
-              };
-              reader.readAsDataURL(request.response);
+          console.log("called getBlobURL...");
+          var request = new XMLHttpRequest();
+          request.open("GET", scriptSrc, true);
+          request.responseType = "blob";
+          request.onload = () => {
+            const reader = new FileReader();
+            reader.onload = function() {
+              var content = reader.result;
+              console.log("content: " + content);
+              resolve(content);
             };
-            request.send();
-            console.log("scriptSrc:" + scriptSrc);
-          } catch (err) {
-            console.log("getBlobURl err: " + err);
-            reject(err);
-          }
+            reader.onerror = function(e) {
+              console.log("filereader err: " + e);
+              reject(e);
+            };
+            reader.readAsDataURL(request.response);
+          };
+          request.send();
+          console.log("scriptSrc:" + scriptSrc);
         });
       }
       var styles = document.querySelectorAll("link[rel*='stylesheet']");
@@ -326,7 +322,7 @@ app.get("/waitstuffs", async (req, res) => {
         //     script.src.indexOf("://") === (5 || 6)
         //   ? script.src
         //   : getQueryStringValue("q") + script.src;
-        script.src = await handleEntries(script);
+        script.src = await handleEntries(script.src);
         // fetch(scriptSrc)
         //   .then(data => {
         //     var scriptBlob = URL.createObjectURL(data.blob());
