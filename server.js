@@ -252,11 +252,14 @@ app.get("/waitstuffs", async (req, res) => {
       async function getBlobURL(hrefSrc) {
         return new Promise((resolve, reject) => {
           try {
+            console.log("cal");
             var request = new XMLHttpRequest();
             request.open("GET", hrefSrc);
             request.responseType = "blob";
             request.onload = async () => {
-              resolve(await fileRead(request.response));
+              var response = await fileRead(request.response);
+              console.log("response: " + response);
+              resolve(response);
             };
             request.send();
           } catch (err) {
