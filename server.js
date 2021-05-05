@@ -268,18 +268,35 @@ app.get("/waitstuffs", async (req, res) => {
           }
         });
       }
-      async function handleEntries(script) {
+      async function handleEntries(hrefSrc) {
         return new Promise((resolve, reject) => {
           var scriptSrc = new URL(
-            script.src,
+            hrefSrc,
             window.location.protocol + window.location.hostname
           );
-          console.log("scriptSrc:" + scriptSrc);
-          getBlobURL(scriptSrc).then(blobScriptSrc => {
-            console.log("blobScriptSrc: " + blobScriptSrc);
-            script.src = blobScriptSrc;
-            resolve(blobScriptSrc);
-          });
+          try {
+            console.log("called getBlobURL...");
+            var request = new XMLHttpRequest();
+            request.open("GET", scriptSrc, true);
+            request.responseType = "blob";
+            request.onload = () => {
+              const reader = new FileReader();
+              reader.onload = function() {
+                var content = reader.result;
+                console.log("content: " + content);
+                resolve(content);
+              };
+              reader.onerror = function(e) {
+                reject(e);
+              };
+              reader.readAsDataURL(request.response);
+            };
+            request.send();
+            console.log("scriptSrc:" + scriptSrc);
+          } catch (err) {
+            console.log("getBlobURl err: " + err);
+            reject(err);
+          }
         });
       }
       var styles = document.querySelectorAll("link[rel*='stylesheet']");
@@ -309,7 +326,7 @@ app.get("/waitstuffs", async (req, res) => {
         //     script.src.indexOf("://") === (5 || 6)
         //   ? script.src
         //   : getQueryStringValue("q") + script.src;
-        await handleEntries(script);
+        script.src = await handleEntries(script);
         // fetch(scriptSrc)
         //   .then(data => {
         //     var scriptBlob = URL.createObjectURL(data.blob());
