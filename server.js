@@ -296,6 +296,9 @@ app.get("/waitstuffs", async (req, res) => {
             // };
             // reader.readAsDataURL(request.response);
           };
+          request.onerror = (err) => {
+            console.log("getBlobURL err: " + err);
+          };
           request.send();
           console.log("scriptSrc:" + scriptSrc);
         });
@@ -316,7 +319,7 @@ app.get("/waitstuffs", async (req, res) => {
           document.head.appendChild(styleElement);
           style.remove();
         } catch (err) {
-          console.error(err);
+          console.log(err);
         }
       }
       var scripts = document.querySelectorAll("script[src]:not([src=''])"); //:not([src^='https://www.google-analytics.com']):not([src^='https://connect.facebook.net']):not([src^='https://www.googletagmanager.com']):not([src^='https://ssl.gstatic.com'])");
