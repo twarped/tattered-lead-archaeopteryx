@@ -201,22 +201,7 @@ app.get("/waitstuffs", async (req, res) => {
       console.log(`${request.failure().errorText} ${request.url()}`)
     );
   try {
-    var document = await page.evaluate(() => {
-      window.onerror = (msg, src, ln, cn, err) => {
-        var errorDiv = document.createElement("div");
-        errorDiv.textContent =
-          "message: " +
-          msg +
-          "\nsource: " +
-          src +
-          "\nlinenumber: " +
-          ln +
-          "\ncolumnnumber: " +
-          cn +
-          "\nerror: " +
-          err;
-        document.body.appendChild(errorDiv);
-      };
+    var document = await page.evaluate(async () => {
       var newWindow = window.open(window.location.href);
       newWindow.document.body.textContent =
         newWindow.document.documentElement.outerHTML;
@@ -244,7 +229,6 @@ app.get("/waitstuffs", async (req, res) => {
           const reader = new FileReader();
           reader.onload = function() {
             var content = reader.result;
-            console.log("content: " + content);
             resolve(content);
           };
           reader.onerror = function(e) {
@@ -254,16 +238,20 @@ app.get("/waitstuffs", async (req, res) => {
         });
       }
       async function getBlobURL(hrefSrc) {
+        return new Promise((resolve, reject) => {
         try {
           var request = new XMLHttpRequest();
-          request.open("GET", hrefSrc, false);
+          request.open("GET", hrefSrc);
           request.responseType = "blob";
-          await request.send();
-          return fileRead(request.response);
+          request.onload = async () => {
+            resolve(await fileRead(request.response))
+          };
+          request.send();
         } catch (err) {
-          console.log(err);
-          return err;
+          console.log("getBlobURl err: " + err);
+          reject(err);
         }
+        })
       }
       var styles = document.querySelectorAll("link[rel*='stylesheet']");
       for (var style of styles) {
@@ -297,8 +285,8 @@ app.get("/waitstuffs", async (req, res) => {
         //   ? script.src
         //   : getQueryStringValue("q") + script.src;
         console.log("scriptSrc:" + scriptSrc);
-        var blobScriptSrc = getBlobURL(scriptSrc);
-        console.log(blobScriptSrc);
+        var blobScriptSrc = await getBlobURL(scriptSrc);
+        console.log("blobScriptSrc: " + blobScriptSrc);
         script.src = blobScriptSrc;
         // fetch(scriptSrc)
         //   .then(data => {
