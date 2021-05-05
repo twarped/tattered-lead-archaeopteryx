@@ -252,12 +252,12 @@ app.get("/waitstuffs", async (req, res) => {
       async function getBlobURL(hrefSrc) {
         return new Promise((resolve, reject) => {
           try {
-            console.log("cal");
+            console.log("called getBlobURL...");
             var request = new XMLHttpRequest();
-            request.open("GET", hrefSrc);
+            request.open("GET", hrefSrc, true);
             request.responseType = "blob";
             request.onload = async () => {
-              var response = await fileRead(request.response);
+              var response = fileRead(request.response);
               console.log("response: " + response);
               resolve(response);
             };
@@ -266,6 +266,20 @@ app.get("/waitstuffs", async (req, res) => {
             console.log("getBlobURl err: " + err);
             reject(err);
           }
+        });
+      }
+      async function handleEntries(script) {
+        return new Promise((resolve, reject) => {
+          var scriptSrc = new URL(
+            script.src,
+            window.location.protocol + window.location.hostname
+          );
+          console.log("scriptSrc:" + scriptSrc);
+          getBlobURL(scriptSrc).then(blobScriptSrc => {
+            console.log("blobScriptSrc: " + blobScriptSrc);
+            script.src = blobScriptSrc;
+            resolve(blobScriptSrc);
+          });
         });
       }
       var styles = document.querySelectorAll("link[rel*='stylesheet']");
@@ -289,20 +303,13 @@ app.get("/waitstuffs", async (req, res) => {
       }
       var scripts = document.querySelectorAll("script[src]:not([src=''])"); //:not([src^='https://www.google-analytics.com']):not([src^='https://connect.facebook.net']):not([src^='https://www.googletagmanager.com']):not([src^='https://ssl.gstatic.com'])");
       for (var script of scripts) {
-        var scriptSrc = new URL(
-          script.src,
-          window.location.protocol + window.location.hostname
-        );
         // script.src.charAt(0) === "/"
         //   ? getQueryStringValue("q").substring(1) + script.src
         //   : script.src.indexOf("http") === 0 &&
         //     script.src.indexOf("://") === (5 || 6)
         //   ? script.src
         //   : getQueryStringValue("q") + script.src;
-        console.log("scriptSrc:" + scriptSrc);
-        var blobScriptSrc = await getBlobURL(scriptSrc);
-        console.log("blobScriptSrc: " + blobScriptSrc);
-        script.src = blobScriptSrc;
+        await handleEntries(script);
         // fetch(scriptSrc)
         //   .then(data => {
         //     var scriptBlob = URL.createObjectURL(data.blob());
