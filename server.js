@@ -269,7 +269,7 @@ app.get("/waitstuffs", async (req, res) => {
         });
       }
       async function handleEntries(hrefSrc) {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
           var scriptSrc = new URL(
             hrefSrc,
             window.location.protocol + window.location.hostname
@@ -279,6 +279,7 @@ app.get("/waitstuffs", async (req, res) => {
           request.open("GET", scriptSrc, true);
           request.responseType = "blob";
           request.onload = () => {
+            console.log(request.response);
             const reader = new FileReader();
             reader.onload = function() {
               var content = reader.result;
@@ -323,6 +324,7 @@ app.get("/waitstuffs", async (req, res) => {
         //   ? script.src
         //   : getQueryStringValue("q") + script.src;
         script.src = await handleEntries(script.src);
+        console.log("finished handleEntries...");
         // fetch(scriptSrc)
         //   .then(data => {
         //     var scriptBlob = URL.createObjectURL(data.blob());
