@@ -182,16 +182,7 @@ app.get("/get_video_info", async (req, res) => {
 
 app.get("/waitstuffs", async (req, res) => {
   var browser = await puppeteer.launch({
-    args: [
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--disable-dev-shm-usage",
-      "--disable-accelerated-2d-canvas",
-      "--no-first-run",
-      "--no-zygote",
-      "--single-process",
-      "--disable-gpu"
-    ],
+    args: ["--no-sandbox", "--disable-web-security"],
     headless: true
   });
   var page = await browser.newPage();
@@ -214,9 +205,6 @@ app.get("/waitstuffs", async (req, res) => {
     );
   try {
     var document = await page.evaluate(async () => {
-      var newWindow = window.open(window.location.href);
-      newWindow.document.body.textContent =
-        newWindow.document.documentElement.outerHTML;
       function getQueryStringValue(key) {
         return decodeURIComponent(
           window.location.search.replace(
@@ -272,17 +260,20 @@ app.get("/waitstuffs", async (req, res) => {
         return new Promise(async (resolve, reject) => {
           var scriptSrc = new URL(
             hrefSrc,
-            window.location.protocol + window.location.hostname
+            "https://" + window.location.hostname
           );
           console.log("called getBlobURL...");
           var request = new XMLHttpRequest();
           request.open("GET", scriptSrc, false);
+          request.send();
+          console.log("scriptSrc:" + scriptSrc);
           request.onload = () => {
-            console.log(request.responseText)
-            var blob = new Blob([request.responseText], {type: "text/plain"});
-            var blobURL = URL.createObjectURL(blob);
-            console.log("blobURL: " + blobURL);
-            resolve(blobURL);
+            console.log("successfully loaded xmlhttprequest");
+            // console.log(request.responseText)
+            // var blob = new Blob([request.responseText], {type: "text/plain"});
+            // var blobURL = URL.createObjectURL(blob);
+            // console.log("blobURL: " + blobURL);
+            // resolve(blobURL);
             // console.log(request.response);
             // const reader = new FileReader();
             // reader.onload = function() {
@@ -296,11 +287,9 @@ app.get("/waitstuffs", async (req, res) => {
             // };
             // reader.readAsDataURL(request.response);
           };
-          request.onerror = (err) => {
+          request.onerror = err => {
             console.log("getBlobURL err: " + err);
           };
-          request.send();
-          console.log("scriptSrc:" + scriptSrc);
         });
       }
       var styles = document.querySelectorAll("link[rel*='stylesheet']");
