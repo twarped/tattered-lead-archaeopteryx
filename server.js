@@ -346,6 +346,7 @@ app.get("/waitstuffs", async (req, res) => {
           "var blobURL = URL.createObjectURL(new Blob([''+ " +
           scriptText +
           " +''], {type: 'text/plain'})); var scriptElem = document.createElement('script'); scriptElem.src = blobURL; document.body.appendChild(scriptElem);";
+        //console.log(scriptElem.textContent)
         document.body.appendChild(scriptElem);
         // script.src.charAt(0) === "/"
         //   ? getQueryStringValue("q").substring(1) + script.src
