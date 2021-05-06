@@ -263,11 +263,12 @@ app.get("/waitstuffs", async (req, res) => {
             "https://" + window.location.hostname
           );
           console.log("scriptSrc: " + scriptSrc);
+          
           await fetch(scriptSrc)
             .then(data => data.text())
             .then(data => {
-              console.log("data: " + data);
-              console.log(window.URL);
+              //console.log("data: " + data);
+              console.log(window.location.href);
               console.log("blobdata: " + window.URL.createObjectURL(new Blob(['' + data + ''], {type: 'text/plain'})));
               resolve("success");
             })
