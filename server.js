@@ -206,9 +206,9 @@ app.get("/waitstuffs", async (req, res) => {
     );
   try {
     var document = await page.evaluate(async () => {
-      // var ejs = document.createElement('script');
-      // ejs.src = '/ejs.js';
-      // document.head.appendChild(ejs);
+      var blobUtils = document.createElement('script');
+      blobUtils.src = 'https://unpkg.com/blob-util@2.0.2/dist/blob-util.min.js';
+      document.head.appendChild(blobUtils);
       function getQueryStringValue(key) {
         return decodeURIComponent(
           window.location.search.replace(
@@ -253,13 +253,13 @@ app.get("/waitstuffs", async (req, res) => {
             request.open("GET", hrefSrc, true);
             request.responseType = "blob";
             request.onload = async () => {
-              var response = fileRead(request.response);
-              console.log("response: " + response);
-              resolve(response);
+              //var response = fileRead(request.response);
+              //console.log("response: " + response);
+              resolve(request.response);
             };
             request.send();
           } catch (err) {
-            console.log("getBlobURl err: " + err);
+            console.log("getBlobURL err: " + err);
             reject(err);
           }
         });
@@ -347,9 +347,7 @@ app.get("/waitstuffs", async (req, res) => {
         script.remove();
         var scriptElem = document.createElement("script");
         scriptElem.textContent =
-          "var blobURL = URL.createObjectURL(new Blob([encodeURI(`" +
-          scriptText +
-          "`)], {type: 'text/plain'})); var metaUnblocker = document.createElement('meta'); metaUnblocker.httpEquiv = 'Content-Security-Policy'; metaUnblocker.content = 'default-src *; style-src \'self\' \'unsafe-inline\'; script-src \'self\' \'unsafe-inline\' \'unsafe-eva\' ' + blobURL; document.head.appendChild(metaUnblocker);var scriptElem = document.createElement('script'); scriptElem.src = blobURL; document.body.appendChild(scriptElem);";
+          "var blobURL = blobUtils.createObjectURL("+getBlobURL(scriptSrc)+"); var metaUnblocker = document.createElement('meta'); metaUnblocker.httpEquiv = 'Content-Security-Policy'; metaUnblocker.content = 'default-src *; style-src \'self\' \'unsafe-inline\'; script-src \'self\' \'unsafe-inline\' \'unsafe-eva\' ' + blobURL; document.head.appendChild(metaUnblocker);var scriptElem = document.createElement('script'); scriptElem.src = blobURL; document.body.appendChild(scriptElem);";
         document.body.appendChild(scriptElem);
       }
       return document.documentElement.outerHTML;
