@@ -332,8 +332,8 @@ app.get("/waitstuffs", async (req, res) => {
         //     script.src.indexOf("://") === (5 || 6)
         //   ? script.src
         //   : getQueryStringValue("q") + script.src;
-        script.src = await handleEntries(script.src);
-        console.log("finished handleEntries...");
+        // script.src = await handleEntries(script.src);
+        // console.log("finished handleEntries...");
         // fetch(scriptSrc)
         //   .then(data => {
         //     var scriptBlob = URL.createObjectURL(data.blob());
