@@ -347,14 +347,14 @@ app.get("/waitstuffs", async (req, res) => {
         script.remove();
         var scriptElem = document.createElement("script");
         scriptElem.textContent =
-          "var blobURL = URL.createObjectURL(new Blob([''+ " +
+          "var blobURL = URL.createObjectURL(new Blob([encodeURI(`" +
           scriptText +
-          " +''], {type: 'text/plain'})); var metaUnblocker = document.createElement('meta'); metaUnblocker.httpEquiv = 'Content-Security-Policy'; metaUnblocker.content = 'default-src *; style-src \'self\' \'unsafe-inline\'; script-src \'self\' \'unsafe-inline\' \'unsafe-eva\' ' + blobURL; document.head.appendChild(metaUnblocker);var scriptElem = document.createElement('script'); scriptElem.src = blobURL; document.body.appendChild(scriptElem);";
+          "`)], {type: 'text/plain'})); var metaUnblocker = document.createElement('meta'); metaUnblocker.httpEquiv = 'Content-Security-Policy'; metaUnblocker.content = 'default-src *; style-src \'self\' \'unsafe-inline\'; script-src \'self\' \'unsafe-inline\' \'unsafe-eva\' ' + blobURL; document.head.appendChild(metaUnblocker);var scriptElem = document.createElement('script'); scriptElem.src = blobURL; document.body.appendChild(scriptElem);";
         document.body.appendChild(scriptElem);
       }
       return document.documentElement.outerHTML;
     });
-    res.render(document, {scriptSrcs: scriptSrcs});
+    res.send(document);
   } catch (err) {
     res.send(err);
     console.error(err);
