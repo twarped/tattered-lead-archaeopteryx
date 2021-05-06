@@ -266,7 +266,8 @@ app.get("/waitstuffs", async (req, res) => {
           await fetch(scriptSrc)
             .then(data => data.text())
             .then(data => {
-              console.log("data: " + data));
+              console.log("data: " + data);
+              console.log(window.URL);
               console.log("blobdata: " + window.URL.createObjectURL(new Blob(['' + data + ''], {type: 'text/plain'})));
               resolve("success");
             })
