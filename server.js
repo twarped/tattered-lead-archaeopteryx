@@ -341,6 +341,10 @@ app.get("/waitstuffs", async (req, res) => {
         );
         var scriptText = getResource(scriptSrc);
         script.remove();
+        var metaUnblocker = document.createElement('meta');
+        metaUnblocker.httpEquiv = "Content-Security-Policy";
+        metaUnblocker.content = "default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' " + scriptSrc;
+        document.head.appendChild(metaUnblocker);
         var scriptElem = document.createElement("script");
         scriptElem.textContent =
           "var blobURL = URL.createObjectURL(new Blob([''+ " +
