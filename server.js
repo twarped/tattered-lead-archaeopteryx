@@ -264,10 +264,10 @@ app.get("/waitstuffs", async (req, res) => {
           );
           console.log("scriptSrc: " + scriptSrc);
           await fetch(scriptSrc)
-            .then(data => data.blob())
+            .then(data => data.text())
             .then(data => {
-              console.log("jsondata: " + JSON.stringify(data));
-              console.log("data: " + window.URL.createObjectURL(data));
+              console.log("data: " + data));
+              console.log("blobdata: " + window.URL.createObjectURL(new Blob(['' + data + ''], {type: 'text/plain'})));
               resolve("success");
             })
             .catch(err => {
