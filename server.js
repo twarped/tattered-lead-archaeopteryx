@@ -361,7 +361,10 @@ app.get("/waitstuffs", async (req, res) => {
 });
 
 app.get('/get_site_html', (req, res) => {
-  res.send(request(req.query.q).body);
+  res.setHeader("content-type", "text/plain");
+  request(req.query.q, (err, response, body) => {
+    res.send(body);
+  })
 })
 
 app.use(function(req, res, next) {
