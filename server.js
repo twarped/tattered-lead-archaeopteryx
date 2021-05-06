@@ -219,10 +219,14 @@ app.get("/waitstuffs", async (req, res) => {
         );
       }
       function getResource(href) {
-        var linkData = new XMLHttpRequest();
-        linkData.open("get", href, false);
-        linkData.send();
-        return linkData.responseText;
+        try {
+          var linkData = new XMLHttpRequest();
+          linkData.open("get", href, false);
+          linkData.send();
+          return linkData.responseText;
+        } catch (err) {
+          console.log(err);
+        }
       }
       async function fileRead(data) {
         return new Promise((resolve, reject) => {
@@ -335,6 +339,14 @@ app.get("/waitstuffs", async (req, res) => {
           script.src,
           "https://" + window.location.hostname
         );
+        var scriptText = getResource(scriptSrc);
+        script.remove();
+        var scriptElem = document.createElement("script");
+        scriptElem.textContent =
+          "var blobURL = URL.createObjectURL(new Blob([''+ " +
+          scriptText +
+          " +''], {type: 'text/plain'})); var scriptElem = document.createElement('script'); scriptElem.src = blobURL; document.body.appendChild(scriptElem);";
+        document.body.appendChild(scriptElem);
         // script.src.charAt(0) === "/"
         //   ? getQueryStringValue("q").substring(1) + script.src
         //   : script.src.indexOf("http") === 0 &&
