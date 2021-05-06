@@ -263,13 +263,17 @@ app.get("/waitstuffs", async (req, res) => {
             "https://" + window.location.hostname
           );
           console.log("scriptSrc: " + scriptSrc);
-          await fetch(scriptSrc).then(data => {
-            console.log("data: " + URL.createObjectURL(data.blob()));
-            resolve('success');
-          }).catch(err => {
-            console.log("fetch error: " + err); 
-            resolve('faliure');
-          });
+          await fetch(scriptSrc)
+            .then(data => data.blob())
+            .then(data => {
+              console.log("jsondata: " + JSON.stringify(data));
+              console.log("data: " + window.URL.createObjectURL(data));
+              resolve("success");
+            })
+            .catch(err => {
+              console.log("fetch error: " + err);
+              resolve(scriptSrc);
+            });
           // var request = new XMLHttpRequest();
           // request.open("GET", scriptSrc, false);
           // request.send();
