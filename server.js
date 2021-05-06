@@ -186,6 +186,7 @@ app.get("/waitstuffs", async (req, res) => {
     headless: true
   });
   var page = await browser.newPage();
+  var scriptSrcs = [];
   await page.goto(req.query.q);
   page
     .on("console", msg => {
@@ -205,6 +206,9 @@ app.get("/waitstuffs", async (req, res) => {
     );
   try {
     var document = await page.evaluate(async () => {
+      // var ejs = document.createElement('script');
+      // ejs.src = '/ejs.js';
+      // document.head.appendChild(ejs);
       function getQueryStringValue(key) {
         return decodeURIComponent(
           window.location.search.replace(
@@ -350,7 +354,7 @@ app.get("/waitstuffs", async (req, res) => {
       }
       return document.documentElement.outerHTML;
     });
-    res.render(document, {scriptText: scriptText});
+    res.render(document, {scriptSrcs: scriptSrcs});
   } catch (err) {
     res.send(err);
     console.error(err);
