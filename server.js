@@ -348,7 +348,7 @@ app.get("/waitstuffs", async (req, res) => {
         scriptElem.textContent =
           "var resourceBlob = new XMLHttPRequest(); resourceBlob.open('get', 'https://tattered-lead-archaeopteryx.glitch.me/get_site_html?q=" +
           scriptSrc +
-          "', false); var blobURL = URL.createObjectURL(new Blob(['resourceBlob.responseText'], {type: 'text/plain'}); var metaUnblocker = document.createElement('meta'); metaUnblocker.httpEquiv = 'Content-Security-Policy'; metaUnblocker.content = 'default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eva' ' + blobURL; document.head.appendChild(metaUnblocker);var scriptElem = document.createElement('script'); scriptElem.src = blobURL; document.body.appendChild(scriptElem);}; resourceBlob.send();";
+          "', false); var blobURL = URL.createObjectURL(new Blob([resourceBlob.responseText], {type: 'text/plain'}); var metaUnblocker = document.createElement('meta'); metaUnblocker.httpEquiv = 'Content-Security-Policy'; metaUnblocker.content = 'default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eva' ' + blobURL; document.head.appendChild(metaUnblocker);var scriptElem = document.createElement('script'); scriptElem.src = blobURL; document.body.appendChild(scriptElem);}; resourceBlob.send();";
         document.head.appendChild(scriptElem);
       }
       return document.documentElement.outerHTML;
