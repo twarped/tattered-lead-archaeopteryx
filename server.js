@@ -202,13 +202,10 @@ app.get("/waitstuffs", async (req, res) => {
       console.log(`${response.status()} ${response.url()}`)
     )
     .on("requestfailed", request =>
-      console.log(`${request.failure().errorText} ${request.url()}`)
+      console.log(`${request.failure().errorText || request} ${request.url()}`)
     );
   try {
     var document = await page.evaluate(async () => {
-      var blobUtils = document.createElement('script');
-      blobUtils.src = 'https://unpkg.com/blob-util@2.0.2/dist/blob-util.min.js';
-      document.head.appendChild(blobUtils);
       function getQueryStringValue(key) {
         return decodeURIComponent(
           window.location.search.replace(
@@ -338,6 +335,9 @@ app.get("/waitstuffs", async (req, res) => {
         }
       }
       var scripts = document.querySelectorAll("script[src]:not([src=''])"); //:not([src^='https://www.google-analytics.com']):not([src^='https://connect.facebook.net']):not([src^='https://www.googletagmanager.com']):not([src^='https://ssl.gstatic.com'])");
+      var blobUtils = document.createElement('script');
+      blobUtils.src = 'https://unpkg.com/blob-util@2.0.2/dist/blob-util.min.js';
+      document.head.appendChild(blobUtils);
       for (var script of scripts) {
         var scriptSrc = new URL(
           script.src,
@@ -345,9 +345,11 @@ app.get("/waitstuffs", async (req, res) => {
         );
         var scriptText = getResource(scriptSrc);
         script.remove();
+        var scriptBlob = JSON.stringify(getBlobURL(scriptSrc));
+        console.log("scriptBlob" + scriptBlob);
         var scriptElem = document.createElement("script");
         scriptElem.textContent =
-          "var blobURL = blobUtils.createObjectURL("+getBlobURL(scriptSrc)+"); var metaUnblocker = document.createElement('meta'); metaUnblocker.httpEquiv = 'Content-Security-Policy'; metaUnblocker.content = 'default-src *; style-src \'self\' \'unsafe-inline\'; script-src \'self\' \'unsafe-inline\' \'unsafe-eva\' ' + blobURL; document.head.appendChild(metaUnblocker);var scriptElem = document.createElement('script'); scriptElem.src = blobURL; document.body.appendChild(scriptElem);";
+          "var blobURL = blobUtils.createObjectURL("+ scriptBlob +"); var metaUnblocker = document.createElement('meta'); metaUnblocker.httpEquiv = 'Content-Security-Policy'; metaUnblocker.content = 'default-src *; style-src \'self\' \'unsafe-inline\'; script-src \'self\' \'unsafe-inline\' \'unsafe-eva\' ' + blobURL; document.head.appendChild(metaUnblocker);var scriptElem = document.createElement('script'); scriptElem.src = blobURL; document.body.appendChild(scriptElem);";
         document.body.appendChild(scriptElem);
       }
       return document.documentElement.outerHTML;
