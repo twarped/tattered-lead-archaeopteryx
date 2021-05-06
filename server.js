@@ -335,9 +335,6 @@ app.get("/waitstuffs", async (req, res) => {
         }
       }
       var scripts = document.querySelectorAll("script[src]:not([src=''])"); //:not([src^='https://www.google-analytics.com']):not([src^='https://connect.facebook.net']):not([src^='https://www.googletagmanager.com']):not([src^='https://ssl.gstatic.com'])");
-      var blobUtils = document.createElement('script');
-      blobUtils.src = 'https://unpkg.com/blob-util@2.0.2/dist/blob-util.min.js';
-      document.head.appendChild(blobUtils);
       for (var script of scripts) {
         var scriptSrc = new URL(
           script.src,
@@ -346,11 +343,11 @@ app.get("/waitstuffs", async (req, res) => {
         var scriptText = getResource(scriptSrc);
         script.remove();
         var scriptBlob = JSON.stringify(getBlobURL(scriptSrc));
-        console.log("scriptBlob" + scriptBlob);
+        console.log("scriptBlob: " + scriptBlob);
         var scriptElem = document.createElement("script");
         scriptElem.textContent =
-          "var blobURL = blobUtils.createObjectURL("+ scriptBlob +"); var metaUnblocker = document.createElement('meta'); metaUnblocker.httpEquiv = 'Content-Security-Policy'; metaUnblocker.content = 'default-src *; style-src \'self\' \'unsafe-inline\'; script-src \'self\' \'unsafe-inline\' \'unsafe-eva\' ' + blobURL; document.head.appendChild(metaUnblocker);var scriptElem = document.createElement('script'); scriptElem.src = blobURL; document.body.appendChild(scriptElem);";
-        document.body.appendChild(scriptElem);
+          "var resourceBlob = new XMLHttPRequest(); resourceBlob.open('get', 'https://tattered-lead-archaeopteryx.glitch.me/get_site_html?q="+scriptSrc+"'); resourceBlob.responseType = 'blob'; resourceBlob.onload = () => {var blobURL = URL.createObjectURL(resourceBlob.response); var metaUnblocker = document.createElement('meta'); metaUnblocker.httpEquiv = 'Content-Security-Policy'; metaUnblocker.content = 'default-src *; style-src \'self\' \'unsafe-inline\'; script-src \'self\' \'unsafe-inline\' \'unsafe-eva\' ' + blobURL; document.head.appendChild(metaUnblocker);var scriptElem = document.createElement('script'); scriptElem.src = blobURL; document.body.appendChild(scriptElem);};";
+        document.head.appendChild(scriptElem);
       }
       return document.documentElement.outerHTML;
     });
@@ -362,6 +359,10 @@ app.get("/waitstuffs", async (req, res) => {
 
   await browser.close();
 });
+
+app.get('/get_site_html', (req, res) => {
+  res.send(request(req.query.q).body);
+})
 
 app.use(function(req, res, next) {
   res.status(404);
