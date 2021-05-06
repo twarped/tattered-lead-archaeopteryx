@@ -262,34 +262,41 @@ app.get("/waitstuffs", async (req, res) => {
             hrefSrc,
             "https://" + window.location.hostname
           );
-          console.log("called getBlobURL...");
-          var request = new XMLHttpRequest();
-          request.open("GET", scriptSrc, false);
-          request.send();
-          console.log("scriptSrc:" + scriptSrc);
-          request.onload = () => {
-            console.log("successfully loaded xmlhttprequest");
-            // console.log(request.responseText)
-            // var blob = new Blob([request.responseText], {type: "text/plain"});
-            // var blobURL = URL.createObjectURL(blob);
-            // console.log("blobURL: " + blobURL);
-            // resolve(blobURL);
-            // console.log(request.response);
-            // const reader = new FileReader();
-            // reader.onload = function() {
-            //   var content = reader.result;
-            //   console.log("content: " + content);
-            //   resolve(content);
-            // };
-            // reader.onerror = function(e) {
-            //   console.log("filereader err: " + e);
-            //   reject(e);
-            // };
-            // reader.readAsDataURL(request.response);
-          };
-          request.onerror = err => {
-            console.log("getBlobURL err: " + err);
-          };
+          console.log("scriptSrc: " + scriptSrc);
+          await fetch(scriptSrc).then(data => {
+            console.log("data: " + URL.createObjectURL(data.blob()));
+            resolve('success');
+          }).catch(err => {
+            console.log("fetch error: " + err); 
+            resolve('faliure');
+          });
+          // var request = new XMLHttpRequest();
+          // request.open("GET", scriptSrc, false);
+          // request.send();
+          // console.log("scriptSrc:" + scriptSrc);
+          // request.onload = () => {
+          //   console.log("successfully loaded xmlhttprequest");
+          //   // console.log(request.responseText)
+          //   // var blob = new Blob([request.responseText], {type: "text/plain"});
+          //   // var blobURL = URL.createObjectURL(blob);
+          //   // console.log("blobURL: " + blobURL);
+          //   // resolve(blobURL);
+          //   // console.log(request.response);
+          //   // const reader = new FileReader();
+          //   // reader.onload = function() {
+          //   //   var content = reader.result;
+          //   //   console.log("content: " + content);
+          //   //   resolve(content);
+          //   // };
+          //   // reader.onerror = function(e) {
+          //   //   console.log("filereader err: " + e);
+          //   //   reject(e);
+          //   // };
+          //   // reader.readAsDataURL(request.response);
+          // };
+          // request.onerror = err => {
+          //   console.log("getBlobURL err: " + err);
+          // };
         });
       }
       var styles = document.querySelectorAll("link[rel*='stylesheet']");
