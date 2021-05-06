@@ -263,13 +263,18 @@ app.get("/waitstuffs", async (req, res) => {
             "https://" + window.location.hostname
           );
           console.log("scriptSrc: " + scriptSrc);
-          
+
           await fetch(scriptSrc)
             .then(data => data.text())
             .then(data => {
               //console.log("data: " + data);
               console.log(window.location.href);
-              console.log("blobdata: " + window.URL.createObjectURL(new Blob(['' + data + ''], {type: 'text/plain'})));
+              console.log(
+                "blobdata: " +
+                  window.URL.createObjectURL(
+                    new Blob(["" + data + ""], { type: "text/plain" })
+                  )
+              );
               resolve("success");
             })
             .catch(err => {
@@ -326,6 +331,10 @@ app.get("/waitstuffs", async (req, res) => {
       }
       var scripts = document.querySelectorAll("script[src]:not([src=''])"); //:not([src^='https://www.google-analytics.com']):not([src^='https://connect.facebook.net']):not([src^='https://www.googletagmanager.com']):not([src^='https://ssl.gstatic.com'])");
       for (var script of scripts) {
+        var scriptSrc = new URL(
+          script.src,
+          "https://" + window.location.hostname
+        );
         // script.src.charAt(0) === "/"
         //   ? getQueryStringValue("q").substring(1) + script.src
         //   : script.src.indexOf("http") === 0 &&
