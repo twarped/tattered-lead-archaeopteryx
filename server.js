@@ -341,41 +341,16 @@ app.get("/waitstuffs", async (req, res) => {
         );
         var scriptText = getResource(scriptSrc);
         script.remove();
-        var metaUnblocker = document.createElement('meta');
-        metaUnblocker.httpEquiv = "Content-Security-Policy";
-        metaUnblocker.content = "default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' " + scriptSrc;
-        document.head.appendChild(metaUnblocker);
         var scriptElem = document.createElement("script");
         scriptElem.textContent =
           "var blobURL = URL.createObjectURL(new Blob([''+ " +
           scriptText +
-          " +''], {type: 'text/plain'})); var scriptElem = document.createElement('script'); scriptElem.src = blobURL; document.body.appendChild(scriptElem);";
-        //console.log(scriptElem.textContent)
+          " +''], {type: 'text/plain'})); var metaUnblocker = document.createElement('meta'); metaUnblocker.httpEquiv = 'Content-Security-Policy'; metaUnblocker.content = 'default-src *; style-src \'self\' \'unsafe-inline\'; script-src \'self\' \'unsafe-inline\' \'unsafe-eva\' ' + blobURL; document.head.appendChild(metaUnblocker);var scriptElem = document.createElement('script'); scriptElem.src = blobURL; document.body.appendChild(scriptElem);";
         document.body.appendChild(scriptElem);
-        // script.src.charAt(0) === "/"
-        //   ? getQueryStringValue("q").substring(1) + script.src
-        //   : script.src.indexOf("http") === 0 &&
-        //     script.src.indexOf("://") === (5 || 6)
-        //   ? script.src
-        //   : getQueryStringValue("q") + script.src;
-        // script.src = await handleEntries(script.src);
-        // console.log("finished handleEntries...");
-        // fetch(scriptSrc)
-        //   .then(data => {
-        //     var scriptBlob = URL.createObjectURL(data.blob());
-        //     script.src = scriptBlob;
-        //     console.log("scriptBlob:" + scriptBlob)
-        //   })
-        //   .catch(err => {
-        //     console.log("fetchError:" + err);
-        //     var divErr = document.createElement("div");
-        //     divErr.innerHTML = JSON.stringify(err);
-        //     document.body.appendChild(divErr);
-        //   });
       }
       return document.documentElement.outerHTML;
     });
-    res.send(document);
+    res.render(document, {scriptText: scriptText});
   } catch (err) {
     res.send(err);
     console.error(err);
