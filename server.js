@@ -206,6 +206,7 @@ app.get("/waitstuffs", async (req, res) => {
     );
   try {
     var document = await page.evaluate(async () => {
+      var unblock
       function getQueryStringValue(key) {
         return decodeURIComponent(
           window.location.search.replace(
@@ -318,18 +319,25 @@ app.get("/waitstuffs", async (req, res) => {
       var styles = document.querySelectorAll("link[rel*='stylesheet']");
       for (var style of styles) {
         try {
-          var styleElement = document.createElement("style");
-          var styleText = getResource(
-            style.href.charAt(0) === "/"
-              ? window.location.protocol + window.location.hostname + style.href
-              : style.href.indexOf("http") === 0 &&
-                style.href.indexOf("://") === (5 || 6)
-              ? style.href
-              : window.location.protocol + window.location.hostname + style.href
+          var styleHref = new URL(
+            style.href,
+            "https://" + window.location.hostname
           );
-          styleElement.textContent = styleText;
-          document.head.appendChild(styleElement);
-          style.remove();
+          style.href =
+            "https://tattered-lead-archaeopteryx.glitch.me/get_site_html?q=" +
+            styleHref;
+          // var styleElement = document.createElement("style");
+          // var styleText = getResource(
+          //   style.href.charAt(0) === "/"
+          //     ? window.location.protocol + window.location.hostname + style.href
+          //     : style.href.indexOf("http") === 0 &&
+          //       style.href.indexOf("://") === (5 || 6)
+          //     ? style.href
+          //     : window.location.protocol + window.location.hostname + style.href
+          // );
+          // styleElement.textContent = styleText;
+          // document.head.appendChild(styleElement);
+          // style.remove();
         } catch (err) {
           console.log(err);
         }
@@ -338,8 +346,11 @@ app.get("/waitstuffs", async (req, res) => {
       for (var script of scripts) {
         var scriptSrc = new URL(
           script.src,
-          "https://tattered-lead-archaeopteryx.glitch.me/get_site_html?q=https://" + window.location.hostname
+          "https://" + window.location.hostname
         );
+        script.src =
+          "https://tattered-lead-archaeopteryx.glitch.me/get_site_html?q=" +
+          scriptSrc;
         // var scriptText = getResource(scriptSrc);
         // script.remove();
         // var scriptBlob = JSON.stringify(getBlobURL(scriptSrc));
