@@ -206,7 +206,10 @@ app.get("/waitstuffs", async (req, res) => {
     );
   try {
     var document = await page.evaluate(async () => {
-      var unblock
+      var unblockSources = document.createElement("meta");
+      unblockSources.httpEquiv = "content-security-policy";
+      unblockSources.content = "style-src 'self' 'unsafe-inline' https://tattered-lead-archaeopteryx.glitch.me/get_site_html?q=*";
+      document.head.appendChild(unblockSources);
       function getQueryStringValue(key) {
         return decodeURIComponent(
           window.location.search.replace(
