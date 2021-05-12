@@ -208,7 +208,7 @@ app.get("/waitstuffs", async (req, res) => {
     var document = await page.evaluate(async () => {
       var unblockSources = document.createElement("meta");
       unblockSources.httpEquiv = "content-security-policy";
-      unblockSources.content = "style-src 'self' 'unsafe-inline' https://tattered-lead-archaeopteryx.glitch.me/get_site_html?q=*";
+      //unblockSources.content = "style-src 'self' 'unsafe-inline' https://tattered-lead-archaeopteryx.glitch.me/get_site_html?q=*";
       document.head.appendChild(unblockSources);
       function getQueryStringValue(key) {
         return decodeURIComponent(
@@ -351,9 +351,14 @@ app.get("/waitstuffs", async (req, res) => {
           script.src,
           "https://" + window.location.hostname
         );
-        script.src =
+        scriptSrc =
           "https://tattered-lead-archaeopteryx.glitch.me/get_site_html?q=" +
           scriptSrc;
+        var metaUnblocker = document.createElement("meta");
+        metaUnblocker.httpEquiv = "Content-Security-Policy";
+        metaUnblocker.content = "script-src-elem" + scriptSrc;
+        document.head.appendChild(metaUnblocker);
+        script.src = scriptSrc;
         // var scriptText = getResource(scriptSrc);
         // script.remove();
         // var scriptBlob = JSON.stringify(getBlobURL(scriptSrc));
