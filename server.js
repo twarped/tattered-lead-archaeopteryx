@@ -208,7 +208,7 @@ app.get("/waitstuffs", async (req, res) => {
     var document = await page.evaluate(async () => {
       var unblockSources = document.createElement("meta");
       unblockSources.httpEquiv = "content-security-policy";
-      //unblockSources.content = "style-src 'self' 'unsafe-inline' https://tattered-lead-archaeopteryx.glitch.me/get_site_html?q=*";
+      unblockSources.content = "style-src 'unsafe-inline' https://tattered-lead-archaeopteryx.glitch.me/get_site_html?q=*";
       document.head.appendChild(unblockSources);
       function getQueryStringValue(key) {
         return decodeURIComponent(
@@ -319,6 +319,7 @@ app.get("/waitstuffs", async (req, res) => {
           // };
         });
       }
+      var htmlBaseLink = "https://tattered-lead-archaeopteryx.glitch.me/get_site_html";
       var styles = document.querySelectorAll("link[rel*='stylesheet']");
       for (var style of styles) {
         try {
@@ -326,9 +327,14 @@ app.get("/waitstuffs", async (req, res) => {
             style.href,
             "https://" + window.location.hostname
           );
-          style.href =
-            "https://tattered-lead-archaeopteryx.glitch.me/get_site_html?q=" +
+          styleHref =
+            htmlBaseLink + "?q=" +
             styleHref;
+          var metaUnblocker = document.createElement("meta");
+          metaUnblocker.httpEquiv = "Content-Security-Policy";
+          metaUnblocker.content =
+            "script-src-elem 'unsafe-inline' 'self' " + styleHref;
+          document.head.appendChild(metaUnblocker);
           // var styleElement = document.createElement("style");
           // var styleText = getResource(
           //   style.href.charAt(0) === "/"
@@ -352,12 +358,7 @@ app.get("/waitstuffs", async (req, res) => {
           "https://" + window.location.hostname
         );
         scriptSrc =
-          "https://tattered-lead-archaeopteryx.glitch.me/get_site_html?q=" +
-          scriptSrc;
-        var metaUnblocker = document.createElement("meta");
-        metaUnblocker.httpEquiv = "Content-Security-Policy";
-        metaUnblocker.content = "script-src-elem" + scriptSrc;
-        document.head.appendChild(metaUnblocker);
+          htmlBaseLink + "?q=" + scriptSrc;
         script.src = scriptSrc;
         // var scriptText = getResource(scriptSrc);
         // script.remove();
