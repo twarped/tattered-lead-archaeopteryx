@@ -316,10 +316,14 @@ app.get("/waitstuffs", async (req, res) => {
         });
       }
       var htmlBaseLink = "https://tattered-lead-archaeopteryx.glitch.me/get_site_html";
+      var badMetas = document.querySelectorAll("meta[http-equiv='content-security-policy' i]");
+      for (var i of badMetas) {
+        i.remove();
+      }
       var unblockSources = document.createElement("meta");
       unblockSources.httpEquiv = "content-security-policy";
-      unblockSources.content = `default-src 'unsafe-inline' ${htmlBaseLink}*`;//; script-src 'unsafe-inline' ${htmlBaseLink}*; script-src-elem 'unsafe-inline' ${htmlBaseLink}*;`;
-      document.head.appendChild(unblockSources);
+      unblockSources.content = `default-src 'unsafe-inline' ${htmlBaseLink}*; script-src 'unsafe-inline' ${htmlBaseLink}*; script-src-elem 'unsafe-inline' ${htmlBaseLink}*; style-src 'unsafe-inline' 'self' ${htmlBaseLink}*; style-src-elem 'self' 'unsafe-inline' ${htmlBaseLink}*;`;
+      await document.head.appendChild(unblockSources);
       var styles = document.querySelectorAll("link[rel*='stylesheet']");
       for (var style of styles) {
         try {
