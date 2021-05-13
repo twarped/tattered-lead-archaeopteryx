@@ -323,9 +323,13 @@ app.get("/waitstuffs", async (req, res) => {
       }
       var unblockSources = document.createElement("meta");
       unblockSources.httpEquiv = "content-security-policy";
-      unblockSources.content = `default-src 'unsafe-inline' https:; script-src 'unsafe-inline' https:; script-src-elem 'unsafe-inline' https:; style-src 'unsafe-inline' 'self' https:; style-src-elem 'self' 'unsafe-inline' https:;`;
+      unblockSources.content = `default-src 'unsafe-inline' https:; script-src 'unsafe-inline' https:; script-src-elem 'unsafe-inline' https:; style-src 'self' https:; style-src-elem 'self' https:;`;
       await document.head.appendChild(unblockSources);
       var styles = document.querySelectorAll("link[rel*='stylesheet']");
+      var firstStyle = document.createElement("link");
+      firstStyle.rel = "stylesheet";
+      firstStyle.href = "https://tattered-lead-archaeopteryx.glitch.me/nothing.css";
+      document.head.appendChild(firstStyle);
       for (var style of styles) {
         try {
           var styleHref = new URL(
