@@ -318,7 +318,8 @@ app.get("/waitstuffs", async (req, res) => {
       var htmlBaseLink = "https://tattered-lead-archaeopteryx.glitch.me/get_site_html";
       var badMetas = document.querySelectorAll("meta[http-equiv='content-security-policy' i]");
       for (var i of badMetas) {
-        i.remove();
+        console.log(i.httpEquiv + "   " + i.content)
+        await i.remove();
       }
       var unblockSources = document.createElement("meta");
       unblockSources.httpEquiv = "content-security-policy";
