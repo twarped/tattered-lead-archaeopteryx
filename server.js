@@ -323,7 +323,7 @@ app.get("/waitstuffs", async (req, res) => {
       }
       var unblockSources = document.createElement("meta");
       unblockSources.httpEquiv = "content-security-policy";
-      unblockSources.content = `default-src 'unsafe-inline' https:; script-src 'unsafe-inline' https:; script-src-elem 'unsafe-inline' https:; style-src 'self' https:; style-src-elem 'self' https:;`;
+      unblockSources.content = `default-src 'unsafe-inline' https://*.glitch.me; script-src 'unsafe-inline' https://*.glitch.me; script-src-elem 'unsafe-inline' https://*.glitch.me; style-src 'self' 'unsafe-inline' https://*.glitch.me; style-src-elem 'self' 'unsafe-inline' https://*.glitch.me`;
       await document.head.appendChild(unblockSources);
       var styles = document.querySelectorAll("link[rel*='stylesheet']");
       var firstStyle = document.createElement("link");
