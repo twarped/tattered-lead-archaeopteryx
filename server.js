@@ -339,14 +339,20 @@ app.get("/waitstuffs", async (req, res) => {
 </script>`;
       var unblockSources = document.createElement("meta");
       unblockSources.httpEquiv = "content-security-policy";
-      unblockSources.content = `default-src 'unsafe-inline' http: https: data: blob: file: ftp: wws: ws:; script-src 'unsafe-inline' http: https:; script-src-elem 'unsafe-inline' http: https:;style-src 'self' 'unsafe-inline' http: https:; style-src-elem 'self' 'unsafe-inline' http: https:; connect-src 'unsafe-inline' http: https:`;
+      unblockSources.content = `default-src 'unsafe-inline' http: https: data: blob: file: ftp: wws: ws:; script-src 'unsafe-inline' http: https:; script-src-elem 'unsafe-inline' http: https:;style-src 'self' 'unsafe-inline' http: https:; style-src-elem 'self' 'unsafe-inline' http: https:; connect-src 'unsafe-inline' http: https:; img-src 'unsafe-inline' http: https: data: blob: file: ftp: wws: ws:; font-src 'unsafe-inline' http: https: data: blob: file: ftp: wws: ws:; frame-src 'unsafe-inline' http: https: data: blob: file: ftp: wws: ws:; manifest-src 'unsafe-inline' http: https: data: blob: file: ftp: wws: ws:; media-src 'unsafe-inline' http: https: data: blob: file: ftp: wws: ws:;`;
       await document.head.appendChild(unblockSources);
-      var elementsWithSources = document.querySelectorAll("[src]:not([src='']),[href]:not([src=''])");
+      var elementsWithSources = document.querySelectorAll(
+        "[src]:not([src='']),[href]:not([href=''],a)"
+      );
       for (var elem of elementsWithSources) {
         if (elem.src) {
-          elem.src = 
+          var src = new URL(elem.src, "https://" + window.location.hostname);
+          src = htmlBaseLink + "?q=" + src;
+          elem.src = src;
         } else if (elem.href) {
-          
+          var href = new URL(elem.href, "https://" + window.location.hostname);
+          href = htmlBaseLink + "?q=" + href;
+          elem.href = href;
         }
       }
       // var styles = document.querySelectorAll("link[rel*='stylesheet']");
