@@ -315,20 +315,37 @@ app.get("/waitstuffs", async (req, res) => {
           // };
         });
       }
-      var htmlBaseLink = "https://tattered-lead-archaeopteryx.glitch.me/get_site_html";
-      var badMetas = document.querySelectorAll("meta[http-equiv='content-security-policy' i]");
+      var htmlBaseLink =
+        "https://tattered-lead-archaeopteryx.glitch.me/get_site_html";
+      var badMetas = document.querySelectorAll(
+        "meta[http-equiv='content-security-policy' i]"
+      );
       for (var i of badMetas) {
-        console.log(i.httpEquiv + "   " + i.content)
+        console.log(i.httpEquiv + "   " + i.content);
         await i.remove();
       }
+      document.head.innerHTML += `<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-XXXXX-X']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>`;
       var unblockSources = document.createElement("meta");
       unblockSources.httpEquiv = "content-security-policy";
-      unblockSources.content = `default-src 'unsafe-inline' http: https:; script-src 'unsafe-inline' http: https:; script-src-elem 'unsafe-inline' http: https:;style-src 'self' 'unsafe-inline' http: https:; style-src-elem 'self' 'unsafe-inline' http: https:; connect-src 'unsafe-inline' http: https:`;
+      unblockSources.content = `default-src 'unsafe-inline' http: https: data: blob: file: ftp: wws: ws:; script-src 'unsafe-inline' http: https:; script-src-elem 'unsafe-inline' http: https:;style-src 'self' 'unsafe-inline' http: https:; style-src-elem 'self' 'unsafe-inline' http: https:; connect-src 'unsafe-inline' http: https:`;
       await document.head.appendChild(unblockSources);
       var styles = document.querySelectorAll("link[rel*='stylesheet']");
       var firstStyle = document.createElement("link");
       firstStyle.rel = "stylesheet";
-      firstStyle.href = "https://tattered-lead-archaeopteryx.glitch.me/nothing.css";
+      firstStyle.href =
+        "https://tattered-lead-archaeopteryx.glitch.me/nothing.css";
       document.head.appendChild(firstStyle);
       for (var style of styles) {
         try {
@@ -336,9 +353,7 @@ app.get("/waitstuffs", async (req, res) => {
             style.href,
             "https://" + window.location.hostname
           );
-          styleHref =
-            htmlBaseLink + "?q=" +
-            styleHref;
+          styleHref = htmlBaseLink + "?q=" + styleHref;
           style.href = styleHref;
           // var styleElement = document.createElement("style");
           // var styleText = getResource(
@@ -362,8 +377,7 @@ app.get("/waitstuffs", async (req, res) => {
           script.src,
           "https://" + window.location.hostname
         );
-        scriptSrc =
-          htmlBaseLink + "?q=" + scriptSrc;
+        scriptSrc = htmlBaseLink + "?q=" + scriptSrc;
         script.src = scriptSrc;
         // var scriptText = getResource(scriptSrc);
         // script.remove();
