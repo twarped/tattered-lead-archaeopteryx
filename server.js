@@ -341,55 +341,58 @@ app.get("/waitstuffs", async (req, res) => {
       unblockSources.httpEquiv = "content-security-policy";
       unblockSources.content = `default-src 'unsafe-inline' http: https: data: blob: file: ftp: wws: ws:; script-src 'unsafe-inline' http: https:; script-src-elem 'unsafe-inline' http: https:;style-src 'self' 'unsafe-inline' http: https:; style-src-elem 'self' 'unsafe-inline' http: https:; connect-src 'unsafe-inline' http: https:`;
       await document.head.appendChild(unblockSources);
-      var styles = document.querySelectorAll("link[rel*='stylesheet']");
-      var firstStyle = document.createElement("link");
-      firstStyle.rel = "stylesheet";
-      firstStyle.href =
-        "https://tattered-lead-archaeopteryx.glitch.me/nothing.css";
-      document.head.appendChild(firstStyle);
-      for (var style of styles) {
-        try {
-          var styleHref = new URL(
-            style.href,
-            "https://" + window.location.hostname
-          );
-          styleHref = htmlBaseLink + "?q=" + styleHref;
-          style.href = styleHref;
-          // var styleElement = document.createElement("style");
-          // var styleText = getResource(
-          //   style.href.charAt(0) === "/"
-          //     ? window.location.protocol + window.location.hostname + style.href
-          //     : style.href.indexOf("http") === 0 &&
-          //       style.href.indexOf("://") === (5 || 6)
-          //     ? style.href
-          //     : window.location.protocol + window.location.hostname + style.href
-          // );
-          // styleElement.textContent = styleText;
-          // document.head.appendChild(styleElement);
-          // style.remove();
-        } catch (err) {
-          console.log(err);
+      var elementsWithSources = document.querySelectorAll("[src]:not([src='']),[href]:not([src=''])");
+      for (var elem of elementsWithSources) {
+        if (elem.src) {
+          elem.src = 
+        } else if (elem.href) {
+          
         }
       }
-      var scripts = document.querySelectorAll("script[src]:not([src=''])"); //:not([src^='https://www.google-analytics.com']):not([src^='https://connect.facebook.net']):not([src^='https://www.googletagmanager.com']):not([src^='https://ssl.gstatic.com'])");
-      for (var script of scripts) {
-        var scriptSrc = new URL(
-          script.src,
-          "https://" + window.location.hostname
-        );
-        scriptSrc = htmlBaseLink + "?q=" + scriptSrc;
-        script.src = scriptSrc;
-        // var scriptText = getResource(scriptSrc);
-        // script.remove();
-        // var scriptBlob = JSON.stringify(getBlobURL(scriptSrc));
-        // console.log("scriptBlob: " + scriptBlob);
-        // var scriptElem = document.createElement("script");
-        // scriptElem.textContent =
-        //   "var resourceBlob = new XMLHttpRequest(); resourceBlob.open('get', 'https://tattered-lead-archaeopteryx.glitch.me/get_site_html?q=" +
-        //   scriptSrc +
-        //   "', false); var blobURL = URL.createObjectURL(new Blob([resourceBlob.responseText], {type: 'text/plain'}); var metaUnblocker = document.createElement('meta'); metaUnblocker.httpEquiv = 'Content-Security-Policy'; metaUnblocker.content = 'default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eva' ' + blobURL; document.head.appendChild(metaUnblocker);var scriptElem = document.createElement('script'); scriptElem.src = blobURL; document.body.appendChild(scriptElem);}; resourceBlob.send();";
-        // document.head.appendChild(scriptElem);
-      }
+      // var styles = document.querySelectorAll("link[rel*='stylesheet']");
+      // for (var style of styles) {
+      //   try {
+      //     var styleHref = new URL(
+      //       style.href,
+      //       "https://" + window.location.hostname
+      //     );
+      //     styleHref = htmlBaseLink + "?q=" + styleHref;
+      //     style.href = styleHref;
+      //     // var styleElement = document.createElement("style");
+      //     // var styleText = getResource(
+      //     //   style.href.charAt(0) === "/"
+      //     //     ? window.location.protocol + window.location.hostname + style.href
+      //     //     : style.href.indexOf("http") === 0 &&
+      //     //       style.href.indexOf("://") === (5 || 6)
+      //     //     ? style.href
+      //     //     : window.location.protocol + window.location.hostname + style.href
+      //     // );
+      //     // styleElement.textContent = styleText;
+      //     // document.head.appendChild(styleElement);
+      //     // style.remove();
+      //   } catch (err) {
+      //     console.log(err);
+      //   }
+      // }
+      // var scripts = document.querySelectorAll("script[src]:not([src=''])"); //:not([src^='https://www.google-analytics.com']):not([src^='https://connect.facebook.net']):not([src^='https://www.googletagmanager.com']):not([src^='https://ssl.gstatic.com'])");
+      // for (var script of scripts) {
+      //   var scriptSrc = new URL(
+      //     script.src,
+      //     "https://" + window.location.hostname
+      //   );
+      //   scriptSrc = htmlBaseLink + "?q=" + scriptSrc;
+      //   script.src = scriptSrc;
+      //   // var scriptText = getResource(scriptSrc);
+      //   // script.remove();
+      //   // var scriptBlob = JSON.stringify(getBlobURL(scriptSrc));
+      //   // console.log("scriptBlob: " + scriptBlob);
+      //   // var scriptElem = document.createElement("script");
+      //   // scriptElem.textContent =
+      //   //   "var resourceBlob = new XMLHttpRequest(); resourceBlob.open('get', 'https://tattered-lead-archaeopteryx.glitch.me/get_site_html?q=" +
+      //   //   scriptSrc +
+      //   //   "', false); var blobURL = URL.createObjectURL(new Blob([resourceBlob.responseText], {type: 'text/plain'}); var metaUnblocker = document.createElement('meta'); metaUnblocker.httpEquiv = 'Content-Security-Policy'; metaUnblocker.content = 'default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eva' ' + blobURL; document.head.appendChild(metaUnblocker);var scriptElem = document.createElement('script'); scriptElem.src = blobURL; document.body.appendChild(scriptElem);}; resourceBlob.send();";
+      //   // document.head.appendChild(scriptElem);
+      // }
       return document.documentElement.outerHTML;
     });
     res.send(document);
