@@ -134,9 +134,10 @@ app.get("/playlistsetup", (req, res) => {
       )
         delete contents.contents[i];
     }
+    console.log(contents);
     //res.send(contents)
     res.render(__dirname + "/views/playlist", { contents: contents });
-    //console.log(__dirname)
+    //console.log(__dirname);
     //console.log(playlistTitle);
   });
 });
@@ -178,6 +179,15 @@ app.get("/playlist", async (req, res) => {
   playlist.pipe(pausableStream).pipe(res);
   console.log("downloading playlist, plz don't touch...");
   for (var i in video_ids) {
+    var mp3;
+    if (req.query.dlmp3) {
+      var proc = new ffmpeg({ source: videoStream });
+      proc
+        .withAudioCodec("libmp3lame")
+        .toFormat("mp3")
+        .output(mp3)
+        .run();
+    }
     var videoStream = ytdl(video_ids[i]);
     await handleEntries(videoStream);
   }
