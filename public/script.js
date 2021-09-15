@@ -31,7 +31,8 @@ downloadbutton.addEventListener("click", () => {
     if (wantstodownload == true) {
       window.open(
         "https://tattered-lead-archaeopteryx.glitch.me/playlistsetup?list=" +
-          url
+          url + 
+          (ytmp3.checked ? "&dlmp3=true" : "")
       );
     }
   } else {

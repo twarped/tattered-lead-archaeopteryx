@@ -86,18 +86,7 @@ app.get("/watch", async (req, res) => {
     } else {
       var playbackURL = await ytdl.getVideoPlaybackURL(info);
       console.log(playbackURL);
-      var stream = await request(playbackURL);
-      if (req.query.dlmp3) {
-        res.header("Content-Type", "audio/mpeg");
-        var proc = new ffmpeg({ source: stream });
-        proc
-          .withAudioCodec("libmp3lame")
-          .toFormat("mp3")
-          .output(res)
-          .run();
-      } else {
-        stream.pipe(res);
-      }
+      await request(playbackURL).pipe(res);
     }
   });
   videoStream.on("error", err => {
