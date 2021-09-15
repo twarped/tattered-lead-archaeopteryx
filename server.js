@@ -56,6 +56,7 @@ PausablePassThrough.prototype._transform = function(chunk, encoding, cb) {
 
 app.get("/watch", async (req, res) => {
   var videoStream = await ytdl(req.query.v);
+  var proc = new ffmpeg({source : videoStream});
   var pausableStream = new PausablePassThrough();
   const streamVideo = () => {
     videoStream.pipe(pausableStream).pipe(res);
@@ -67,13 +68,15 @@ app.get("/watch", async (req, res) => {
         ? info.videoDetails.title.substring(
             0,
             info.videoDetails.title.length - 1
-          ) + ".mp4"
-        : info.videoDetails.title + ".mp4";
+          ) + (!req.query.mp3 ? ".mp4" : ".mp3")
+        : info.videoDetails.title + (!req.query.mp3 ? ".mp4" : ".mp3");
     if (!req.query.inbrowser) {
       res.header("Content-Disposition", contentdisposition(title));
+      if (req.query.mp3) res.header("Content-Type", "audio/mpeg");
       streamVideo();
     } else {
       var playbackURL = await ytdl.getVideoPlaybackURL(info);
+      console.log(playbackURL);
       request(playbackURL).pipe(res);
     }
   });
