@@ -155,15 +155,6 @@ app.get("/playlist", async (req, res) => {
     return new Promise((resolve, reject) => {
       videoStream.on("info", info => {
         var title = info.videoDetails.title;
-        var mp3;
-        if (req.query.dlmp3) {
-        var proc = new ffmpeg({ source: videoStream });
-        proc
-          .withAudioCodec("libmp3lame")
-          .toFormat("mp3")
-          .output(mp3)
-          .run();
-        }
         playlist.entry(
           videoStream,
           { name: title + (!req.query.dlmp3 ? ".mp4" : ".mp3") },
