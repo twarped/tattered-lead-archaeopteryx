@@ -179,16 +179,16 @@ app.get("/playlist", async (req, res) => {
   playlist.pipe(pausableStream).pipe(res);
   console.log("downloading playlist, plz don't touch...");
   for (var i in video_ids) {
-    var mp3;
+    var videoStream = ytdl(video_ids[i]);
+    //var mp3;
     if (req.query.dlmp3) {
       var proc = new ffmpeg({ source: videoStream });
       proc
         .withAudioCodec("libmp3lame")
         .toFormat("mp3")
-        .output(mp3)
+        .output(videoStream)
         .run();
     }
-    var videoStream = ytdl(video_ids[i]);
     await handleEntries(videoStream);
   }
   console.log("done...");
