@@ -112,13 +112,12 @@ app.get("/playlistsetup", (req, res) => {
   //console.log(playlistURL)
   request.get(playlistURL, (err, body) => {
     //"https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr"
-    var parsedBody = JSON.parse(
-      body.body
-        .split(`var ytInitialData = `)[1]
-        .split(
-          `;</script><link rel="alternate" media="handheld" href="https://m.youtube.com/playlist?list=`
-        )[0]
-    );
+    //res.send(body.body.split(`var ytInitialData = `)[1].replace(";", ""));
+    var unParsedBody = body.body.split(`var ytInitialData = `)[1];
+    unParsedBody = unParsedBody.split(
+      `</script><link rel="alternate" media="handheld" href="https://m.youtube.com/playlist?list=`
+    )[0];
+    var parsedBody = JSON.parse(unParsedBody);
     var playlistTitle = parsedBody.metadata.playlistMetadataRenderer.title;
     var contents =
       parsedBody.contents.twoColumnBrowseResultsRenderer.tabs[0].tabRenderer
