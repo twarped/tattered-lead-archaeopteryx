@@ -60,7 +60,9 @@ app.get("/watch", async (req, res) => {
       headers: {
         cookie: "key=" + apikey
       }
-    }
+    },
+    quality: req.query.dlmp3 ? "highestaudio" : "highest",
+    filter: format => format.audioBitrate
   });
   var pausableStream = new PausablePassThrough();
   const streamVideo = () => {
@@ -95,7 +97,9 @@ app.get("/watch", async (req, res) => {
           headers: {
             cookie: "key=" + apikey
           }
-        }
+        },
+        quality: req.query.dlmp3 ? "highestaudio" : "highest",
+        filter: format => format.audioBitrate
       });
       console.log(playbackURL);
       await request(playbackURL).pipe(res);
@@ -199,7 +203,8 @@ app.get("/playlist", async (req, res) => {
           cookie: "key=" + apikey
         }
       },
-      quality: ()
+      quality: req.query.dlmp3 ? "highestaudio" : "highest",
+      filter: format => format.audioBitrate
     });
     //var mp3;
     if (req.query.dlmp3) {
