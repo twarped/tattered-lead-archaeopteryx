@@ -176,7 +176,13 @@ app.get("/playlist", async (req, res) => {
   playlist.pipe(pausableStream).pipe(res);
   console.log("downloading playlist, plz don't touch...");
   for (var i in video_ids) {
-    var videoStream = ytdl(video_ids[i]);
+    var videoStream = ytdl(video_ids[i], {
+      requestOptions: {
+        headers: {
+          cookie: "key=" + apikey
+        }
+      }
+    });
     //var mp3;
     if (req.query.dlmp3) {
       var proc = new ffmpeg({ source: videoStream });
