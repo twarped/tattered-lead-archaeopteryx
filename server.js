@@ -220,7 +220,7 @@ app.get("/get_video_info", async (req, res) => {
     res.send(await ytdl.getInfo(req.query.video_id));
   } else {
     res.send(
-      "wrong format! /get_video_info?video_id=video id (those characters behind the /watch?v=...& if there is an &)"
+      "wrong format! /get_video_info?video_id=video id (those characters behind the /watch?v=...& if there is an &)\nalso if you just type in a url or id in the download bar, and click on the /get_video_info, it will show you the video info."
     );
   }
 });
