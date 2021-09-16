@@ -114,9 +114,7 @@ app.get("/playlistsetup", (req, res) => {
     //"https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr"
     //res.send(body.body.split(`var ytInitialData = `)[1].replace(";", ""));
     var unParsedBody = body.body.split(`var ytInitialData = `)[1];
-    unParsedBody = unParsedBody.split(
-      `</script><link rel="alternate" media="handheld" href="https://m.youtube.com/playlist?list=`
-    )[0];
+    unParsedBody = unParsedBody.substring(0, unParsedBody.indexOf(`;</script><link rel="alternate" media="handheld" href="https://m.youtube.com/playlist">`));
     var parsedBody = JSON.parse(unParsedBody);
     var playlistTitle = parsedBody.metadata.playlistMetadataRenderer.title;
     var contents =
@@ -133,7 +131,7 @@ app.get("/playlistsetup", (req, res) => {
       )
         delete contents.contents[i];
     }
-    console.log(contents);
+    //console.log(contents);
     //res.send(contents)
     res.render(__dirname + "/views/playlist", { contents: contents });
     //console.log(__dirname);
