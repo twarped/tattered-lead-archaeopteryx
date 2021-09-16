@@ -199,9 +199,7 @@ app.get("/playlist", async (req, res) => {
           cookie: "key=" + apikey
         }
       },
-      format: {
-        
-      }
+      quality: ()
     });
     //var mp3;
     if (req.query.dlmp3) {
