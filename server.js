@@ -55,7 +55,13 @@ PausablePassThrough.prototype._transform = function(chunk, encoding, cb) {
 };
 
 app.get("/watch", async (req, res) => {
-  var videoStream = await ytdl(req.query.v);
+  var videoStream = await ytdl(req.query.v, {
+    requestOptions: {
+      headers: {
+        cookie: "key=" + apikey
+      }
+    }
+  });
   var pausableStream = new PausablePassThrough();
   const streamVideo = () => {
     videoStream.pipe(pausableStream).pipe(res);
@@ -84,7 +90,13 @@ app.get("/watch", async (req, res) => {
       }
       //streamVideo();
     } else {
-      var playbackURL = await ytdl.getVideoPlaybackURL(info);
+      var playbackURL = await ytdl.getVideoPlaybackURL(info, {
+        requestOptions: {
+          headers: {
+            cookie: "key=" + apikey
+          }
+        }
+      });
       console.log(playbackURL);
       await request(playbackURL).pipe(res);
     }
@@ -114,7 +126,12 @@ app.get("/playlistsetup", (req, res) => {
     //"https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr"
     //res.send(body.body.split(`var ytInitialData = `)[1].replace(";", ""));
     var unParsedBody = body.body.split(`var ytInitialData = `)[1];
-    unParsedBody = unParsedBody.substring(0, unParsedBody.indexOf(`;</script><link rel="alternate" media="handheld" href="https://m.youtube.com/playlist">`));
+    unParsedBody = unParsedBody.substring(
+      0,
+      unParsedBody.indexOf(
+        `;</script><link rel="alternate" media="handheld" href="https://m.youtube.com/playlist">`
+      )
+    );
     var parsedBody = JSON.parse(unParsedBody);
     var playlistTitle = parsedBody.metadata.playlistMetadataRenderer.title;
     var contents =
