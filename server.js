@@ -198,6 +198,9 @@ app.get("/playlist", async (req, res) => {
         headers: {
           cookie: "key=" + apikey
         }
+      },
+      format: {
+        
       }
     });
     //var mp3;
