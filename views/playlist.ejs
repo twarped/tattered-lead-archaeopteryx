@@ -136,7 +136,7 @@
         if (i.getAttribute("data-shoulddownload"))
           video_ids.push(i.getAttribute("data-videoid"));
       };
-      var downloadURL = "https://tattered-lead-archaeopteryx.glitch.me/playlist?video_ids="+JSON.stringify(video_ids)+"&playlist_name="+contents.playlistTitle;
+      var downloadURL = "https://tattered-lead-archaeopteryx.glitch.me/playlist?video_ids="+JSON.stringify(video_ids)+"&playlist_name="+contents.playlistTitle+"&key="+apikey;
       //alert (downloadURL);
       window.open(downloadURL);
     };
