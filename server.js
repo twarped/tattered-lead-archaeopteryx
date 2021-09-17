@@ -101,8 +101,7 @@ app.get("/watch", async (req, res) => {
         quality: req.query.dlmp3 ? "highestaudio" : "highest",
         filter: format => format.audioBitrate
       });
-      console.log(playbackURL);
-      await request(playbackURL).pipe(res);
+      //console.log(playbackURL);
     }
   });
   videoStream.on("error", err => {
