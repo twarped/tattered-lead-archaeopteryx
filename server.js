@@ -102,7 +102,7 @@ app.get("/watch", async (req, res) => {
         filter: format => format.audioBitrate
       });
       await request(playbackURL).pipe(res);
-      
+
       //console.log(playbackURL);
     }
   });
@@ -198,6 +198,7 @@ app.get("/playlist", async (req, res) => {
   playlist.pipe(pausableStream).pipe(res);
   console.log("downloading playlist, plz don't touch...");
   for (var i in video_ids) {
+    var chosenFormat;
     var videoStream = ytdl(video_ids[i], {
       requestOptions: {
         headers: {
@@ -205,8 +206,12 @@ app.get("/playlist", async (req, res) => {
         }
       },
       quality: req.query.dlmp3 ? "highestaudio" : "highest",
-      filter: format => format.audioBitrate
+      filter: function(format) {
+        if (format.audioBitrate) return true;
+        else chosenFormat = format;
+      }
     });
+    console.log(chosenFormat);
     //var mp3;
     if (req.query.dlmp3) {
       var proc = new ffmpeg({ source: videoStream });

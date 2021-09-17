@@ -138,7 +138,7 @@
       };
       var urlSearchParams = new URLSearchParams(window.location.search);
       var params = Object.fromEntries(urlSearchParams.entries());
-      var downloadURL = "https://tattered-lead-archaeopteryx.glitch.me/playlist?video_ids="+JSON.stringify(video_ids)+"&playlist_name="+contents.playlistTitle+"&dlmp3="+params.dlmp3;
+      var downloadURL = "https://tattered-lead-archaeopteryx.glitch.me/playlist?video_ids="+JSON.stringify(video_ids)+"&playlist_name="+contents.playlistTitle+"&dlmp3="+(params.dlmp3 == true? params.dlmp3 : false);
       //alert (downloadURL);
       window.open(downloadURL);
     };
