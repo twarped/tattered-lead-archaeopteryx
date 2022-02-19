@@ -55,13 +55,15 @@ PausablePassThrough.prototype._transform = function(chunk, encoding, cb) {
 };
 
 app.get("/watch", async (req, res) => {
+  var audio = req.query.dlmp3;
+  console.log(audio)
   var videoStream = await ytdl(req.query.v, {
     requestOptions: {
       headers: {
         cookie: "key=" + apikey
       }
     },
-    quality: req.query.dlmp3 ? "highestaudio" : "highest",
+    quality: audio ? "highestaudio" : "highest",
     filter: format => format.audioBitrate
   });
   var pausableStream = new PausablePassThrough();
@@ -75,10 +77,11 @@ app.get("/watch", async (req, res) => {
         ? info.videoDetails.title.substring(
             0,
             info.videoDetails.title.length - 1
-          ) + (!req.query.mp3 ? ".mp4" : ".mp3")
-        : info.videoDetails.title + (!req.query.dlmp3 ? ".mp4" : ".mp3");
+          ) + (!audio ? ".mp4" : ".mp3")
+        : info.videoDetails.title + (!audio ? ".mp4" : ".mp3");
     if (!req.query.inbrowser) {
       res.header("Content-Disposition", contentdisposition(title));
+      console.log(req.query.dlmp3)
       if (req.query.dlmp3) {
         res.header("Content-Type", "audio/mpeg");
         var proc = new ffmpeg({ source: videoStream });
