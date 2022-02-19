@@ -81,8 +81,7 @@ app.get("/watch", async (req, res) => {
         : info.videoDetails.title + (!audio ? ".mp4" : ".mp3");
     if (!req.query.inbrowser) {
       res.header("Content-Disposition", contentdisposition(title));
-      console.log(req.query.dlmp3)
-      if (req.query.dlmp3) {
+      if (audio) {
         res.header("Content-Type", "audio/mpeg");
         var proc = new ffmpeg({ source: videoStream });
         proc
@@ -101,7 +100,7 @@ app.get("/watch", async (req, res) => {
             cookie: "key=" + apikey
           }
         },
-        quality: req.query.dlmp3 ? "highestaudio" : "highest",
+        quality: audio ? "highestaudio" : "highest",
         filter: format => format.audioBitrate
       });
       await request(playbackURL).pipe(res);
@@ -165,6 +164,8 @@ app.get("/playlistsetup", (req, res) => {
 });
 
 app.get("/playlist", async (req, res) => {
+  var audio = req.query.dlmp3;
+  console.log(audio)
   console.log("pending...");
   var pausableStream = new PausablePassThrough();
   var video_ids = JSON.parse(req.query.video_ids);
@@ -180,7 +181,7 @@ app.get("/playlist", async (req, res) => {
         var title = info.videoDetails.title;
         playlist.entry(
           videoStream,
-          { name: title + (!req.query.dlmp3 ? ".mp4" : ".mp3") },
+          { name: title + (!audio ? ".mp4" : ".mp3") },
           (error, result) => {
             if (!error) {
               resolve(result);
