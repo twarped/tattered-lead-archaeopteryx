@@ -56,7 +56,6 @@ PausablePassThrough.prototype._transform = function(chunk, encoding, cb) {
 
 app.get("/watch", async (req, res) => {
   var audio = req.query.dlmp3;
-  console.log(audio)
   var videoStream = await ytdl(req.query.v, {
     requestOptions: {
       headers: {
@@ -165,7 +164,6 @@ app.get("/playlistsetup", (req, res) => {
 
 app.get("/playlist", async (req, res) => {
   var audio = req.query.dlmp3;
-  console.log(audio)
   console.log("pending...");
   var pausableStream = new PausablePassThrough();
   var video_ids = JSON.parse(req.query.video_ids);
