@@ -1,4 +1,5 @@
 dependencies:
+  //ytdl-core: github.com/twarped/node-ytdl-core/e3b0c884c0a2897854b846c31ec798b5a81644bd
   archiver: 5.3.0
   axios: 0.21.1
   content-disposition: 0.5.3
@@ -16,7 +17,7 @@ dependencies:
   stream-to-blob-url: 3.0.2
   util: 0.12.3
   youtube-dl: 3.5.0
-  ytdl-core: github.com/twarped/node-ytdl-core/4eab25432b1ba210787f303ada3e6466663100b8
+  ytdl-core: 4.11.0
   zip-stream: 4.1.0
 packages:
   /@sindresorhus/is/4.0.0:
@@ -1352,15 +1353,15 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-tqNXrS78oMOE73NMxK4EMLQsQowWf8jKooH9g7xPavRT706R6bkQJ6DY2Te7QukaZsulxa30wQ7bk0pm4XiHmA==
-  /m3u8stream/0.8.3:
+  /m3u8stream/0.8.6:
     dependencies:
-      miniget: 4.2.0
+      miniget: 4.2.2
       sax: 1.2.4
     dev: false
     engines:
-      node: '>=10'
+      node: '>=12'
     resolution:
-      integrity: sha512-0nAcdrF8YJKUkb6PzWdvGftTPyCVWgoiot1AkNVbPKTeIGsWs6DrOjifrJ0Zi8WQfQmD2SuVCjkYIOip12igng==
+      integrity: sha512-LZj8kIVf9KCphiHmH7sbFQTVe4tOemb202fWwvJwR9W5ENW/1hxJN6ksAWGhQgSBSa3jyWhnjKU1Fw1GaOdbyA==
   /map-obj/1.0.1:
     dev: false
     engines:
@@ -1454,6 +1455,12 @@ packages:
       node: '>=10'
     resolution:
       integrity: sha512-IzTOaNgBw/qEpzkPTE7X2cUVXQfSKbG8w52Emi93zb+Zya2ZFrbmavpixzebuDJD9Ku4ecbaFlC7Y1cEESzQtQ==
+  /miniget/4.2.2:
+    dev: false
+    engines:
+      node: '>=12'
+    resolution:
+      integrity: sha512-a7voNL1N5lDMxvTMExOkg+Fq89jM2vY8pAi9ZEWzZtfNmdfP6RXkvUtFnCAXoCv2T9k1v/fUJVaAEuepGcvLYA==
   /minimatch/3.0.4:
     dependencies:
       brace-expansion: 1.1.11
@@ -2412,6 +2419,16 @@ packages:
     requiresBuild: true
     resolution:
       integrity: sha512-+I9o908rD154LqaVdP1f9Xlu+qYp3/m/bZeUwaxsAV7nR8W0IObqz0oAyxvE1Qrn7oTCvvg6MZ1oqkHIA8LA+g==
+  /ytdl-core/4.11.0:
+    dependencies:
+      m3u8stream: 0.8.6
+      miniget: 4.2.2
+      sax: 1.2.4
+    dev: false
+    engines:
+      node: '>=12'
+    resolution:
+      integrity: sha512-Q3hCLiUA9AOGQXzPvno14GN+HgF9wsO1ZBHlj0COTcyxjIyFpWvMfii0UC4/cAbVaIjEdbWB71GdcGuc4J1Lmw==
   /zero-fill/2.2.4:
     dev: false
     resolution:
@@ -2426,10 +2443,10 @@ packages:
       node: '>= 10'
     resolution:
       integrity: sha512-zshzwQW7gG7hjpBlgeQP9RuyPGNxvJdzR8SUM3QhxCnLjWN2E7j3dOvpeDcQoETfHx0urRS7EtmVToql7YpU4A==
-  github.com/twarped/node-ytdl-core/4eab25432b1ba210787f303ada3e6466663100b8:
+  github.com/twarped/node-ytdl-core/e3b0c884c0a2897854b846c31ec798b5a81644bd:
     dependencies:
-      m3u8stream: 0.8.3
-      miniget: 4.2.0
+      m3u8stream: 0.8.6
+      miniget: 4.2.2
       request: 2.88.2
       sax: 1.2.4
     dev: false
@@ -2438,12 +2455,13 @@ packages:
     name: ytdl-core
     resolution:
       registry: 'https://registry.npmjs.org/'
-      tarball: 'https://codeload.github.com/twarped/node-ytdl-core/tar.gz/4eab25432b1ba210787f303ada3e6466663100b8'
+      tarball: 'https://codeload.github.com/twarped/node-ytdl-core/tar.gz/e3b0c884c0a2897854b846c31ec798b5a81644bd'
     version: 0.0.0-development
 registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
 specifiers:
+  //ytdl-core: 'git+https://github.com/twarped/node-ytdl-core.git#patch-3'
   archiver: ^5.2.0
   axios: ^0.21.1
   content-disposition: ^0.5.3
@@ -2461,5 +2479,5 @@ specifiers:
   stream-to-blob-url: ^3.0.1
   util: ^0.12.3
   youtube-dl: ^3.5.0
-  ytdl-core: 'git+https://github.com/twarped/node-ytdl-core.git#patch-3'
+  ytdl-core: ^4.11.0
   zip-stream: ^4.1.0

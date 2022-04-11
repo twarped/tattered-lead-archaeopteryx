@@ -102,14 +102,16 @@ app.get("/watch", async (req, res) => {
         quality: audio ? "highestaudio" : "highest",
         filter: format => format.audioBitrate
       });
+      console.log(playbackURL)
       await request(playbackURL).pipe(res);
 
       //console.log(playbackURL);
     }
   });
   videoStream.on("error", err => {
-    res.send(err);
-    console.log(err);
+    res.send(JSON.stringify(err));
+    console.log(typeof err)
+    console.error(JSON.stringify(err));
   });
 });
 

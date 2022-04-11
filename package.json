@@ -27,8 +27,9 @@
     "stream-to-blob-url": "^3.0.1",
     "util": "^0.12.3",
     "youtube-dl": "^3.5.0",
-    "ytdl-core": "git+https://github.com/twarped/node-ytdl-core.git#patch-3",
-    "zip-stream": "^4.1.0"
+    "//ytdl-core": "git+https://github.com/twarped/node-ytdl-core.git#patch-3",
+    "zip-stream": "^4.1.0",
+    "ytdl-core": "^4.11.0"
   },
   "engines": {
     "node": "12.x"
