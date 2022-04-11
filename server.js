@@ -78,6 +78,7 @@ app.get("/watch", async (req, res) => {
             info.videoDetails.title.length - 1
           ) + (!audio ? ".mp4" : ".mp3")
         : info.videoDetails.title + (!audio ? ".mp4" : ".mp3");
+    console.log(title)
     if (!req.query.inbrowser) {
       res.header("Content-Disposition", contentdisposition(title));
       if (audio) {
@@ -93,6 +94,7 @@ app.get("/watch", async (req, res) => {
       }
       //streamVideo();
     } else {
+      console.log("inbrowser")
       var playbackURL = await ytdl.getVideoPlaybackURL(info, {
         requestOptions: {
           headers: {
@@ -109,9 +111,8 @@ app.get("/watch", async (req, res) => {
     }
   });
   videoStream.on("error", err => {
-    res.send(JSON.stringify(err));
-    console.log(typeof err)
-    console.error(JSON.stringify(err));
+    res.send("an error occured, please try again later...");
+    console.error(err);
   });
 });
 

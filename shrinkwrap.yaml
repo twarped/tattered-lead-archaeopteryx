@@ -1,5 +1,4 @@
 dependencies:
-  //ytdl-core: github.com/twarped/node-ytdl-core/e3b0c884c0a2897854b846c31ec798b5a81644bd
   archiver: 5.3.0
   axios: 0.21.1
   content-disposition: 0.5.3
@@ -18,6 +17,7 @@ dependencies:
   util: 0.12.3
   youtube-dl: 3.5.0
   ytdl-core: 4.11.0
+  ytdl-core-custom: github.com/twarped/node-ytdl-core/e3b0c884c0a2897854b846c31ec798b5a81644bd
   zip-stream: 4.1.0
 packages:
   /@sindresorhus/is/4.0.0:
@@ -2454,14 +2454,12 @@ packages:
       node: '>=10'
     name: ytdl-core
     resolution:
-      registry: 'https://registry.npmjs.org/'
       tarball: 'https://codeload.github.com/twarped/node-ytdl-core/tar.gz/e3b0c884c0a2897854b846c31ec798b5a81644bd'
     version: 0.0.0-development
 registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
 specifiers:
-  //ytdl-core: 'git+https://github.com/twarped/node-ytdl-core.git#patch-3'
   archiver: ^5.2.0
   axios: ^0.21.1
   content-disposition: ^0.5.3
@@ -2480,4 +2478,5 @@ specifiers:
   util: ^0.12.3
   youtube-dl: ^3.5.0
   ytdl-core: ^4.11.0
+  ytdl-core-custom: 'git+https://github.com/twarped/node-ytdl-core.git#patch-3'
   zip-stream: ^4.1.0
