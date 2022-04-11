@@ -112,7 +112,7 @@ app.get("/watch", async (req, res) => {
   });
   videoStream.on("error", err => {
     res.send("an error occured, please try again later...");
-    console.error(err);
+    console.log(err);
   });
 });
 
