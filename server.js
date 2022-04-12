@@ -96,6 +96,7 @@ app.get("/watch", async (req, res) => {
           .run();
       } else if (req.query.amv) {
         setDis(".amv")
+        setCon("video/x-amv")
         
       } else {
         setDis(".mp4")
