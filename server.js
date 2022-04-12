@@ -90,17 +90,26 @@ app.get("/watch", async (req, res) => {
         setCon("audio/mpeg");
         var proc = new ffmpeg({ source: videoStream });
         proc.withAudioCodec("libmp3lame").toFormat("mp3").output(res).run();
-      } else if (req.query.format && req.query.audioCodec && req.query.videoCodec && req.query.contentType) {
+      } else if (
+        req.query.format &&
+        req.query.audioCodec &&
+        req.query.videoCodec &&
+        req.query.contentType
+      ) {
         setDis("." + req.query.format);
         setCon(req.query.contentType);
         var proc = new ffmpeg({ source: videoStream });
-        proc.on("error", error => res.send(error))
-        proc.withAudioCodec(req.query.audioCodec).withVideoCodec(req.query.videoCodec).toFormat(req.query.format).output(res).run();
+        var stream = proc
+          .withAudioCodec(req.query.audioCodec)
+          .withVideoCodec(req.query.videoCodec)
+          .toFormat(req.query.format)
+          .output(res)
+          .run();
+        stream.on("error", (error) => res.send(error));
       } else {
         setDis(".mp4");
         streamVideo();
       }
-      //streamVideo();
     } else {
       console.log("inbrowser");
       var playbackURL = await ytdl.getVideoPlaybackURL(info, {
