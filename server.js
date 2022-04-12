@@ -87,7 +87,7 @@ app.get("/watch", async (req, res) => {
     if (!req.query.inbrowser) {
       if (audio) {
         setDis(".mp3")
-        setCon(audio/mpeg");
+        setCon("audio/mpeg");
         var proc = new ffmpeg({ source: videoStream });
         proc
           .withAudioCodec("libmp3lame")
