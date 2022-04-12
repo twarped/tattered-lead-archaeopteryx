@@ -76,20 +76,29 @@ app.get("/watch", async (req, res) => {
         ? info.videoDetails.title.substring(
             0,
             info.videoDetails.title.length - 1
-          ) + (!audio ? ".mp4" : ".mp3")
-        : info.videoDetails.title + (!audio ? ".mp4" : ".mp3");
-    console.log(title)
+          )
+        : info.videoDetails.title;
+    function setDis(ext) {
+      res.header("Content-Disposition", contentdisposition(title) + ext);
+    }
+    function setCon(type) {
+      res.header("Content-Type", type)
+    }
     if (!req.query.inbrowser) {
-      res.header("Content-Disposition", contentdisposition(title));
       if (audio) {
-        res.header("Content-Type", "audio/mpeg");
+        setDis(".mp3")
+        setCon(audio/mpeg");
         var proc = new ffmpeg({ source: videoStream });
         proc
           .withAudioCodec("libmp3lame")
           .toFormat("mp3")
           .output(res)
           .run();
+      } else if (req.query.amv) {
+        setDis(".amv")
+        
       } else {
+        setDis(".mp4")
         streamVideo();
       }
       //streamVideo();
