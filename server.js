@@ -36,7 +36,7 @@ function PausablePassThrough(options) {
   this.queuedCallbacks = [];
 }
 
-PausablePassThrough.prototype.togglePause = function(paused) {
+PausablePassThrough.prototype.togglePause = function (paused) {
   this.paused = paused;
   if (!this.paused) {
     while (this.queuedCallbacks.length) {
@@ -45,7 +45,7 @@ PausablePassThrough.prototype.togglePause = function(paused) {
   }
 };
 
-PausablePassThrough.prototype._transform = function(chunk, encoding, cb) {
+PausablePassThrough.prototype._transform = function (chunk, encoding, cb) {
   this.push(chunk);
   if (this.paused) {
     this.queuedCallbacks.push(cb);
@@ -59,17 +59,17 @@ app.get("/watch", async (req, res) => {
   var videoStream = await ytdl(req.query.v, {
     requestOptions: {
       headers: {
-        cookie: "key=" + apikey
-      }
+        cookie: "key=" + apikey,
+      },
     },
     quality: audio ? "highestaudio" : "highest",
-    filter: format => format.audioBitrate
+    filter: (format) => format.audioBitrate,
   });
   var pausableStream = new PausablePassThrough();
   const streamVideo = () => {
     videoStream.pipe(pausableStream).pipe(res);
   };
-  videoStream.on("info", async info => {
+  videoStream.on("info", async (info) => {
     var title =
       info.videoDetails.title.indexOf(".") ===
       info.videoDetails.title.length - 1
@@ -82,45 +82,42 @@ app.get("/watch", async (req, res) => {
       res.header("Content-Disposition", contentdisposition(title) + ext);
     }
     function setCon(type) {
-      res.header("Content-Type", type)
+      res.header("Content-Type", type);
     }
     if (!req.query.inbrowser) {
       if (audio) {
-        setDis(".mp3")
+        setDis(".mp3");
         setCon("audio/mpeg");
         var proc = new ffmpeg({ source: videoStream });
-        proc
-          .withAudioCodec("libmp3lame")
-          .toFormat("mp3")
-          .output(res)
-          .run();
+        proc.withAudioCodec("libmp3lame").toFormat("mp3").output(res).run();
       } else if (req.query.amv) {
-        setDis(".amv")
-        setCon("video/x-amv")
-        
+        setDis(".amv");
+        setCon("video/x-amv");
+        var proc = new ffmpeg({ source: videoStream });
+        proc.withAudioCodec("libmp3lame").toFormat("amv").output(res).run();
       } else {
-        setDis(".mp4")
+        setDis(".mp4");
         streamVideo();
       }
       //streamVideo();
     } else {
-      console.log("inbrowser")
+      console.log("inbrowser");
       var playbackURL = await ytdl.getVideoPlaybackURL(info, {
         requestOptions: {
           headers: {
-            cookie: "key=" + apikey
-          }
+            cookie: "key=" + apikey,
+          },
         },
         quality: audio ? "highestaudio" : "highest",
-        filter: format => format.audioBitrate
+        filter: (format) => format.audioBitrate,
       });
-      console.log(playbackURL)
+      console.log(playbackURL);
       await request(playbackURL).pipe(res);
 
       //console.log(playbackURL);
     }
   });
-  videoStream.on("error", err => {
+  videoStream.on("error", (err) => {
     res.send("an error occured, please try again later...");
     console.log(err);
   });
@@ -186,9 +183,9 @@ app.get("/playlist", async (req, res) => {
     "Content-Disposition",
     contentdisposition(playlist_name + ".zip")
   );
-  const handleEntries = videoStream => {
+  const handleEntries = (videoStream) => {
     return new Promise((resolve, reject) => {
-      videoStream.on("info", info => {
+      videoStream.on("info", (info) => {
         var title = info.videoDetails.title;
         playlist.entry(
           videoStream,
@@ -205,7 +202,7 @@ app.get("/playlist", async (req, res) => {
       videoStream.on("end", () => {
         console.log("finished downloading");
       });
-      videoStream.on("error", err => {
+      videoStream.on("error", (err) => {
         console.log(err);
       });
     });
@@ -217,14 +214,14 @@ app.get("/playlist", async (req, res) => {
     var videoStream = ytdl(video_ids[i], {
       requestOptions: {
         headers: {
-          cookie: "key=" + apikey
-        }
+          cookie: "key=" + apikey,
+        },
       },
       quality: req.query.dlmp3 ? "highestaudio" : "highest",
-      filter: function(format) {
+      filter: function (format) {
         if (format.audioBitrate) return true;
         else chosenFormat = format;
-      }
+      },
     });
     console.log(chosenFormat);
     //var mp3;
@@ -255,25 +252,20 @@ app.get("/get_video_info", async (req, res) => {
 app.get("/waitstuffs", async (req, res) => {
   var browser = await puppeteer.launch({
     args: ["--no-sandbox", "--disable-web-security"],
-    headless: true
+    headless: true,
   });
   var page = await browser.newPage();
   var scriptSrcs = [];
   await page.goto(req.query.q);
   page
-    .on("console", msg => {
-      console.log(
-        `${msg
-          .type()
-          .substr(0, 3)
-          .toUpperCase()} ${msg.text()}`
-      );
+    .on("console", (msg) => {
+      console.log(`${msg.type().substr(0, 3).toUpperCase()} ${msg.text()}`);
     })
     .on("pageerror", ({ message }) => console.log(message))
-    .on("response", response =>
+    .on("response", (response) =>
       console.log(`${response.status()} ${response.url()}`)
     )
-    .on("requestfailed", request =>
+    .on("requestfailed", (request) =>
       console.log(`${request.failure().errorText || request} ${request.url()}`)
     );
   try {
@@ -304,11 +296,11 @@ app.get("/waitstuffs", async (req, res) => {
       async function fileRead(data) {
         return new Promise((resolve, reject) => {
           const reader = new FileReader();
-          reader.onload = function() {
+          reader.onload = function () {
             var content = reader.result;
             resolve(content);
           };
-          reader.onerror = function(e) {
+          reader.onerror = function (e) {
             reject(e);
           };
           reader.readAsDataURL(data);
@@ -342,8 +334,8 @@ app.get("/waitstuffs", async (req, res) => {
           console.log("scriptSrc: " + scriptSrc);
 
           await fetch(scriptSrc)
-            .then(data => data.text())
-            .then(data => {
+            .then((data) => data.text())
+            .then((data) => {
               //console.log("data: " + data);
               console.log(window.location.href);
               console.log(
@@ -354,7 +346,7 @@ app.get("/waitstuffs", async (req, res) => {
               );
               resolve("success");
             })
-            .catch(err => {
+            .catch((err) => {
               console.log("fetch error: " + err);
               resolve(scriptSrc);
             });
@@ -489,7 +481,7 @@ app.get("/get_site_html", (req, res) => {
   });
 });
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.status(404);
   if (req.accepts("html")) {
     res.sendFile(__dirname + "/views/404.html", { url: req.url });
