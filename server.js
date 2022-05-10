@@ -152,12 +152,7 @@ app.get("/playlistsetup", (req, res) => {
     //"https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr"
     //res.send(body.body.split(`var ytInitialData = `)[1].replace(";", ""));
     var unParsedBody = body.body.split(`var ytInitialData = `)[1];
-    unParsedBody = unParsedBody.substring(
-      0,
-      unParsedBody.indexOf(
-        `;</script><link rel="alternate" media="handheld" href="https://m.youtube.com/playlist">`
-      )
-    );
+    unParsedBody = unParsedBody.split(`;</script>`)[0];
     var parsedBody = JSON.parse(unParsedBody);
     var playlistTitle = parsedBody.metadata.playlistMetadataRenderer.title;
     var contents =
