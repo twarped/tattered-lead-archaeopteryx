@@ -106,12 +106,22 @@
       border-top-left-radius: 6px;
       border-bottom-left-radius: 6px;
       }
+      #checkbox {
+        position: absolute;
+        top: 17px;
+        left: 17px;
+        display: flex;
+        flex-direction: column;
+      }
       #checkAll {
+        font-weight: bold;
+        padding: 10px;
+        padding-bottom: 5px;
       }
       #uncheckAll {
+        font-weight: bold;
         padding: 10px;
-        border: solid 1px grey;
-        border-radius: 6px;
+        padding-top: 5px;
       }
       #download {
         position: absolute;
@@ -150,6 +160,11 @@
       //alert (downloadURL);
       window.open(downloadURL);
     };
+    function checkAll() {
+      document.getElementById("playlistContainer").children.forEach(e => {
+        if (e.)
+      })
+    }
     </script>
     <h1>
       Download Youtube Playlists
@@ -166,9 +181,10 @@
           Download
         </p>
       </a>
-      <div id="checkbox"
-      <a id="checkAll">check all</a>
-      <a id="uncheckAll">uncheck all</a>
+      <div id="checkbox">
+        <a id="checkAll" href="javascript:checkAll()">check all</a>
+        <a id="uncheckAll" href="javascript:uncheckAll()">uncheck all</a>
+      </div>
     </h1>
     <div id="playlistContainer" style="width: 100%;">
       <!--<img id="initialLoading" src="https://wpamelia.com/wp-content/uploads/2018/11/loading-hourglass.gif"/>-->
