@@ -196,11 +196,11 @@ app.get("/playlist", async (req, res) => {
           var proc = new ffmpeg({ source: videoStream });
           proc.withAudioCodec("libmp3lame").toFormat("mp3").output(actualOutStream).run();
         } else {
-          videoStream
+          videoStream.pipe(actualOutStream)
         }
         var title = info.videoDetails.title;
         playlist.entry(
-          videoStream,
+          actualOutStream,
           { name: title + (!audio ? ".mp4" : ".mp3") },
           (error, result) => {
             if (!error) {
