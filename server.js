@@ -191,6 +191,13 @@ app.get("/playlist", async (req, res) => {
   const handleEntries = (videoStream) => {
     return new Promise((resolve, reject) => {
       videoStream.on("info", (info) => {
+        var actualOutStream = new PausablePassThrough()
+        if (audio) {
+          var proc = new ffmpeg({ source: videoStream });
+          proc.withAudioCodec("libmp3lame").toFormat("mp3").output(actualOutStream).run();
+        } else {
+          videoStream
+        }
         var title = info.videoDetails.title;
         playlist.entry(
           videoStream,
