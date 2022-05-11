@@ -191,16 +191,14 @@ app.get("/playlist", async (req, res) => {
   const handleEntries = (videoStream) => {
     return new Promise((resolve, reject) => {
       videoStream.on("info", (info) => {
-        var actualOutStream = new PausablePassThrough()
+        var audioStream = new PausablePassThrough()
         if (audio) {
           var proc = new ffmpeg({ source: videoStream });
-          proc.withAudioCodec("libmp3lame").toFormat("mp3").output(actualOutStream).run();
-        } else {
-          videoStream.pipe(actualOutStream)
+          proc.withAudioCodec("libmp3lame").toFormat("mp3").output(audioStream).run();
         }
         var title = info.videoDetails.title;
         playlist.entry(
-          actualOutStream,
+          audio ? audioStream : videoStream,
           { name: title + (!audio ? ".mp4" : ".mp3") },
           (error, result) => {
             if (!error) {
@@ -231,7 +229,7 @@ app.get("/playlist", async (req, res) => {
       },
       quality: req.query.dlmp3 ? "highestaudio" : "highest",
       filter: function (format) {
-        if (format.audioBitrate) return true;
+        if (format.audioBitrate) { console.log(format); return true; }
         else chosenFormat = format;
       },
     });
