@@ -227,11 +227,7 @@ app.get("/playlist", async (req, res) => {
           cookie: "key=" + apikey,
         },
       },
-      quality: req.query.dlmp3 ? "highestaudio" : "highest",
-      filter: function (format) {
-        if (format.audioBitrate) { console.log(format); return true; }
-        else chosenFormat = format;
-      },
+      quality: req.query.dlmp3 ? "highestaudio" : "highest"
     });
     console.log(chosenFormat);
     //var mp3;
