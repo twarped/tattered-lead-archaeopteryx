@@ -149,7 +149,7 @@
     function downloadPlaylist() {
       alert ("this might take awhile (press ok)");
       var video_ids = [];
-        document.querySelectorAll("#playlistContainer > div[data-shoulddownload=true]").forEach(e => {
+      document.querySelectorAll("#playlistContainer > div[data-shoulddownload=true]").forEach(e => {
         video_ids.push(e.getAttribute("data-videoid"));
       })
       var urlSearchParams = new URLSearchParams(window.location.search);

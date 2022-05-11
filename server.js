@@ -191,14 +191,9 @@ app.get("/playlist", async (req, res) => {
   const handleEntries = (videoStream) => {
     return new Promise((resolve, reject) => {
       videoStream.on("info", (info) => {
-        var audioStream = new PausablePassThrough()
-        if (audio) {
-          var proc = new ffmpeg({ source: videoStream });
-          proc.withAudioCodec("libmp3lame").toFormat("mp3").output(audioStream).run();
-        }
         var title = info.videoDetails.title;
         playlist.entry(
-          audio ? audioStream : videoStream,
+          videoStream,
           { name: title + (!audio ? ".mp4" : ".mp3") },
           (error, result) => {
             if (!error) {
@@ -220,6 +215,7 @@ app.get("/playlist", async (req, res) => {
   playlist.pipe(pausableStream).pipe(res);
   console.log("downloading playlist, plz don't touch...");
   for (var i in video_ids) {
+    var audioStream = new PausablePassThrough();
     var chosenFormat;
     var videoStream = ytdl(video_ids[i], {
       requestOptions: {
@@ -236,10 +232,10 @@ app.get("/playlist", async (req, res) => {
       proc
         .withAudioCodec("libmp3lame")
         .toFormat("mp3")
-        .output(videoStream)
+        .output(audioStream)
         .run();
     }
-    await handleEntries(videoStream);
+    await handleEntries(audio ? audioStream : videoStream);
   }
   console.log("done...");
   playlist.finish();
