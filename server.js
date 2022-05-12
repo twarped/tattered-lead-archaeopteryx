@@ -194,9 +194,10 @@ app.get("/playlist", async (req, res) => {
       videoStream.on("info", (info) => {
         var title = info.videoDetails.title;
         console.log(title)
+        console.log(videoStream)
         playlist.entry(
           videoStream,
-          { name: title + (!audio ? ".mp4" : ".mp3") },
+          { name: title + (audio == true ? ".mp3" : ".mp4") },
           (error, result) => {
             if (!error) {
               resolve(result);
@@ -224,7 +225,7 @@ app.get("/playlist", async (req, res) => {
           cookie: "key=" + apikey,
         },
       },
-      quality: audio ? "highestaudio" : "highest"
+      quality: audio == true ? "highestaudio" : "highest"
     });
     console.log("passed videostream (ytdl)")
     if (audio) {
@@ -235,8 +236,10 @@ app.get("/playlist", async (req, res) => {
         .output(audioStream)
         .run();
     }
-    console.log(audio ? audioStream : videoStream)
-    await handleEntries(audio ? audioStream : videoStream);
+    console.log(audio)
+    console.log(audio == true ? "audioStream" : "videoStream")
+    //console.log(audio ? audioStream : videoStream)
+    await handleEntries(audio == true ? audioStream : videoStream);
   }
   console.log("done...");
   playlist.finish();
