@@ -180,6 +180,7 @@ app.get("/playlistsetup", (req, res) => {
 app.get("/playlist", async (req, res) => {
   var audio = req.query.dlmp3;
   console.log("pending...");
+  console.log(audio)
   var pausableStream = new PausablePassThrough();
   var video_ids = JSON.parse(req.query.video_ids);
   var playlist_name = req.query.playlist_name;
@@ -192,6 +193,7 @@ app.get("/playlist", async (req, res) => {
     return new Promise((resolve, reject) => {
       videoStream.on("info", (info) => {
         var title = info.videoDetails.title;
+        console.log(title)
         playlist.entry(
           videoStream,
           { name: title + (!audio ? ".mp4" : ".mp3") },
@@ -216,18 +218,16 @@ app.get("/playlist", async (req, res) => {
   console.log("downloading playlist, plz don't touch...");
   for (var i in video_ids) {
     var audioStream = new PausablePassThrough();
-    var chosenFormat;
     var videoStream = ytdl(video_ids[i], {
       requestOptions: {
         headers: {
           cookie: "key=" + apikey,
         },
       },
-      quality: req.query.dlmp3 ? "highestaudio" : "highest"
+      quality: audio ? "highestaudio" : "highest"
     });
-    console.log(chosenFormat);
-    //var mp3;
-    if (req.query.dlmp3) {
+    console.log("passed videostream (ytdl)")
+    if (audio) {
       var proc = new ffmpeg({ source: videoStream });
       proc
         .withAudioCodec("libmp3lame")
@@ -235,6 +235,7 @@ app.get("/playlist", async (req, res) => {
         .output(audioStream)
         .run();
     }
+    console.log(audio ? audioStream : videoStream)
     await handleEntries(audio ? audioStream : videoStream);
   }
   console.log("done...");
