@@ -180,11 +180,14 @@ app.get("/playlistsetup", (req, res) => {
 app.get("/playlist", async (req, res) => {
   var audio = req.query.dlmp3;
   console.log("pending...");
-  console.log(audio)
+  console.log(audio);
   var pausableStream = new PausablePassThrough();
   var video_ids = JSON.parse(req.query.video_ids);
   var playlist_name = req.query.playlist_name;
   var playlist = new packer();
+  playlist.on("error", (err) => {
+    throw err;
+  });
   res.setHeader(
     "Content-Disposition",
     contentdisposition(playlist_name + ".zip")
@@ -193,13 +196,15 @@ app.get("/playlist", async (req, res) => {
     return new Promise((resolve, reject) => {
       videoStream.on("info", (info) => {
         var title = info.videoDetails.title;
-        console.log(title)
-        console.log(videoStream)
-        console.log({ name: title + (audio == true ? ".mp3" : ".mp4") })
+        console.log(title);
+        console.log(videoStream);
+        console.log({ name: title + (audio == true ? ".mp3" : ".mp4") });
         playlist.entry(
           videoStream,
           { name: title + (audio == true ? ".mp3" : ".mp4") },
           (error, result) => {
+            console.log(result)
+            console.log(error)
             if (!error) {
               resolve(result);
             } else {
@@ -226,9 +231,9 @@ app.get("/playlist", async (req, res) => {
           cookie: "key=" + apikey,
         },
       },
-      quality: audio == true ? "highestaudio" : "highest"
+      quality: audio == true ? "highestaudio" : "highest",
     });
-    console.log("passed videostream (ytdl)")
+    console.log("passed videostream (ytdl)");
     if (audio) {
       var proc = new ffmpeg({ source: videoStream });
       proc
@@ -237,8 +242,8 @@ app.get("/playlist", async (req, res) => {
         .output(audioStream)
         .run();
     }
-    console.log(audio)
-    console.log(audio == true ? "audioStream" : "videoStream")
+    console.log(audio);
+    console.log(audio == true ? "audioStream" : "videoStream");
     //console.log(audio ? audioStream : videoStream)
     await handleEntries(audio == true ? audioStream : videoStream);
   }
