@@ -195,6 +195,7 @@ app.get("/playlist", async (req, res) => {
         var title = info.videoDetails.title;
         console.log(title)
         console.log(videoStream)
+        console.log({ name: title + (audio == true ? ".mp3" : ".mp4") })
         playlist.entry(
           videoStream,
           { name: title + (audio == true ? ".mp3" : ".mp4") },
