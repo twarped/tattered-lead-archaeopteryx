@@ -185,7 +185,7 @@ app.get("/playlist", async (req, res) => {
   var pausableStream = new PausablePassThrough();
   var video_ids = JSON.parse(req.query.video_ids);
   var playlist_name = req.query.playlist_name;
-  var playlist = new packer();
+  var playlist = new packer("zip", {zlib:{level:9}});
   playlist.on("error", (err) => {
     throw err;
   });
@@ -200,18 +200,9 @@ app.get("/playlist", async (req, res) => {
         console.log(title);
         console.log(videoStream);
         console.log({ name: title + (audio == true ? ".mp3" : ".mp4") });
-        playlist.entry(
+        playlist.append(
           videoStream,
-          { name: title + (audio == true ? ".mp3" : ".mp4") },
-          (error, result) => {
-            console.log(result)
-            console.log(error)
-            if (!error) {
-              resolve(result);
-            } else {
-              reject(error);
-            }
-          }
+          { name: title + (audio == true ? ".mp3" : ".mp4") }
         );
       });
       videoStream.on("end", () => {
@@ -222,7 +213,7 @@ app.get("/playlist", async (req, res) => {
       });
     });
   };
-  playlist.pipe(pausableStream).pipe(res);
+  playlist.pipe(res);
   console.log("downloading playlist, plz don't touch...");
   for (var i in video_ids) {
     var audioStream = new PausablePassThrough();
