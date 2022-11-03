@@ -16,7 +16,7 @@ dependencies:
   stream-to-blob-url: 3.0.2
   util: 0.12.3
   youtube-dl: 3.5.0
-  ytdl-core: 4.11.0
+  ytdl-core: 4.11.2
   ytdl-core-custom: github.com/twarped/node-ytdl-core/7311b624f6c45f795cf501e805a1baad9c150574
   zip-stream: 4.1.0
 packages:
@@ -2462,7 +2462,7 @@ packages:
     requiresBuild: true
     resolution:
       integrity: sha512-+I9o908rD154LqaVdP1f9Xlu+qYp3/m/bZeUwaxsAV7nR8W0IObqz0oAyxvE1Qrn7oTCvvg6MZ1oqkHIA8LA+g==
-  /ytdl-core/4.11.0:
+  /ytdl-core/4.11.2:
     dependencies:
       m3u8stream: 0.8.6
       miniget: 4.2.2
@@ -2471,7 +2471,7 @@ packages:
     engines:
       node: '>=12'
     resolution:
-      integrity: sha512-Q3hCLiUA9AOGQXzPvno14GN+HgF9wsO1ZBHlj0COTcyxjIyFpWvMfii0UC4/cAbVaIjEdbWB71GdcGuc4J1Lmw==
+      integrity: sha512-D939t9b4ZzP3v0zDvehR2q+KgG97UTgrTKju3pOPGQcXtl4W6W5z0EpznzcJFu+OOpl7S7Ge8hv8zU65QnxYug==
   /zero-fill/2.2.4:
     dev: false
     resolution:
@@ -2520,6 +2520,6 @@ specifiers:
   stream-to-blob-url: ^3.0.1
   util: ^0.12.3
   youtube-dl: ^3.5.0
-  ytdl-core: ^4.11.0
+  ytdl-core: ^4.11.2
   ytdl-core-custom: 'git+https://github.com/twarped/node-ytdl-core.git#patch-4'
   zip-stream: ^4.1.0

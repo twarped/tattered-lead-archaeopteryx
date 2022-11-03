@@ -29,10 +29,10 @@
     "youtube-dl": "^3.5.0",
     "ytdl-core-custom": "git+https://github.com/twarped/node-ytdl-core.git#patch-4",
     "zip-stream": "^4.1.0",
-    "ytdl-core": "^4.11.0"
+    "ytdl-core": "^4.11.2"
   },
   "engines": {
-    "node": "12.x"
+    "node": "^14.21.0"
   },
   "repository": {
     "url": "https://glitch.com/edit/#!/hello-express"
