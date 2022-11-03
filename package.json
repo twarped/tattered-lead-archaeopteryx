@@ -32,7 +32,7 @@
     "ytdl-core": "^4.11.2"
   },
   "engines": {
-    "node": "^14.21.0"
+    "node": "14.21.0"
   },
   "repository": {
     "url": "https://glitch.com/edit/#!/hello-express"
