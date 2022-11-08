@@ -56,8 +56,8 @@ PausablePassThrough.prototype._transform = function (chunk, encoding, cb) {
 };
 
 app.get("/watch", async (req, res) => {
-  var audio = req.query.dlmp3;
-  console.log("mp3: " + audio);
+  var audio = !req.query.dlmp3;
+  console.log("mp3: " + !audio);
   var videoStream = await ytdl(req.query.v, {
     requestOptions: {
       headers: {
@@ -87,9 +87,9 @@ app.get("/watch", async (req, res) => {
       res.header("Content-Type", type);
     }
     if (!req.query.inbrowser) {
+      setDis(audio ? ".mp3" : ".mp4")
+      setCon(audio ? "audio/mpeg" : "video/mp4")
       if (audio) {
-        setDis(".mp3");
-        setCon("audio/mpeg");
         var proc = new ffmpeg({ source: videoStream });
         proc.withAudioCodec("libmp3lame").toFormat("mp3").output(res).run();
       } else if (
@@ -109,7 +109,6 @@ app.get("/watch", async (req, res) => {
           .run();
         stream.on("error", (error) => res.send(error));
       } else {
-        setDis(".mp4");
         streamVideo();
       }
     } else {
