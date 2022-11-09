@@ -18,6 +18,7 @@ const util = require("util");
 const puppeteer = require("puppeteer");
 const ffmpeg = require("fluent-ffmpeg");
 const miniget = require("miniget");
+const http = require("node:http");
 const apikey = process.env.api_key;
 
 app.use(express.static("public"));
@@ -81,9 +82,14 @@ app.get("/watch", async (req, res) => {
       quality: "highest"
     });
     var url = format.url;
+    if (url.indexOf("s") == 4) {
+      url = url.replace("s", "");
+    }
     //res.send(url);
     if (inbrowser) {
-      fs.createReadStream("server.js").pipe(res);
+      http.get(url, body => {
+        res.pipe(body);
+      })
     }
   });
 })
