@@ -67,7 +67,10 @@ app.get("/watch", async (req, res) => {
       }
     }
   }).then(info => {
-    var format = ytdl.choose
+    var format = ytdl.chooseFormat(info.formats, {
+      filter: format => format.hasAudio && format.hasVideo,
+      quality: "highest"
+    })
     res.send(format);
   });
 })
