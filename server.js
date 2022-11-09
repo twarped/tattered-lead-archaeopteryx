@@ -87,8 +87,9 @@ app.get("/watch", async (req, res) => {
     }
     //res.send(url);
     if (inbrowser) {
+      console.log(url);
       http.get(url, body => {
-        res.pipe(body);
+        body.pipe(res);
       })
     }
   });
