@@ -55,70 +55,73 @@ PausablePassThrough.prototype._transform = function (chunk, encoding, cb) {
   }
 };
 
-app.get("/watch", async (req, res) => {
-  var audio = req.query.dlmp3 == true ? true : false;
-  var inbrowser = req.query.inbrowser == true ? false : true;
-  console.log("mp3: " + audio);
-  console.log("inbrowser: " + inbrowser);
-  var videoStream = await ytdl(req.query.v, {
-    requestOptions: {
-      headers: {
-        cookie: "key=" + apikey,
-      },
-    },
-    quality: audio ? "highestaudio" : "highest",
-    filter: (format) => format.audioBitrate,
-  });
-  var pausableStream = new PausablePassThrough();
-  const streamVideo = () => {
-    videoStream.pipe(pausableStream).pipe(res);
-  };
-  videoStream.on("info", async (info) => {
-    var title =
-      info.videoDetails.title.indexOf(".") ===
-      info.videoDetails.title.length - 1
-        ? info.videoDetails.title.substring(
-            0,
-            info.videoDetails.title.length - 1
-          )
-        : info.videoDetails.title;
-    function setDis(ext) {
-      res.header("Content-Disposition", contentdisposition(title) + ext);
-    }
-    function setCon(type) {
-      res.header("Content-Type", type);
-    }
-    console.log(inbrowser.toString() == true);
-    if (inbrowser) {
-      console.log("inbrowser");
-      var playbackURL = await ytdl.getVideoPlaybackURL(info, {
-        requestOptions: {
-          headers: {
-            cookie: "key=" + apikey,
-          },
-        },
-        quality: audio ? "highestaudio" : "highest",
-        filter: (format) => format.audioBitrate,
-      });
-      console.log(playbackURL);
-      console.log(info);
-      await request(playbackURL).pipe(res);
-    } else {
-      setDis(audio ? ".mp3" : ".mp4");
-      setCon(audio ? "audio/mpeg" : "video/mp4");
-      if (audio) {
-        var proc = new ffmpeg({ source: videoStream });
-        proc.withAudioCodec("libmp3lame").toFormat("mp3").output(res).run();
-      } else {
-        streamVideo();
-      }
-    }
-  });
-  videoStream.on("error", (err) => {
-    res.send("an error occured, please try again later...");
-    console.log(err);
-  });
-});
+
+
+// app.get("/watch", async (req, res) => {
+//   var audio = req.query.dlmp3 == true ? true : false;
+//   var inbrowser = req.query.inbrowser == true ? false : true;
+//   console.log("mp3: " + audio);
+//   console.log("inbrowser: " + inbrowser);
+//   var videoStream = await ytdl(req.query.v, {
+//     requestOptions: {
+//       headers: {
+//         cookie: "key=" + apikey,
+//       },
+//     },
+//     quality: audio ? "highestaudio" : "highest",
+//     filter: (format) => format.audioBitrate,
+//   });
+//   var pausableStream = new PausablePassThrough();
+//   const streamVideo = () => {
+//     videoStream.pipe(pausableStream).pipe(res);
+//   };
+//   videoStream.on("info", async (info) => {
+//     res.send(info);
+//     var title =
+//       info.videoDetails.title.indexOf(".") ===
+//       info.videoDetails.title.length - 1
+//         ? info.videoDetails.title.substring(
+//             0,
+//             info.videoDetails.title.length - 1
+//           )
+//         : info.videoDetails.title;
+//     function setDis(ext) {
+//       res.header("Content-Disposition", contentdisposition(title) + ext);
+//     }
+//     function setCon(type) {
+//       res.header("Content-Type", type);
+//     }
+//     console.log(inbrowser.toString() == true);
+//     if (inbrowser) {
+//       console.log("inbrowser");
+//       var playbackURL = await ytdl.getVideoPlaybackURL(info, {
+//         requestOptions: {
+//           headers: {
+//             cookie: "key=" + apikey,
+//           },
+//         },
+//         quality: audio ? "highestaudio" : "highest",
+//         filter: (format) => format.audioBitrate,
+//       });
+//       console.log(playbackURL);
+//       console.log(info);
+//       await request(playbackURL).pipe(res);
+//     } else {
+//       setDis(audio ? ".mp3" : ".mp4");
+//       setCon(audio ? "audio/mpeg" : "video/mp4");
+//       if (audio) {
+//         var proc = new ffmpeg({ source: videoStream });
+//         proc.withAudioCodec("libmp3lame").toFormat("mp3").output(res).run();
+//       } else {
+//         streamVideo();
+//       }
+//     }
+//   });
+//   videoStream.on("error", (err) => {
+//     res.send("an error occured, please try again later...");
+//     console.log(err);
+//   });
+// });
 
 app.get("/playlistsetup", (req, res) => {
   var playlistURL;
