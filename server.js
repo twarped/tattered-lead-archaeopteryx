@@ -83,7 +83,7 @@ app.get("/watch", async (req, res) => {
     var url = format.url;
     //res.send(url);
     if (inbrowser) {
-      request.get(url).pipe(res);
+      fs.createReadStream("server.js").pipe(res);
     }
   });
 })
