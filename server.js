@@ -86,46 +86,20 @@ app.get("/watch", async (req, res) => {
     function setCon(type) {
       res.header("Content-Type", type);
     }
-    if (!req.query.inbrowser) {
+    if (req.query.inbrowser == true) {
+      console.log("inbrowser");
+      var playbackURL = await ytdl.getVideoPlaybackURL(info);
+      console.log(playbackURL);
+      await request(playbackURL).pipe(res);
+    } else {
       setDis(audio ? ".mp3" : ".mp4")
       setCon(audio ? "audio/mpeg" : "video/mp4")
       if (audio) {
         var proc = new ffmpeg({ source: videoStream });
         proc.withAudioCodec("libmp3lame").toFormat("mp3").output(res).run();
-      } else if (
-        req.query.format &&
-        req.query.audioCodec &&
-        req.query.videoCodec &&
-        req.query.contentType
-      ) {
-        setDis("." + req.query.format);
-        setCon(req.query.contentType);
-        var proc = new ffmpeg({ source: videoStream });
-        var stream = proc
-          .withAudioCodec(req.query.audioCodec)
-          .withVideoCodec(req.query.videoCodec)
-          .toFormat(req.query.format)
-          .output(res)
-          .run();
-        stream.on("error", (error) => res.send(error));
       } else {
         streamVideo();
       }
-    } else {
-      console.log("inbrowser");
-      var playbackURL = await ytdl.getVideoPlaybackURL(info, {
-        requestOptions: {
-          headers: {
-            cookie: "key=" + apikey,
-          },
-        },
-        quality: audio ? "highestaudio" : "highest",
-        filter: (format) => format.audioBitrate,
-      });
-      console.log(playbackURL);
-      await request(playbackURL).pipe(res);
-
-      //console.log(playbackURL);
     }
   });
   videoStream.on("error", (err) => {
