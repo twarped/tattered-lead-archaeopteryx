@@ -66,11 +66,10 @@ app.get("/watch", async (req, res) => {
   try {
     inbrowser = inbrowser.toString() === "true";
   } catch (e) {
-    console.log(e);
     inbrowser = false;
   }
-  console.log("audio: " + req.query.dlmp3);
-  console.log("inbrowser: " + req.query.inbrowser);
+  console.log("audio: " + audio);
+  console.log("inbrowser: " + inbrowser);
   ytdl.getInfo(req.query.v, {
     requestOptions: {
       headers: {
