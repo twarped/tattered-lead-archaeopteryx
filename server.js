@@ -56,8 +56,10 @@ PausablePassThrough.prototype._transform = function (chunk, encoding, cb) {
 };
 
 app.get("/watch", async (req, res) => {
-  var audio = !req.query.dlmp3;
-  console.log("mp3: " + !audio);
+  var audio = req.query.dlmp3 == true ? true : false;
+  var inbrowser = req.query.inbrowser == true ? false : true;
+  console.log("mp3: " + audio);
+  console.log("inbrowser: " + inbrowser);
   var videoStream = await ytdl(req.query.v, {
     requestOptions: {
       headers: {
@@ -86,7 +88,8 @@ app.get("/watch", async (req, res) => {
     function setCon(type) {
       res.header("Content-Type", type);
     }
-    if (req.query.inbrowser == true) {
+    console.log(inbrowser.toString() == true);
+    if (inbrowser) {
       console.log("inbrowser");
       var playbackURL = await ytdl.getVideoPlaybackURL(info);
       console.log(playbackURL);
