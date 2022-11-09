@@ -87,7 +87,6 @@ app.get("/watch", async (req, res) => {
       console.log("iboss blocks proxy piping, so i just have to redirect you...");
       console.log(url);
       res.redirect(url);
-      res.end();
     }
   });
 })
