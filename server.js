@@ -60,8 +60,18 @@ app.get("/watch", async (req, res) => {
   var inbrowser = req.query.inbrowser;
   console.log(audio);
   console.log(inbrowser);
-  ytdl.getInfo(req.query.v).then(info => {
-    
+  ytdl.getInfo(req.query.v, {
+    requestOptions: {
+      headers: {
+        cookie: "key=" + apikey
+      }
+    }
+  }).then(info => {
+    var format = ytdl.chooseFormat(info, {
+      quality: audio ? "highestaudio" : "highest",
+      filter: format => format.audioBitrate
+    });
+    res.send(format);
   });
 })
 
