@@ -56,10 +56,10 @@ PausablePassThrough.prototype._transform = function (chunk, encoding, cb) {
 };
 
 app.get("/watch", async (req, res) => {
-  var audio = req.query.dlmp3;
-  var inbrowser = req.query.inbrowser;
-  console.log(audio);
-  console.log(inbrowser);
+  var audio = req.query.dlmp3 ? true : false;
+  var inbrowser = req.query.inbrowser ? true : false;
+  console.log("audio: " + audio);
+  console.log("inbrowser: " + inbrowser);
   ytdl.getInfo(req.query.v, {
     requestOptions: {
       headers: {
@@ -68,9 +68,10 @@ app.get("/watch", async (req, res) => {
     }
   }).then(info => {
     var format = ytdl.chooseFormat(info.formats, {
-      filter: format => format.hasAudio && format.hasVideo,
+      filter: audio ? format => format.hasAudio : format => format.hasAudio && format.hasVideo,
       quality: "highest"
-    })
+    });
+    var url = format.url;
     res.send(format);
   });
 })
