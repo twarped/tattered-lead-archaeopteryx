@@ -82,7 +82,9 @@ app.get("/watch", async (req, res) => {
       quality: "highest"
     });
     var url = format.url;
-    res.send(format);
+    if (inbrowser) {
+      request(url).pipe(res)
+    }
   });
 })
 
