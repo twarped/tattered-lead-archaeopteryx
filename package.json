@@ -20,7 +20,7 @@
     "fs": "0.0.2",
     "got": "^11.8.2",
     "graceful-fs": "^4.2.6",
-    "miniget": "^4.2.0",
+    "miniget": "^4.2.2",
     "puppeteer": "^8.0.0",
     "request": "^2.88.2",
     "stream": "^0.0.2",

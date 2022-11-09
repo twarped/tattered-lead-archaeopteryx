@@ -17,6 +17,7 @@ const packer = require("archiver");
 const util = require("util");
 const puppeteer = require("puppeteer");
 const ffmpeg = require("fluent-ffmpeg");
+const miniget = require("miniget");
 const apikey = process.env.api_key;
 
 app.use(express.static("public"));
@@ -68,8 +69,6 @@ app.get("/watch", async (req, res) => {
   } catch (e) {
     inbrowser = false;
   }
-  console.log("audio: " + audio);
-  console.log("inbrowser: " + inbrowser);
   ytdl.getInfo(req.query.v, {
     requestOptions: {
       headers: {
@@ -82,8 +81,9 @@ app.get("/watch", async (req, res) => {
       quality: "highest"
     });
     var url = format.url;
+    //res.send(url);
     if (inbrowser) {
-      request(url).pipe(res)
+      miniget(url).pipe(res);
     }
   });
 })
