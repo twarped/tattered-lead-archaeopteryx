@@ -55,7 +55,15 @@ PausablePassThrough.prototype._transform = function (chunk, encoding, cb) {
   }
 };
 
-
+app.get("/watch", async (req, res) => {
+  var audio = req.query.dlmp3;
+  var inbrowser = req.query.inbrowser;
+  console.log(audio);
+  console.log(inbrowser);
+  ytdl.getInfo(req.query.v).then(info => {
+    
+  });
+})
 
 // app.get("/watch", async (req, res) => {
 //   var audio = req.query.dlmp3 == true ? true : false;
