@@ -13,7 +13,7 @@ const fs = require("graceful-fs");
 const toBlobURL = require("stream-to-blob-url");
 const stream = require("stream");
 //const packer = require("zip-stream");
-const packer = require("archiver")
+const packer = require("archiver");
 const util = require("util");
 const puppeteer = require("puppeteer");
 const ffmpeg = require("fluent-ffmpeg");
@@ -91,12 +91,21 @@ app.get("/watch", async (req, res) => {
     console.log(inbrowser.toString() == true);
     if (inbrowser) {
       console.log("inbrowser");
-      var playbackURL = await ytdl.getVideoPlaybackURL(info);
+      var playbackURL = await ytdl.getVideoPlaybackURL(info, {
+        requestOptions: {
+          headers: {
+            cookie: "key=" + apikey,
+          },
+        },
+        quality: audio ? "highestaudio" : "highest",
+        filter: (format) => format.audioBitrate,
+      });
       console.log(playbackURL);
+      console.log(info);
       await request(playbackURL).pipe(res);
     } else {
-      setDis(audio ? ".mp3" : ".mp4")
-      setCon(audio ? "audio/mpeg" : "video/mp4")
+      setDis(audio ? ".mp3" : ".mp4");
+      setCon(audio ? "audio/mpeg" : "video/mp4");
       if (audio) {
         var proc = new ffmpeg({ source: videoStream });
         proc.withAudioCodec("libmp3lame").toFormat("mp3").output(res).run();
@@ -162,7 +171,7 @@ app.get("/playlist", async (req, res) => {
   var pausableStream = new PausablePassThrough();
   var video_ids = JSON.parse(req.query.video_ids);
   var playlist_name = req.query.playlist_name;
-  var playlist = new packer("zip", {zlib:{level:9}});
+  var playlist = new packer("zip", { zlib: { level: 9 } });
   playlist.on("error", (err) => {
     throw err;
   });
@@ -177,10 +186,9 @@ app.get("/playlist", async (req, res) => {
         console.log(title);
         console.log(videoStream);
         console.log({ name: title + (audio == true ? ".mp3" : ".mp4") });
-        playlist.append(
-          videoStream,
-          { name: title + (audio == true ? ".mp3" : ".mp4") }
-        );
+        playlist.append(videoStream, {
+          name: title + (audio == true ? ".mp3" : ".mp4"),
+        });
       });
       videoStream.on("end", () => {
         console.log("finished downloading");
