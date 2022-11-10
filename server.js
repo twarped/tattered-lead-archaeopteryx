@@ -88,25 +88,25 @@ app.get("/watch", async (req, res) => {
       var url = format.url;
       var title = info.videoDetails.title;
       var ext = audio ? ".mp3" : ".mp4";
-      if (!inbrowser) {
-        console.log(url);
-        console.log(title);
-        console.log(audio);
-        console.log(inbrowser);
-        console.log(ext);
+      if (inbrowser) {
+        res.redirect(302, url); //iboss blocks proxy piping, so i just have to redirect you...
+      } else {
         res.header("content-type", audio ? "audio/mpeg" : "video/mp4");
         res.header(
           "content-disposition",
           contentdisposition(title + ext)
         );
+        console.log(url);
+        console.log(title);
+        console.log(audio);
+        console.log(inbrowser);
+        console.log(ext);
+        console.log(res.getHeaders());
+        https.get(url, body => {
+          body.pipe(res);
+          res.end();
+        });
       }
-      console.log(url);
-      console.log(title);
-      console.log(audio);
-      console.log(inbrowser);
-      console.log(ext);
-      console.log(res.getHeaders());
-      res.redirect(url); //iboss blocks proxy piping, so i just have to redirect you...
     });
 });
 
