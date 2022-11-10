@@ -82,12 +82,14 @@ app.get("/watch", async (req, res) => {
       quality: "highest"
     });
     var url = format.url;
-    //res.send(url);
-    if (inbrowser) {
-      console.log("iboss blocks proxy piping, so i just have to redirect you...");
-      console.log(url);
-      res.redirect(url);
+    var title = format.title;
+    console.log(url);
+    console.log(title);
+    if (!inbrowser) {
+      res.header("content-type", audio ? "audio/mpeg" : "video/mp4");
+      res.header("content-disposition", contentdisposition(format.title.index) + audio ? ".mp3" : ".mp4");
     }
+    res.redirect(url); //iboss blocks proxy piping, so i just have to redirect you...
   });
 })
 
