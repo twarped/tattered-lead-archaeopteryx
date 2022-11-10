@@ -98,8 +98,9 @@ app.get("/watch", async (req, res) => {
         //console.log(audio);
         //console.log(inbrowser);
         //console.log(ext);
-        //console.log(res.getHeaders());
-        request(url).pipe(res);
+        console.log(res.getHeaders());
+        https.get(url, (body) => body.pipe(res));
+        res.end();
       }
     });
 });
