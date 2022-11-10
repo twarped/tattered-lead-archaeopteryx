@@ -91,19 +91,15 @@ app.get("/watch", async (req, res) => {
       if (inbrowser) {
         res.redirect(302, url); //iboss blocks proxy piping, so i just have to redirect you...
       } else {
-        res.header("content-type", audio ? "audio/mpeg" : "video/mp4");
-        res.header("content-disposition", contentdisposition(title + ext));
+        //res.header("content-type", audio ? "audio/mpeg" : "video/mp4");
+        //res.header("content-disposition", contentdisposition(title + ext));
         console.log(url);
         //console.log(title);
         //console.log(audio);
         //console.log(inbrowser);
         //console.log(ext);
         //console.log(res.getHeaders());
-        request(url, (err, rres, body) => {
-          
-        })
-        var proc = new ffmpeg({ source: request(url).on("response", rres => console.log(rres)) });
-        proc.withAudioCodec("libmp3lame").toFormat("mp3").output(res).run();
+        request(url).pipe(res);
       }
     });
 });
