@@ -70,28 +70,39 @@ app.get("/watch", async (req, res) => {
   } catch (e) {
     inbrowser = false;
   }
-  ytdl.getInfo(req.query.v, {
-    requestOptions: {
-      headers: {
-        cookie: "key=" + apikey
+  ytdl
+    .getInfo(req.query.v, {
+      requestOptions: {
+        headers: {
+          cookie: "key=" + apikey,
+        },
+      },
+    })
+    .then((info) => {
+      var format = ytdl.chooseFormat(info.formats, {
+        filter: audio
+          ? (format) => format.hasAudio
+          : (format) => format.hasAudio && format.hasVideo,
+        quality: "highest",
+      });
+      var url = format.url;
+      var title = info.videoDetails.title;
+      console.log(url);
+      console.log(title);
+      if (!inbrowser) {
+        res.header("content-type", audio ? "audio/mpeg" : "video/mp4");
+        res.header(
+          "content-disposition",
+          contentdisposition(
+            title[title.length - 1] === "." ? title.slice(0, -1) : title
+          ) + audio
+            ? ".mp3"
+            : ".mp4"
+        );
       }
-    }
-  }).then(info => {
-    var format = ytdl.chooseFormat(info.formats, {
-      filter: audio ? format => format.hasAudio : format => format.hasAudio && format.hasVideo,
-      quality: "highest"
+      res.redirect(url); //iboss blocks proxy piping, so i just have to redirect you...
     });
-    var url = format.url;
-    var title = format.title;
-    console.log(url);
-    console.log(title);
-    if (!inbrowser) {
-      res.header("content-type", audio ? "audio/mpeg" : "video/mp4");
-      res.header("content-disposition", contentdisposition(format.title.index) + audio ? ".mp3" : ".mp4");
-    }
-    res.redirect(url); //iboss blocks proxy piping, so i just have to redirect you...
-  });
-})
+});
 
 // app.get("/watch", async (req, res) => {
 //   var audio = req.query.dlmp3 == true ? true : false;
