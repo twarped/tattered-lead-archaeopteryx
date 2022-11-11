@@ -8,7 +8,7 @@ const events = require("events");
 const contentdisposition = require("content-disposition");
 const archiver = require("archiver");
 const axios = require("axios");
-const http2Express = require("http2-express-bridge")
+const http2Express = require("http2-express-bridge");
 const fs = require("graceful-fs");
 const toBlobURL = require("stream-to-blob-url");
 const stream = require("stream");
@@ -105,10 +105,10 @@ app.get("/watch", async (req, res) => {
         //console.log(ext);
         console.log(res.getHeaders());
         var pipe = request(url);
-        pipe.on('data',function(chunk) { 
+        pipe.on("data", function (chunk) {
           res.push(chunk);
         });
-        pipe.on('end',function() { 
+        pipe.on("end", function () {
           var res2 = Buffer.concat(res);
           console.log(res2);
           res.end();
@@ -325,6 +325,10 @@ app.use(function (req, res, next) {
   res.type("txt").send("Not found");
 });
 
-var server = http2.createSecureServer({ allowHTTP1: true, key: "./privkey.pem", cert: "./cert.pem"}, app);
-server.listen(process.env.PORT);
+var options = {
+  allowHTTP1: true,
+  key: fs.readFileSync("./key.pem"),
+  cert: fs.readFileSync("./cert.pem"),
+};
+var server = http2.createSecureServer(options, app).listen(process.env.PORT);
 console.log(process.env.PORT + " is the port");
