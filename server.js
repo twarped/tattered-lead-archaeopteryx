@@ -100,7 +100,15 @@ app.get("/watch", async (req, res) => {
         //console.log(inbrowser);
         //console.log(ext);
         console.log(res.getHeaders());
-        https.get(url, (body) => body.pipe(res));
+        var pipe = request(url);
+        pipe.on('data',function(chunk) { 
+          res.push(chunk);
+        });
+        pipe.on('end',function() { 
+          var res2 = Buffer.concat(res);
+          console.log(res2);
+          // don't forget to end the 'res' response after this!
+        });
       }
     });
 });
