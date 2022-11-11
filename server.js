@@ -107,7 +107,7 @@ app.get("/watch", async (req, res) => {
         pipe.on('end',function() { 
           var res2 = Buffer.concat(res);
           console.log(res2);
-          // don't forget to end the 'res' response after this!
+          res.end();
         });
       }
     });
