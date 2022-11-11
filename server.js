@@ -332,6 +332,9 @@ var options = {
 };
 
 var server = spdy.createServer(options, app);
-server.listen(process.env.PORT, () => {
+server.listen(process.env.PORT, err => {
+  if (err) {
+    throw err;
+  }
   console.log(process.env.PORT + " is the port");
 });
