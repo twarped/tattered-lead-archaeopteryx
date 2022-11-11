@@ -331,6 +331,7 @@ var options = {
   cert: fs.readFileSync("./cert.pem")
 };
 
-var server = spdy.createServer(options, app).listen(process.env.PORT, () => {
+var server = spdy.createServer(options, app);
+server.listen(process.env.PORT, () => {
   console.log(process.env.PORT + " is the port");
 });
