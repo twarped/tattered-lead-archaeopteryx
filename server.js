@@ -22,9 +22,10 @@ const ffmpeg = require("fluent-ffmpeg");
 const miniget = require("miniget");
 const https = require("node:https");
 const http2 = require("http2");
+const spdy = require("spdy");
 const apikey = process.env.api_key;
 
-var app = http2Express(express);
+var app = express();
 
 app.use(express.static("public"));
 app.use(cors());
@@ -326,9 +327,10 @@ app.use(function (req, res, next) {
 });
 
 var options = {
-  allowHTTP1: true,
   key: fs.readFileSync("./key.pem"),
-  cert: fs.readFileSync("./cert.pem"),
+  cert: fs.readFileSync("./cert.pem")
 };
-var server = http2.createSecureServer(options, app).listen(process.env.PORT);
-console.log(process.env.PORT + " is the port");
+
+var server = spdy.createServer(options, app).listen(process.env.PORT, () => {
+  console.log(process.env.PORT + " is the port");
+});
