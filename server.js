@@ -325,6 +325,6 @@ app.use(function (req, res, next) {
   res.type("txt").send("Not found");
 });
 
-var server = http2.createSecureServer({ allowHTTP1: true}, app);
+var server = http2.createSecureServer({ allowHTTP1: true, key: "./privkey.pem", cert: "./cert.pem"}, app);
 server.listen(process.env.PORT);
 console.log(process.env.PORT + " is the port");
