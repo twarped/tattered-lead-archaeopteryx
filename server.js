@@ -12,6 +12,7 @@ const axios = require("axios");
 const fs = require("graceful-fs");
 const toBlobURL = require("stream-to-blob-url");
 const stream = require("stream");
+const httpsproxyagent = require("https-proxy-agent");
 //const packer = require("zip-stream");
 const packer = require("archiver");
 const util = require("util");
@@ -91,8 +92,8 @@ app.get("/watch", async (req, res) => {
       if (inbrowser) {
         res.redirect(302, url); //iboss blocks proxy piping, so i just have to redirect you...
       } else {
-        //res.header("content-type", audio ? "audio/mpeg" : "video/mp4");
-        //res.header("content-disposition", contentdisposition(title + ext));
+        res.header("content-type", audio ? "audio/mpeg" : "video/mp4");
+        res.header("content-disposition", contentdisposition(title + ext));
         console.log(url);
         //console.log(title);
         //console.log(audio);
@@ -100,7 +101,6 @@ app.get("/watch", async (req, res) => {
         //console.log(ext);
         console.log(res.getHeaders());
         https.get(url, (body) => body.pipe(res));
-        res.end();
       }
     });
 });
