@@ -29,7 +29,8 @@
     "youtube-dl": "^3.5.0",
     "ytdl-core-custom": "git+https://github.com/twarped/node-ytdl-core.git",
     "zip-stream": "^4.1.0",
-    "ytdl-core": "^4.11.2"
+    "ytdl-core": "^4.11.2",
+    "http2-express-bridge": "^1.0.7"
   },
   "engines": {
     "node": "16"

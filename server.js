@@ -1,5 +1,4 @@
 const express = require("express");
-var app = express();
 const cors = require("cors");
 const got = require("got");
 const youtubedl = require("youtube-dl");
@@ -9,6 +8,7 @@ const events = require("events");
 const contentdisposition = require("content-disposition");
 const archiver = require("archiver");
 const axios = require("axios");
+const http2Express = require("http2-express-bridge")
 const fs = require("graceful-fs");
 const toBlobURL = require("stream-to-blob-url");
 const stream = require("stream");
@@ -20,7 +20,10 @@ const puppeteer = require("puppeteer");
 const ffmpeg = require("fluent-ffmpeg");
 const miniget = require("miniget");
 const https = require("node:https");
+const http2 = 
 const apikey = process.env.api_key;
+
+var app = http2Express(express);
 
 app.use(express.static("public"));
 app.use(cors());
@@ -542,5 +545,6 @@ app.use(function (req, res, next) {
   res.type("txt").send("Not found");
 });
 
-var listener = app.listen(process.env.PORT);
-console.log("3000 is the port");
+var listener = http2.createSecureServer();
+listener.listen(process.env.PORT);
+console.log(process.env.PORT + " is the port");
