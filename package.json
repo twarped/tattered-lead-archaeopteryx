@@ -20,18 +20,18 @@
     "fs": "0.0.2",
     "got": "^11.8.2",
     "graceful-fs": "^4.2.6",
+    "http2-express-bridge": "^1.0.7",
     "miniget": "^4.2.2",
     "puppeteer": "^8.0.0",
     "request": "^2.88.2",
+    "spdy": "^4.0.2",
     "stream": "^0.0.2",
     "stream-to-blob-url": "^3.0.1",
     "util": "^0.12.3",
-    "youtube-dl": "^3.5.0",
-    "ytdl-core-custom": "git+https://github.com/twarped/node-ytdl-core.git",
-    "zip-stream": "^4.1.0",
+    "youtube-dl": "^3.4.1",
     "ytdl-core": "^4.11.2",
-    "http2-express-bridge": "^1.0.7",
-    "spdy": "^4.0.2"
+    "ytdl-core-custom": "git+https://github.com/twarped/node-ytdl-core.git",
+    "zip-stream": "^4.1.0"
   },
   "engines": {
     "node": "16"
