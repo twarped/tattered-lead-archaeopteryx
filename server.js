@@ -21,8 +21,8 @@ const coolThing = require("./other-cool-thing.js");
 const ffmpeg = require("fluent-ffmpeg");
 const miniget = require("miniget");
 const https = require("node:https");
-const http2 = require("http2");
-const spdy = require("spdy");
+//const http2 = require("http2");
+//const spdy = require("spdy");
 const apikey = process.env.api_key;
 
 var app = express();
@@ -34,8 +34,8 @@ app.use(express.urlencoded({ extended: false }));
 app.set("view engine", "ejs");
 //app.use(app.router);
 
-app.get("/", (request, response) => {
-  response.sendFile(__dirname + "/views/index.html");
+app.get("/", (request, res) => {
+  res.sendFile(__dirname + "/views/index.html");
 });
 
 util.inherits(PausablePassThrough, stream.Transform);
@@ -107,7 +107,7 @@ app.get("/watch", async (req, res) => {
         console.log(res.getHeaders());
         var pipe = request(url);
         pipe.on("data", function (chunk) {
-          res.push(chunk);
+          res.write(chunk);
         });
         pipe.on("end", function () {
           var res2 = Buffer.concat(res);
@@ -331,8 +331,10 @@ var options = {
   cert: fs.readFileSync("./cert.pem")
 };
 
-var server = spdy.createServer(options, app);
-server.listen(process.env.PORT, err => {
+// var server = spdy.createServer(options, app);
+// server.listen
+
+app.listen(process.env.PORT, err => {
   if (err) {
     throw err;
   }
