@@ -106,11 +106,13 @@ app.get("/watch", async (req, res) => {
         //console.log(ext);
         console.log(res.getHeaders());
         var pipe = request(url);
+        var chunks = [];
         pipe.on("data", function (chunk) {
+          chunks.push(chunk);
           console.log(chunk);
         });
         pipe.on("end", function () {
-          var res2 = Buffer.concat(res);
+          var res2 = Buffer.concat(chunks);
           console.log(res2);
           res.end("url");
         });
