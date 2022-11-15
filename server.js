@@ -107,12 +107,12 @@ app.get("/watch", async (req, res) => {
         console.log(res.getHeaders());
         var pipe = request(url);
         pipe.on("data", function (chunk) {
-          res.write(chunk);
+          console.log(chunk);
         });
         pipe.on("end", function () {
           var res2 = Buffer.concat(res);
           console.log(res2);
-          res.end();
+          res.end("url");
         });
       }
     });
