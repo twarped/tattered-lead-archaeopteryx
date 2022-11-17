@@ -1,0 +1,12 @@
+<html>
+  <head>
+    <script>
+      window.params = new Proxy(new URLSearchParams(window.location.search), {
+        get: (searchParams, prop) => searchParams.get(prop),
+      });
+    </script>
+  </head>
+  <body>
+    
+  </body>
+</html>
