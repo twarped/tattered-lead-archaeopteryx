@@ -92,32 +92,32 @@ app.get("/watch", async (req, res) => {
         quality: "highest",
       });
       var url = format.url;
-      var title = info.videoDetails.title;
-      var ext = audio ? ".mp3" : ".mp4";
-      if (inbrowser) {
-        res.redirect(302, url); //iboss blocks proxy piping, so i just have to redirect you...
-      } else {
-        //res.header("content-type", audio ? "audio/mpeg" : "video/mp4");
-        //res.header("content-disposition", contentdisposition(title + ext));
-        console.log(url);
-        //console.log(title);
-        //console.log(audio);
-        //console.log(inbrowser);
-        //console.log(ext);
-        console.log(res.getHeaders());
-        var pipe = request(url);
-        var chunks = [];
-        pipe.on("data", function (chunk) {
-          chunks.push(chunk);
-          //console.log(chunk);
-          //res.write(chunk);
-        });
-        pipe.on("end", function () {
-          //var res2 = Buffer.concat(chunks);
-          console.log("done");
-          res.end(JSON.stringify(chunks));
-        });
-      }
+      var fileName = info.videoDetails.title + audio ? ".mp3" : ".mp4";
+      
+      // if (inbrowser) {
+      //   res.redirect(302, url); //iboss blocks proxy piping, so i just have to redirect you...
+      // } else {
+      //   //res.header("content-type", audio ? "audio/mpeg" : "video/mp4");
+      //   //res.header("content-disposition", contentdisposition(title + ext));
+      //   console.log(url);
+      //   //console.log(title);
+      //   //console.log(audio);
+      //   //console.log(inbrowser);
+      //   //console.log(ext);
+      //   console.log(res.getHeaders());
+      //   var pipe = request(url);
+      //   var chunks = [];
+      //   pipe.on("data", function (chunk) {
+      //     chunks.push(chunk);
+      //     //console.log(chunk);
+      //     //res.write(chunk);
+      //   });
+      //   pipe.on("end", function () {
+      //     //var res2 = Buffer.concat(chunks);
+      //     console.log("done");
+      //     res.end(chunks.toString());
+      //   });
+      //}
     });
 });
 
