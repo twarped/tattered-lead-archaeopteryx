@@ -4,6 +4,13 @@
       window.params = new Proxy(new URLSearchParams(window.location.search), {
         get: (searchParams, prop) => searchParams.get(prop),
       });
+      if (params.url === null) {
+        window.body.write("needed data nonexistent, redirecting you to /");
+        setTimeout(() => window.location = window.location.origin, 1000)
+      } else {
+        window.url = params.url;
+        window.fileName = params.fileName;
+      }
     </script>
   </head>
   <body>
