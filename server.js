@@ -97,8 +97,8 @@ app.get("/watch", async (req, res) => {
       if (inbrowser) {
         res.redirect(302, url); //iboss blocks proxy piping, so i just have to redirect you...
       } else {
-        res.header("content-type", audio ? "audio/mpeg" : "video/mp4");
-        res.header("content-disposition", contentdisposition(title + ext));
+        //res.header("content-type", audio ? "audio/mpeg" : "video/mp4");
+        //res.header("content-disposition", contentdisposition(title + ext));
         console.log(url);
         //console.log(title);
         //console.log(audio);
@@ -109,13 +109,13 @@ app.get("/watch", async (req, res) => {
         var chunks = [];
         pipe.on("data", function (chunk) {
           chunks.push(chunk);
-          console.log(chunk);
-          res.write(chunk);
+          //console.log(chunk);
+          //res.write(chunk);
         });
         pipe.on("end", function () {
           //var res2 = Buffer.concat(chunks);
-          console.log(chunks);
-          res.end();
+          console.log("done");
+          res.end(JSON.stringify(chunks));
         });
       }
     });
