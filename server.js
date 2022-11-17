@@ -110,11 +110,12 @@ app.get("/watch", async (req, res) => {
         pipe.on("data", function (chunk) {
           chunks.push(chunk);
           console.log(chunk);
+          res.write(chunk);
         });
         pipe.on("end", function () {
-          var res2 = Buffer.concat(chunks);
-          console.log(res2);
-          res.end("url");
+          //var res2 = Buffer.concat(chunks);
+          console.log(chunks);
+          res.end();
         });
       }
     });
