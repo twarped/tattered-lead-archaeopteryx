@@ -4,16 +4,39 @@
       window.params = new Proxy(new URLSearchParams(window.location.search), {
         get: (searchParams, prop) => searchParams.get(prop),
       });
+      function saveOrOpenBlob(url, blobName) {
+        var blob;
+        var xmlHTTP = new XMLHttpRequest();
+        xmlHTTP.open("GET", url, true);
+        xmlHTTP.responseType = "arraybuffer";
+        xmlHTTP.onload = function (e) {
+          blob = new Blob([this.response]);
+        };
+        xmlHTTP.onprogress = function (pr) {
+          //pr.loaded - current state
+          //pr.total  - max
+        };
+        xmlHTTP.onloadend = function (e) {
+          var fileName = blobName;
+          var tempEl = document.createElement("a");
+          document.body.appendChild(tempEl);
+          tempEl.style = "display: none";
+          url = window.URL.createObjectURL(blob);
+          tempEl.href = url;
+          tempEl.download = fileName;
+          tempEl.click();
+          window.URL.revokeObjectURL(url);
+        };
+        xmlHTTP.send();
+      }
       if (params.url === null) {
         window.body.write("needed data nonexistent, redirecting you to /");
-        setTimeout(() => window.location = window.location.origin, 1000)
+        setTimeout(() => (window.location = window.location.origin), 1000);
       } else {
         window.url = params.url;
         window.fileName = params.fileName;
       }
     </script>
   </head>
-  <body>
-    
-  </body>
+  <body></body>
 </html>

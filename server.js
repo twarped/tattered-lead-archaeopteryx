@@ -90,7 +90,7 @@ app.get("/watch", async (req, res) => {
           ? (format) => format.hasAudio
           : (format) => format.hasAudio && format.hasVideo,
         quality: "highest",
-      });
+      })
       var url = format.url;
       var fileName = info.videoDetails.title + audio ? ".mp3" : ".mp4";
       
@@ -118,7 +118,9 @@ app.get("/watch", async (req, res) => {
       //     res.end(chunks.toString());
       //   });
       //}
-    });
+    }).on("error", err => {
+            res.send("something was wrong with your input url...\n\n" + err);
+  });
 });
 
 // app.get("/watch", async (req, res) => {
