@@ -76,51 +76,54 @@ app.get("/watch", async (req, res) => {
   } catch (e) {
     inbrowser = false;
   }
-  ytdl
-    .getInfo(req.query.v, {
-      requestOptions: {
-        headers: {
-          cookie: "key=" + apikey,
+  try {
+    ytdl
+      .getInfo(req.query.v, {
+        requestOptions: {
+          headers: {
+            cookie: "key=" + apikey,
+          },
         },
-      },
-    })
-    .then((info) => {
-      var format = ytdl.chooseFormat(info.formats, {
-        filter: audio
-          ? (format) => format.hasAudio
-          : (format) => format.hasAudio && format.hasVideo,
-        quality: "highest",
       })
-      var url = format.url;
-      var filename = info.videoDetails.title + audio ? ".mp3" : ".mp4";
-      res.render(__dirname + "/views/watch", {url, filename, inbrowser})
-      // if (inbrowser) {
-      //   res.redirect(302, url); //iboss blocks proxy piping, so i just have to redirect you...
-      // } else {
-      //   //res.header("content-type", audio ? "audio/mpeg" : "video/mp4");
-      //   //res.header("content-disposition", contentdisposition(title + ext));
-      //   console.log(url);
-      //   //console.log(title);
-      //   //console.log(audio);
-      //   //console.log(inbrowser);
-      //   //console.log(ext);
-      //   console.log(res.getHeaders());
-      //   var pipe = request(url);
-      //   var chunks = [];
-      //   pipe.on("data", function (chunk) {
-      //     chunks.push(chunk);
-      //     //console.log(chunk);
-      //     //res.write(chunk);
-      //   });
-      //   pipe.on("end", function () {
-      //     //var res2 = Buffer.concat(chunks);
-      //     console.log("done");
-      //     res.end(chunks.toString());
-      //   });
-      //}
-    }).on("error", err => {
-            res.send("something was wrong with your input url...\n\n" + err);
-  });
+      .then((info) => {
+        var format = ytdl.chooseFormat(info.formats, {
+          filter: audio
+            ? (format) => format.hasAudio
+            : (format) => format.hasAudio && format.hasVideo,
+          quality: "highest",
+        });
+        var url = format.url;
+        var filename = info.videoDetails.title + audio ? ".mp3" : ".mp4";
+        res.render(__dirname + "/views/watch", { url, filename, inbrowser });
+        // if (inbrowser) {
+        //   res.redirect(302, url); //iboss blocks proxy piping, so i just have to redirect you...
+        // } else {
+        //   //res.header("content-type", audio ? "audio/mpeg" : "video/mp4");
+        //   //res.header("content-disposition", contentdisposition(title + ext));
+        //   console.log(url);
+        //   //console.log(title);
+        //   //console.log(audio);
+        //   //console.log(inbrowser);
+        //   //console.log(ext);
+        //   console.log(res.getHeaders());
+        //   var pipe = request(url);
+        //   var chunks = [];
+        //   pipe.on("data", function (chunk) {
+        //     chunks.push(chunk);
+        //     //console.log(chunk);
+        //     //res.write(chunk);
+        //   });
+        //   pipe.on("end", function () {
+        //     //var res2 = Buffer.concat(chunks);
+        //     console.log("done");
+        //     res.end(chunks.toString());
+        //   });
+        //}
+      });
+  } catch (e) {
+    console.log(e);
+    res.send(e);
+  }
 });
 
 // app.get("/watch", async (req, res) => {
@@ -333,13 +336,13 @@ app.use(function (req, res, next) {
 
 var options = {
   key: fs.readFileSync("./key.pem"),
-  cert: fs.readFileSync("./cert.pem")
+  cert: fs.readFileSync("./cert.pem"),
 };
 
 // var server = spdy.createServer(options, app);
 // server.listen
 
-app.listen(process.env.PORT, err => {
+app.listen(process.env.PORT, (err) => {
   if (err) {
     throw err;
   }

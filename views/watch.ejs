@@ -2,7 +2,9 @@
   <head>
     <link rel="stylesheet" href="/watch.css"/>
     <script>
-      window.contents = <%= contents %>;
+      window.inbrowser = <%= inbrowser %>;
+      window.filename = "<%= filename %>";
+      window.url = "<%= url %>";
       window.params = new Proxy(new URLSearchParams(window.location.search), {
         get: (searchParams, prop) => searchParams.get(prop),
       });
@@ -32,7 +34,7 @@
         xmlHTTP.send();
       }
       if (params.url === null) {
-        window.body.write("needed data nonexistent, redirecting you to /");
+        window.document.body.write("needed data nonexistent, redirecting you to /");
         setTimeout(() => (window.location = window.location.origin), 1000);
       } else {
         window.url = params.url;
