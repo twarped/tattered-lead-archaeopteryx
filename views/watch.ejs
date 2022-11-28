@@ -1,6 +1,8 @@
 <html>
   <head>
+    <link rel="stylesheet" href="/watch.css"/>
     <script>
+      window.contents = <%= contents %>;
       window.params = new Proxy(new URLSearchParams(window.location.search), {
         get: (searchParams, prop) => searchParams.get(prop),
       });
@@ -42,7 +44,9 @@
     <div>
       <h2>
       </h2>
-      <
+      <div id="meter-gauge">
+        <span style="width: 70.42%;">video download progress</span>
+      </div>
     </div>
   </body>
 </html>
