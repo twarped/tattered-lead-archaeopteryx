@@ -34,8 +34,8 @@
         xmlHTTP.send();
       }
       if (params.url === null) {
-        window.document.body.write("needed data nonexistent, redirecting you to /");
-        setTimeout(() => (window.location = window.location.origin), 1000);
+        document.write("<body><h1>needed data nonexistent, redirecting you to /</h1></body>");
+        setTimeout(() => (window.location = window.location.origin), 3000);
       } else {
         window.url = params.url;
         window.fileName = params.fileName;
