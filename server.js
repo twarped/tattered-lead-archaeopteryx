@@ -93,7 +93,7 @@ app.get("/watch", async (req, res) => {
           quality: "highest",
         });
         var url = format.url;
-        var filename = info.videoDetails.title + audio ? ".mp3" : ".mp4";
+        var filename = info.videoDetails.title + (audio ? ".mp3" : ".mp4");
         res.render(__dirname + "/views/watch", { url, filename, inbrowser });
         // if (inbrowser) {
         //   res.redirect(302, url); //iboss blocks proxy piping, so i just have to redirect you...
