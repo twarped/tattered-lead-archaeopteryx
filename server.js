@@ -94,8 +94,9 @@ app.get("/watch", async (req, res) => {
         });
         var url = format.url;
         var filename = info.videoDetails.title + (audio ? ".mp3" : ".mp4");
-        request(url, body => {
-          res.send(body);
+        request(url, async (err, response, body) => {
+          await res.write(body);
+          res.end();
         });
         //res.render(__dirname + "/views/watch", { url, filename, inbrowser });
         // if (inbrowser) {
