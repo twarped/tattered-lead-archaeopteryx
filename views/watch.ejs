@@ -8,6 +8,17 @@
       window.params = new Proxy(new URLSearchParams(window.location.search), {
         get: (searchParams, prop) => searchParams.get(prop),
       });
+      if (params.url === null && window.url === null) {
+        document.body.innerHTML = "<h1>needed data nonexistent, redirecting you to /</h1>";
+        setTimeout(() => (window.location = window.location.origin), 3000);
+      } else if (window.url === null) {
+        window.url = params.url;
+        window.fileName = params.fileName;
+      }
+    </script>
+  </head>
+  <body>
+    <script>
       function saveOrOpenBlob(url, blobName) {
         var blob;
         var xmlHTTP = new XMLHttpRequest();
@@ -19,6 +30,8 @@
         xmlHTTP.onprogress = function (pr) {
           //pr.loaded - current state
           //pr.total  - max
+          console.log(pr.loaded);
+          console.log(pr.total);
         };
         xmlHTTP.onloadend = function (e) {
           var fileName = blobName;
@@ -33,18 +46,6 @@
         };
         xmlHTTP.send();
       }
-      if (params.url === null && window.url === null) {
-        document.write("<body><h1>needed data nonexistent, redirecting you to /</h1></body>");
-        setTimeout(() => (window.location = window.location.origin), 3000);
-      } else if (window.url === null) {
-        window.url = params.url;
-        window.fileName = params.fileName;
-      }
-    </script>
-  </head>
-  <body>
-    <script>
-      
     </script>
     <div>
       <h2>
