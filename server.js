@@ -98,8 +98,8 @@ app.get("/watch", async (req, res) => {
         console.log(filename);
         request(url, async (err, response, body) => {
           console.log(response);
-          await res.write(body);
-          res.end();
+          //await res.write(body);
+          res.end(response);
         });
         //res.render(__dirname + "/views/watch", { url, filename, inbrowser });
         // if (inbrowser) {
