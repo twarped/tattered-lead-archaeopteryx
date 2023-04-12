@@ -92,115 +92,22 @@ app.get("/watch", async (req, res) => {
             : (format) => format.hasAudio && format.hasVideo,
           quality: "highest",
         });
+        console.log("audio ", audio)
         var url = format.url;
-        console.log(url);
         var filename = info.videoDetails.title + (audio ? ".mp3" : ".mp4");
-        res.header("content-type", audio ? "audio/mpeg" : "video/mp4");
-        res.header("content-disposition", contentdisposition(filename));
-        console.log(filename);
+        if (!inbrowser) {
+          res.header("content-type", audio ? "audio/mpeg" : "video/mp4");
+          res.header("content-disposition", contentdisposition(filename));
+        }
+        if (!audio)
         request(url).pipe(res);
-        // request(url, async (err, response, body) => {
-        //   console.log(body);
-        //   res.end(body);
-        // });
-        
-        //res.render(__dirname + "/views/watch", { url, filename, inbrowser });
-        // if (inbrowser) {
-        //   res.redirect(302, url); //iboss blocks proxy piping, so i just have to redirect you...
-        // } else {
-        //   //res.header("content-type", audio ? "audio/mpeg" : "video/mp4");
-        //   //res.header("content-disposition", contentdisposition(title + ext));
-        //   console.log(url);
-        //   //console.log(title);
-        //   //console.log(audio);
-        //   //console.log(inbrowser);
-        //   //console.log(ext);
-        //   console.log(res.getHeaders());
-        //   var pipe = request(url);
-        //   var chunks = [];
-        //   pipe.on("data", function (chunk) {
-        //     chunks.push(chunk);
-        //     //console.log(chunk);
-        //     //res.write(chunk);
-        //   });
-        //   pipe.on("end", function () {
-        //     //var res2 = Buffer.concat(chunks);
-        //     console.log("done");
-        //     res.end(chunks.toString());
-        //   });
-        //}
+        else ffmpeg(request(url)).format("mp3").output(res, { end:true }).on("error", console.log).run()
       });
   } catch (e) {
     console.log(e);
     res.send(e);
   }
 });
-
-// app.get("/watch", async (req, res) => {
-//   var audio = req.query.dlmp3 == true ? true : false;
-//   var inbrowser = req.query.inbrowser == true ? false : true;
-//   console.log("mp3: " + audio);
-//   console.log("inbrowser: " + inbrowser);
-//   var videoStream = await ytdl(req.query.v, {
-//     requestOptions: {
-//       headers: {
-//         cookie: "key=" + apikey,
-//       },
-//     },
-//     quality: audio ? "highestaudio" : "highest",
-//     filter: (format) => format.audioBitrate,
-//   });
-//   var pausableStream = new PausablePassThrough();
-//   const streamVideo = () => {
-//     videoStream.pipe(pausableStream).pipe(res);
-//   };
-//   videoStream.on("info", async (info) => {
-//     res.send(info);
-//     var title =
-//       info.videoDetails.title.indexOf(".") ===
-//       info.videoDetails.title.length - 1
-//         ? info.videoDetails.title.substring(
-//             0,
-//             info.videoDetails.title.length - 1
-//           )
-//         : info.videoDetails.title;
-//     function setDis(ext) {
-//       res.header("Content-Disposition", contentdisposition(title) + ext);
-//     }
-//     function setCon(type) {
-//       res.header("Content-Type", type);
-//     }
-//     console.log(inbrowser.toString() == true);
-//     if (inbrowser) {
-//       console.log("inbrowser");
-//       var playbackURL = await ytdl.getVideoPlaybackURL(info, {
-//         requestOptions: {
-//           headers: {
-//             cookie: "key=" + apikey,
-//           },
-//         },
-//         quality: audio ? "highestaudio" : "highest",
-//         filter: (format) => format.audioBitrate,
-//       });
-//       console.log(playbackURL);
-//       console.log(info);
-//       await request(playbackURL).pipe(res);
-//     } else {
-//       setDis(audio ? ".mp3" : ".mp4");
-//       setCon(audio ? "audio/mpeg" : "video/mp4");
-//       if (audio) {
-//         var proc = new ffmpeg({ source: videoStream });
-//         proc.withAudioCodec("libmp3lame").toFormat("mp3").output(res).run();
-//       } else {
-//         streamVideo();
-//       }
-//     }
-//   });
-//   videoStream.on("error", (err) => {
-//     res.send("an error occured, please try again later...");
-//     console.log(err);
-//   });
-// });
 
 app.get("/playlistsetup", (req, res) => {
   var playlistURL;
