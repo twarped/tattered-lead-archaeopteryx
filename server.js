@@ -108,7 +108,7 @@ app.get("/watch", async (req, res) => {
             .format("mp3")
             .audioBitrate(128)
             .pipe();
-          command.on('data', (chunk) => console.log(typeof chunk))
+          command.on('data', res.write)
         }
       });
   } catch (e) {
