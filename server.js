@@ -105,7 +105,7 @@ app.get("/watch", async (req, res) => {
         } else {
           var proc = new ffmpeg({ source: stream });
           console.log(proc)
-          proc.audioCodec("libmp3lame").format("mp3").writeToStream(res);
+          proc.audioCodec("libmp3lame").format("mp3").stream(res);
         }
       });
   } catch (e) {
