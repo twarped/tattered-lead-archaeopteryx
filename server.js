@@ -92,12 +92,15 @@ app.get("/watch", async (req, res) => {
             : (format) => format.hasAudio && format.hasVideo,
           quality: "highest",
         });
-        console.log("audio ", audio);
+        console.log(format)
+        var contentLength = format.contentLength;
+        var audioBitrate = format.audioBitrate;
         var url = format.url;
         var filename = info.videoDetails.title + (audio ? ".mp3" : ".mp4");
         if (!inbrowser) {
           res.header("content-type", audio ? "audio/mpeg" : "video/mp4");
           res.header("content-disposition", contentdisposition(filename));
+          res.header("content-length", contentLength);
         }
         if (!audio) {
           request(url).pipe(res);
@@ -105,15 +108,17 @@ app.get("/watch", async (req, res) => {
           var codecData;
           var command = ffmpeg()
             .input(request(url))
-            .audioCodec("libmp3lame")
+            // .audioCodec("libmp3lame")
+            // .format("mp3")
+            // .audioBitrate(audioBitrate)
+            .noVideo()
             .format("mp3")
-            .audioBitrate(128)
             .on("codecData", (data) => {
               console.log(data);
               codecData = data;
             })
             .on("progress", (data) => {
-              console.log(data);
+              console.log(100 * data.targetSize / contentLength + "%");
             })
             .stream(res, {end: true});
         }
