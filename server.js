@@ -102,13 +102,20 @@ app.get("/watch", async (req, res) => {
         if (!audio) {
           request(url).pipe(res);
         } else {
+          var codecData;
           var command = ffmpeg()
             .input(request(url))
             .audioCodec("libmp3lame")
             .format("mp3")
             .audioBitrate(128)
+            .on("codecData", (data) => {
+              console.log(data);
+              codecData = data;
+            })
+            .on("progress", (data) => {
+              console.log(data);
+            })
             .stream(res, {end: true});
-          command;
         }
       });
   } catch (e) {
