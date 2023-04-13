@@ -99,16 +99,16 @@ app.get("/watch", async (req, res) => {
           res.header("content-type", audio ? "audio/mpeg" : "video/mp4");
           res.header("content-disposition", contentdisposition(filename));
         }
-        var stream = request(url);
         if (!audio) {
-          stream.pipe(res);
+          request(url).pipe(res);
         } else {
-          var command = ffmpeg({ source: stream })
+          var command = ffmpeg()
+            .input(request(url))
             .audioCodec("libmp3lame")
             .format("mp3")
             .audioBitrate(128)
-            .pipe();
-          command.on('data', (chunk) => res.write(chunk));
+            .stream(res, {end: true});
+          command;
         }
       });
   } catch (e) {
