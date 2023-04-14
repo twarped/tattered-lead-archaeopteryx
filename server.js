@@ -105,20 +105,25 @@ app.get("/watch", async (req, res) => {
         if (!audio) {
           request(url).pipe(res);
         } else {
-          var codecData;
+          var totalTime;
           var reader = new stream.PassThrough();
           reader.pipe(res, {end: false});
-          var command = ffmpeg()
-            .input(request(url))
+          var command = ffmpeg(request(url))
             // .audioCodec("libmp3lame")
             // .format("mp3")
             // .audioBitrate(audioBitrate)
             .noVideo()
             .format("mp3")
-            .on("progress", )
+            .on("codecData", data => {
+              totalTime = parseInt(data.duration.replace(/:/g, ''));
+            })
+            .on("progress", progress => {
+              var percent = 100 * parseInt(progress.timemark.replace(/:/g, '')) / totalTime;
+              console.log(percent + "%");
+            })
             .pipe();
           command.on("data", data => {
-            console.log(data);
+            //console.log(data);
             reader.write(data);
           })
           command.on("end", () => {
