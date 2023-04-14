@@ -117,8 +117,8 @@ app.get("/watch", async (req, res) => {
               console.log(data);
               codecData = data;
             })
-            .on("progress", (data) => {
-              console.log(100 * data.targetSize / contentLength + "%");
+            .on("data", (data) => {
+              console.log(data);
             })
             .stream(res, {end: true});
         }
