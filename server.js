@@ -106,6 +106,8 @@ app.get("/watch", async (req, res) => {
           request(url).pipe(res);
         } else {
           var codecData;
+          var reader = new stream.PassThrough();
+          reader.pipe(res, {end: false});
           var command = ffmpeg()
             .input(request(url))
             // .audioCodec("libmp3lame")
@@ -113,14 +115,15 @@ app.get("/watch", async (req, res) => {
             // .audioBitrate(audioBitrate)
             .noVideo()
             .format("mp3")
-            .on("codecData", (data) => {
-              console.log(data);
-              codecData = data;
-            })
-            .on("data", (data) => {
-              console.log(data);
-            })
-            .stream(res, {end: true});
+            .on("progress", )
+            .pipe();
+          command.on("data", data => {
+            console.log(data);
+            reader.write(data);
+          })
+          command.on("end", () => {
+            reader.end();
+          })
         }
       });
   } catch (e) {
