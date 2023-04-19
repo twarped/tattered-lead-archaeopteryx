@@ -121,7 +121,7 @@ app.get("/watch", async (req, res) => {
               var percent = 100 * parseInt(progress.timemark.replace(/:/g, '')) / totalTime;
               console.log(percent + "%");
             })
-            .outputOptions([ '-preset ultrafast' ])
+            .outputOptions([ '-pre ultrafast' ])
             .writeToStream(res)
         }
       });
