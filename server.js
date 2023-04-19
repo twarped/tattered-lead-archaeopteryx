@@ -114,7 +114,6 @@ app.get("/watch", async (req, res) => {
             .audioBitrate(audioBitrate)
             .withAudioFrequency(22050)
             .withAudioChannels(2)
-            .addOptions([ '-preset ultrafast', '-re' ])
             .on("codecData", data => {
               totalTime = parseInt(data.duration.replace(/:/g, ''));
             })
@@ -122,14 +121,8 @@ app.get("/watch", async (req, res) => {
               var percent = 100 * parseInt(progress.timemark.replace(/:/g, '')) / totalTime;
               console.log(percent + "%");
             })
-            .pipe();
-          command.on("data", data => {
-            //console.log(data);
-            res.write(data);
-          })
-          command.on("end", () => {
-            res.end();
-          })
+            .addOptions([ '-preset veryfast' ]) //, '-re'
+            .writeToStream(res)
         }
       });
   } catch (e) {
