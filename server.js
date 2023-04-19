@@ -100,20 +100,21 @@ app.get("/watch", async (req, res) => {
         if (!inbrowser) {
           res.header("content-type", audio ? "audio/mpeg" : "video/mp4");
           res.header("content-disposition", contentdisposition(filename));
-          res.header("content-length", contentLength);
         }
         if (!audio) {
+          res.header("content-length", contentLength);
           request(url).pipe(res);
         } else {
           var totalTime;
-          var reader = new stream.PassThrough();
-          reader.pipe(res, {end: false});
+          // var reader = new stream.PassThrough();
+          //reader.pipe(res, {end: false});
           var command = ffmpeg(request(url))
-            // .audioCodec("libmp3lame")
-            // .format("mp3")
-            // .audioBitrate(audioBitrate)
-            .noVideo()
             .format("mp3")
+            .audioCodec("libmp3lame")
+            .audioBitrate(audioBitrate)
+            .withAudioFrequency(22050)
+            .withAudioChannels(2)
+            .addOptions([ '-preset ultrafast', '-re' ])
             .on("codecData", data => {
               totalTime = parseInt(data.duration.replace(/:/g, ''));
             })
@@ -124,10 +125,10 @@ app.get("/watch", async (req, res) => {
             .pipe();
           command.on("data", data => {
             //console.log(data);
-            reader.write(data);
+            res.write(data);
           })
           command.on("end", () => {
-            reader.end();
+            res.end();
           })
         }
       });
