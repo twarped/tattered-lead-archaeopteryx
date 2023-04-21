@@ -109,7 +109,7 @@ app.get("/watch", async (req, res) => {
           // var reader = new stream.PassThrough();
           //reader.pipe(res, {end: false});
           var stream = request(url)
-          stream.on("data", console.log)
+          //stream.on("data", console.log)
           var command = ffmpeg()
             .input(stream)
             .format("mp3")
@@ -124,9 +124,8 @@ app.get("/watch", async (req, res) => {
               var percent = 100 * parseInt(progress.timemark.replace(/:/g, '')) / totalTime;
               console.log(percent + "%");
             })
-            .output(res)
-            //.outputOptions([ '-pre ultrafast' ])
-            .run()
+            .outputOptions([ "-pre veryfast" ])
+            .writeToStream(res)
         }
       });
   } catch (e) {

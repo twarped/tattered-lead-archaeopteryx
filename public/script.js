@@ -4,7 +4,7 @@ var ytmp3 = document.getElementById("ytmp3");
 downloadbutton.addEventListener("click", () => {
   var url = document.getElementById("yturl").value;
   var idcheckerb = /[A-Za-z0-9_-]+/g;
-  var urlcheckervideo = /http(s|):\/\/(www\.|)youtu(be\.com|\.be)\/watch\?v=[A-Za-z0-9_-]+/g;
+  var urlcheckervideo = /http(s|):\/\/(www\.|)youtu(be\.com|\.be)\/(watch\?v=|)[A-Za-z0-9_-]+/g;
   var urlcheckerplaylist = /http(s|):\/\/(www\.|)youtu(be\.com|\.be)\/playlist\?list=[A-Za-z0-9_-]+/g;
   if (
     url.match(urlcheckervideo) ||
