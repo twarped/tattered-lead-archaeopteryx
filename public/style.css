@@ -8,9 +8,11 @@
   margin-right: 2px;
   width: 500px;
 }
+
 #ytbrowser {
   
 }
+
 #downloadbutton {
   padding: 15px;
   width: 100px;
@@ -25,6 +27,7 @@
   font-size: 75%;
   text-align: center;
 }
+
 .form {
   justify-content: center;
   display: flex;
@@ -39,6 +42,16 @@
   width: 100%;
   text-align: center;
 }
+
+label {
+  cursor: pointer;
+  user-select: none;
+}
+
+input[type="checkbox"] {
+  cursor: pointer;
+}
+
 .remix {
   position: absolute;
   bottom: -5px;
@@ -83,6 +96,7 @@
     text-align: center;
   }
 }
+
 h1 {
   margin: 0;
   position: absolute;
