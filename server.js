@@ -116,7 +116,7 @@ app.get("/watch", async (req, res) => {
           //reader.pipe(res, {end: false});
           console.log("is audio")
           var stream = request(url)
-          ffmpeg(stream).noVideo().writeToStream(stream)
+          ffmpeg(stream).noVideo().format("mp4").writeToStream(res)
           //stream.on("data", console.log)
           // var command = ffmpeg()
           //   .input(stream)
