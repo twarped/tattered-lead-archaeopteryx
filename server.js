@@ -94,7 +94,7 @@ app.get("/watch", async (req, res) => {
       .then((info) => {
         var format;
         if (audio) {
-          format = info.formats.filter(e => e.hasAudio && e.audioBitrate == Math.max(...info.formats.filter(e => e.hasAudio).map(e => e.audioBitrate)))[0]
+          format = info.formats.filter(e => e.hasAudio && !e.hasVideo && e.audioBitrate == Math.max(...info.formats.filter(e => e.hasAudio && !e.hasVideo).map(e => e.audioBitrate)))[0]
         } else {
           format = info.formats.filter(e => e.hasAudio && e.hasVideo).filter(e => e.audioBitrate + e.audioBitrate + e.audioChannels + e.bitrate + e.width + e.height + e.fps == Math.max(...info.formats.filter(e => e.hasAudio && e.hasVideo).map(e => e.audioBitrate + e.audioBitrate + e.audioChannels + e.bitrate + e.width + e.height + e.fps)))[0]
         }
@@ -106,35 +106,11 @@ app.get("/watch", async (req, res) => {
         if (!inbrowser) {
           res.header("content-type", audio ? "audio/mpeg" : "video/mp4");
           res.header("content-disposition", contentdisposition(filename));
-        }
-        if (!audio) {
           res.header("content-length", contentLength);
-          request(url).pipe(res);
-        } else {
-          var totalTime;
-          // var reader = new stream.PassThrough();
-          //reader.pipe(res, {end: false});
-          console.log("is audio")
-          var stream = request(url)
-          ffmpeg(stream).noVideo().format("mp4").writeToStream(res)
-          //stream.on("data", console.log)
-          // var command = ffmpeg()
-          //   .input(stream)
-          //   .format("mp3")
-          //   .audioCodec("libmp3lame")
-          //   .audioBitrate(audioBitrate)
-          //   .withAudioFrequency(22050)
-          //   .withAudioChannels(2)
-          //   .on("codecData", data => {
-          //     totalTime = parseInt(data.duration.replace(/:/g, ''));
-          //   })
-          //   .on("progress", progress => {
-          //     var percent = 100 * parseInt(progress.timemark.replace(/:/g, '')) / totalTime;
-          //     console.log(percent + "%");
-          //   })
-          //   .outputOptions([ "-preset veryfast" ])
-          //   .writeToStream(res)
         }
+        console.log(url)
+        var stream = request(url).pipe(res);
+        stream.on("progress", console.log)
       });
   } catch (e) {
     console.log(e);
