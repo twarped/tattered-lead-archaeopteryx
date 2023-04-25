@@ -86,12 +86,7 @@ app.get("/watch", async (req, res) => {
         },
       })
       .then((info) => {
-        var format = ytdl.chooseFormat(info.formats, {
-          filter: audio
-            ? (format) => format.hasAudio
-            : (format) => format.hasAudio && format.hasVideo,
-          quality: "highest",
-        });
+        var format = info.formats.filter(e => e.hasAudio)
         console.log(format)
         var contentLength = format.contentLength;
         var audioBitrate = format.audioBitrate;
@@ -110,22 +105,22 @@ app.get("/watch", async (req, res) => {
           //reader.pipe(res, {end: false});
           var stream = request(url)
           //stream.on("data", console.log)
-          var command = ffmpeg()
-            .input(stream)
-            .format("mp3")
-            .audioCodec("libmp3lame")
-            .audioBitrate(audioBitrate)
-            .withAudioFrequency(22050)
-            .withAudioChannels(2)
-            .on("codecData", data => {
-              totalTime = parseInt(data.duration.replace(/:/g, ''));
-            })
-            .on("progress", progress => {
-              var percent = 100 * parseInt(progress.timemark.replace(/:/g, '')) / totalTime;
-              console.log(percent + "%");
-            })
-            .outputOptions([ "-preset veryfast" ])
-            .writeToStream(res)
+          // var command = ffmpeg()
+          //   .input(stream)
+          //   .format("mp3")
+          //   .audioCodec("libmp3lame")
+          //   .audioBitrate(audioBitrate)
+          //   .withAudioFrequency(22050)
+          //   .withAudioChannels(2)
+          //   .on("codecData", data => {
+          //     totalTime = parseInt(data.duration.replace(/:/g, ''));
+          //   })
+          //   .on("progress", progress => {
+          //     var percent = 100 * parseInt(progress.timemark.replace(/:/g, '')) / totalTime;
+          //     console.log(percent + "%");
+          //   })
+          //   .outputOptions([ "-preset veryfast" ])
+          //   .writeToStream(res)
         }
       });
   } catch (e) {
