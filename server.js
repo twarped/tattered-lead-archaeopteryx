@@ -66,6 +66,7 @@ PausablePassThrough.prototype._transform = function (chunk, encoding, cb) {
 app.get("/watch", async (req, res) => {
   var audio = req.query.dlmp3;
   var inbrowser = req.query.inbrowser;
+  var iboss = req.query.iboss;
   try {
     audio = audio.toString() === "true";
   } catch (e) {
@@ -77,6 +78,11 @@ app.get("/watch", async (req, res) => {
     inbrowser = false;
   }
   try {
+    iboss = iboss.toString() === "true";
+  } catch (e) {
+    iboss = false;
+  }
+  try {
     ytdl
       .getInfo(req.query.v, {
         requestOptions: {
@@ -86,7 +92,12 @@ app.get("/watch", async (req, res) => {
         },
       })
       .then((info) => {
-        var format = info.formats.filter(e => e.hasAudio)
+        var format;
+        if (audio) {
+          format = info.formats.filter(e => e.hasAudio && e.audioBitrate == Math.max(...info.formats.filter(e => e.hasAudio).map(e => e.audioBitrate)))[0]
+        } else {
+          format = info.formats.filter(e => e.hasAudio && e.hasVideo).filter(e => e.audioBitrate + e.audioBitrate + e.audioChannels + e.bitrate + e.width + e.height + e.fps == Math.max(...info.formats.filter(e => e.hasAudio && e.hasVideo).map(e => e.audioBitrate + e.audioBitrate + e.audioChannels + e.bitrate + e.width + e.height + e.fps)))[0]
+        }
         console.log(format)
         var contentLength = format.contentLength;
         var audioBitrate = format.audioBitrate;
@@ -103,7 +114,7 @@ app.get("/watch", async (req, res) => {
           var totalTime;
           // var reader = new stream.PassThrough();
           //reader.pipe(res, {end: false});
-          var stream = request(url)
+          var stream = request(url).pipe(res)
           //stream.on("data", console.log)
           // var command = ffmpeg()
           //   .input(stream)
