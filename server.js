@@ -108,9 +108,9 @@ app.get("/watch", async (req, res) => {
           res.header("content-disposition", contentdisposition(filename));
           res.header("content-length", contentLength);
         }
-        console.log(url)
-        var stream = request(url).pipe(res);
-        stream.on("progress", console.log)
+        request(url).on("error", err => {
+          console.log(err)
+        }).pipe(res)
       });
   } catch (e) {
     console.log(e);
