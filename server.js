@@ -114,7 +114,9 @@ app.get("/watch", async (req, res) => {
           var totalTime;
           // var reader = new stream.PassThrough();
           //reader.pipe(res, {end: false});
-          var stream = request(url).pipe(res)
+          console.log("is audio")
+          var stream = request(url)
+          ffmpeg(stream).noVideo().writeToStream(stream)
           //stream.on("data", console.log)
           // var command = ffmpeg()
           //   .input(stream)
