@@ -108,10 +108,12 @@ app.get("/watch", async (req, res) => {
           res.header("content-disposition", contentdisposition(filename));
           res.header("content-length", contentLength);
         }
+        var chunks = 0;
         request(url).on("error", err => {
           console.log(err)
         }).on("data", data => {
-          
+          chunks++;
+          console.log(chunks);
         }).pipe(res)
       });
   } catch (e) {
