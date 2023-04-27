@@ -109,12 +109,18 @@ app.get("/watch", async (req, res) => {
           res.header("content-length", contentLength);
         }
         var chunks = 0;
-        request(url).on("error", err => {
+        var stream = request(url).pipe(res);
+        stream.on("error", err => {
           console.log(err)
         }).on("data", data => {
           chunks++;
           console.log(chunks);
-        }).pipe(res)
+        }).on("end", () => {
+          console.log("ended")
+        })
+      }).catch(err => {
+        console.log(err);
+        res.send(err);
       });
   } catch (e) {
     console.log(e);
