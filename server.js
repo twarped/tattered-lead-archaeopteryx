@@ -148,7 +148,7 @@ app.get("/watch", async (req, res, next) => {
           url: url,
           responseType: "stream",
         }).then(function (response) {
-          console.log(response)
+          console.log(response.data)
           response.data.pipe(res);
         });
       })
