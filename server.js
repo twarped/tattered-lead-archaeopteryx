@@ -63,7 +63,7 @@ PausablePassThrough.prototype._transform = function (chunk, encoding, cb) {
   }
 };
 
-app.get("/watch", async (req, res) => {
+app.get("/watch", async (req, res, next) => {
   var audio = req.query.dlmp3;
   var inbrowser = req.query.inbrowser;
   var iboss = req.query.iboss;
@@ -109,18 +109,16 @@ app.get("/watch", async (req, res) => {
           res.header("content-length", contentLength);
         }
         var chunks = 0;
-        var stream = request(url).pipe(res);
-        stream.on("error", err => {
+        request(url).on("error", err => {
           console.log(err)
         }).on("data", data => {
           chunks++;
           console.log(chunks);
         }).on("end", () => {
           console.log("ended")
-        })
+        }).pipe(res);
       }).catch(err => {
-        console.log(err);
-        res.render("error", {error: err});
+        next(err);
       });
   } catch (e) {
     console.log(e);
