@@ -120,7 +120,7 @@ app.get("/watch", async (req, res) => {
         })
       }).catch(err => {
         console.log(err);
-        res.send(err);
+        res.render("error", {error: err});
       });
   } catch (e) {
     console.log(e);
