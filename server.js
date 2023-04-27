@@ -110,6 +110,8 @@ app.get("/watch", async (req, res) => {
         }
         request(url).on("error", err => {
           console.log(err)
+        }).on("data", data => {
+          
         }).pipe(res)
       });
   } catch (e) {
