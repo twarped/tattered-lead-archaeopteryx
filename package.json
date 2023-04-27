@@ -30,7 +30,6 @@
     "util": "^0.12.3",
     "youtube-dl": "^3.4.1",
     "ytdl-core": "^4.11.4",
-    "ytdl-core-custom": "git+https://github.com/twarped/node-ytdl-core.git",
     "zip-stream": "^4.1.0"
   },
   "engines": {
