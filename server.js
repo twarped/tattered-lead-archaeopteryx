@@ -94,11 +94,46 @@ app.get("/watch", async (req, res, next) => {
       .then((info) => {
         var format;
         if (audio) {
-          format = info.formats.filter(e => e.hasAudio && !e.hasVideo && e.audioBitrate == Math.max(...info.formats.filter(e => e.hasAudio && !e.hasVideo).map(e => e.audioBitrate)))[0]
+          format = info.formats.filter(
+            (e) =>
+              e.hasAudio &&
+              !e.hasVideo &&
+              e.audioBitrate ==
+                Math.max(
+                  ...info.formats
+                    .filter((e) => e.hasAudio && !e.hasVideo)
+                    .map((e) => e.audioBitrate)
+                )
+          )[0];
         } else {
-          format = info.formats.filter(e => e.hasAudio && e.hasVideo).filter(e => e.audioBitrate + e.audioBitrate + e.audioChannels + e.bitrate + e.width + e.height + e.fps == Math.max(...info.formats.filter(e => e.hasAudio && e.hasVideo).map(e => e.audioBitrate + e.audioBitrate + e.audioChannels + e.bitrate + e.width + e.height + e.fps)))[0]
+          format = info.formats
+            .filter((e) => e.hasAudio && e.hasVideo)
+            .filter(
+              (e) =>
+                e.audioBitrate +
+                  e.audioBitrate +
+                  e.audioChannels +
+                  e.bitrate +
+                  e.width +
+                  e.height +
+                  e.fps ==
+                Math.max(
+                  ...info.formats
+                    .filter((e) => e.hasAudio && e.hasVideo)
+                    .map(
+                      (e) =>
+                        e.audioBitrate +
+                        e.audioBitrate +
+                        e.audioChannels +
+                        e.bitrate +
+                        e.width +
+                        e.height +
+                        e.fps
+                    )
+                )
+            )[0];
         }
-        console.log(format)
+        console.log(format);
         var contentLength = format.contentLength;
         var audioBitrate = format.audioBitrate;
         var url = format.url;
@@ -108,16 +143,16 @@ app.get("/watch", async (req, res, next) => {
           res.header("content-disposition", contentdisposition(filename));
           res.header("content-length", contentLength);
         }
-        var chunks = 0;
-        request(url).on("error", err => {
-          console.log(err)
-        }).on("data", data => {
-          chunks++;
-          console.log(chunks);
-        }).on("end", () => {
-          console.log("ended")
-        }).pipe(res);
-      }).catch(err => {
+        axios({
+          method: "get",
+          url: url,
+          responseType: "stream",
+        }).then(function (response) {
+          console.log(response)
+          response.data.pipe(res);
+        });
+      })
+      .catch((err) => {
         next(err);
       });
   } catch (e) {
@@ -128,7 +163,7 @@ app.get("/watch", async (req, res, next) => {
 
 app.get("/playlistsetup", (req, res) => {
   var playlistURL;
-  console.log(playlistURL)
+  console.log(playlistURL);
   if (req.query.list.includes("youtu" && "http" && "?list=" && "/playlist"))
     playlistURL =
       "https://www.youtube.com/playlist" + req.query.list.split("/playlist")[1];
