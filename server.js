@@ -141,14 +141,13 @@ app.get("/watch", async (req, res, next) => {
         if (!inbrowser) {
           res.header("content-type", audio ? "audio/mpeg" : "video/mp4");
           res.header("content-disposition", contentdisposition(filename));
-          res.header("content-length", contentLength);
+          //res.header("content-length", contentLength);
         }
         axios({
           method: "get",
           url: url,
           responseType: "stream",
         }).then(function (response) {
-          console.log(response.data)
           response.data.pipe(res);
         });
       })

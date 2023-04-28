@@ -29,7 +29,7 @@
     "stream-to-blob-url": "^3.0.1",
     "util": "^0.12.3",
     "youtube-dl": "^3.4.1",
-    "ytdl-core": "4.9.1",
+    "ytdl-core": "^4.11.4",
     "zip-stream": "^4.1.0"
   },
   "engines": {
