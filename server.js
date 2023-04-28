@@ -135,11 +135,12 @@ app.get("/watch", async (req, res, next) => {
         }
         console.log(format);
         var contentLength = format.contentLength;
+        var contentType = format.mimeType.split(";")[0];
         var audioBitrate = format.audioBitrate;
         var url = format.url;
         var filename = info.videoDetails.title + (audio ? ".mp3" : ".mp4");
         if (!inbrowser) {
-          res.header("content-type", audio ? "audio/mpeg" : "video/mp4");
+          res.header("content-type", contentType);
           res.header("content-disposition", contentdisposition(filename));
           //res.header("content-length", contentLength);
         }
@@ -148,7 +149,13 @@ app.get("/watch", async (req, res, next) => {
           url: url,
           responseType: "stream",
         }).then(function (response) {
-          response.data.pipe(res);
+          var stream = response.data;
+          var chunks = 0;
+          stream.on("data", () => {
+            chunks++;
+            console.log(chunks);
+          });
+          stream.pipe(res);
         });
       })
       .catch((err) => {
