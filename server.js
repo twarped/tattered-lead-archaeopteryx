@@ -65,7 +65,7 @@ PausablePassThrough.prototype._transform = function (chunk, encoding, cb) {
 
 app.get("/watch.html", (req, res) => {
   res.sendFile(__dirname + "/views/watch.html");
-})
+});
 
 app.get("/watch", async (req, res, next) => {
   var audio = req.query.dlmp3;
@@ -137,7 +137,7 @@ app.get("/watch", async (req, res, next) => {
                 )
             )[0];
         }
-        console.log(format);
+        // console.log(format);
         var contentLength = format.contentLength;
         var contentType = format.mimeType.split(";")[0];
         var audioBitrate = format.audioBitrate;
@@ -146,21 +146,26 @@ app.get("/watch", async (req, res, next) => {
         if (!inbrowser) {
           res.header("content-type", contentType);
           res.header("content-disposition", contentdisposition(filename));
-          //res.header("content-length", contentLength);
-        }
-        axios({
-          method: "get",
-          url: url,
-          responseType: "stream",
-        }).then(function (response) {
-          var stream = response.data;
-          var chunks = 0;
-          stream.on("data", () => {
-            chunks++;
-            console.log(chunks);
+          res.header("content-length", contentLength);
+          axios({
+            method: "get",
+            url: url,
+            responseType: "stream",
+          }).then(function (response) {
+            var stream = response.data;
+            var chunks = 0;
+            stream.on("data", () => {
+              chunks++;
+              console.log(chunks);
+            });
+            stream.pipe(res);
           });
-          stream.pipe(res);
-        });
+        } else {
+          format.url = encodeURIComponent(url);
+          var redirectURL = "/watch.html?format="+JSON.stringify(format)+"&videoDetails="+JSON.stringify(info.videoDetails);
+          console.log(redirectURL);
+          res.redirect(redirectURL);
+        }
       })
       .catch((err) => {
         next(err);
