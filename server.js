@@ -63,6 +63,10 @@ PausablePassThrough.prototype._transform = function (chunk, encoding, cb) {
   }
 };
 
+app.get("/watch.html", (req, res) => {
+  res.sendFile(__dirname + "/views/watch.html");
+})
+
 app.get("/watch", async (req, res, next) => {
   var audio = req.query.dlmp3;
   var inbrowser = req.query.inbrowser;
