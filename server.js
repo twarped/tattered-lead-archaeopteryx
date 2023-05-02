@@ -168,9 +168,10 @@ app.get("/watch", async (req, res, next) => {
           info.videoDetails.keywords = info.videoDetails.keywords.map(e => encodeURIComponent(e));
           info.videoDetails.author.name = encodeURIComponent(info.videoDetails.author.name);
           delete info.videoDetails.storyboards;
-          info.videoDetails.thumbnails.map(e => {
+          info.videoDetails.thumbnails = info.videoDetails.thumbnails.map(e => {
             var obj = JSON.parse(JSON.stringify(e));
-            
+            obj.url = encodeURIComponent(obj.url);
+            return obj;
           })
           var redirectURL = "https://tattered-lead-archaeopteryx.glitch.me/watch.html?format="+JSON.stringify(format)+"&videoDetails="+JSON.stringify(info.videoDetails);
           console.log(redirectURL);

@@ -1,62 +1,60 @@
 <html>
-  <head>
-    <link rel="stylesheet" href="/watch.css"/>
-    <script>
-      window.inbrowser = <%= inbrowser %>;
-      window.filename = "<%= filename %>";
-      window.url = "<%= url %>";
-      window.params = new Proxy(new URLSearchParams(window.location.search), {
-        get: (searchParams, prop) => searchParams.get(prop),
-      });
-      if (params.url === null && window.url === null) {
-        document.body.innerHTML = "<h1>needed data nonexistent, redirecting you to /</h1>";
-        setTimeout(() => (window.location = window.location.origin), 3000);
-      } else if (window.url === null) {
-        window.url = params.url;
-        window.fileName = params.fileName;
-      }
-    </script>
-  </head>
-  <body>
-    <script>
-      function saveOrOpenBlob(url, blobName) {
-        var blob;
-        var xmlHTTP = new XMLHttpRequest();
-        xmlHTTP.open("GET", url, true);
-        xmlHTTP.responseType = "arraybuffer";
-        xmlHTTP.onload = function (e) {
-          blob = new Blob([this.response]);
-        };
-        xmlHTTP.onprogress = function (pr) {
-          //pr.loaded - current state
-          //pr.total  - max
-          console.log(pr.loaded);
-          console.log(pr.total);
-        };
-        xmlHTTP.onloadend = function (e) {
-          var fileName = blobName;
-          var tempEl = document.createElement("a");
-          document.body.appendChild(tempEl);
-          tempEl.style = "display: none";
-          url = window.URL.createObjectURL(blob);
-          tempEl.href = url;
-          tempEl.download = fileName;
-          tempEl.click();
-          window.URL.revokeObjectURL(url);
-        };
-        xmlHTTP.send();
-      }
-    </script>
-    <div>
-      <h2>
-        <%= filename %>
-      </h2>
-      <div id="meter-gauge">
-        <span style="width: 70.42%;">video download progress</span>
-      </div>
-      <a href="<%= url %>" target="_blank">
-        <%= url %>
-      </a>
-    </div>
-  </body>
+    <head>
+        <script>
+            function parseParam(param) {
+                if (param[0] == "'") param = param.substr(1);
+                if (param[param.length - 1] == "'") param = param.slice(0, -1);
+                param = param.replace(/\\\\/g, '\\');
+                return param;
+            }
+            try {
+                var params = new URLSearchParams(window.location.search);
+                window.format = JSON.parse(parseParam(params.get("format")));
+                window.videoDetails = JSON.parse(parseParam(params.get("videoDetails")));
+            } catch (err) {
+                window.addEventListener("load", () => {
+                    document.body.innerHTML = "Needed data not found in query string or ejs. Please try again.";
+                })
+            }
+        </script>
+        <style>
+            #content {
+                width: 100%;
+            }
+            #content > video {
+                width: 100%;
+            }
+            #content > audio {
+                padding: 15px;
+                padding-top: 75px;
+                width: calc(100% - 30px);
+            }
+            p {
+                margin: 0;
+                padding-left: 20px;
+            }
+        </style>
+    </head>
+    <body style="margin:0">
+        <script>
+            alreadyErrored = false;
+            var mime = format.mimeType.split(";")[0];
+            function resourceError() {
+                if (alreadyErrored) return true;
+                content.innerHTML += '<p>An error occurred. Your video/audio URL probably expired... Please go back to the home page and try again.</p>';
+                alreadyErrored = true;
+            }
+            window.content = document.createElement("div");
+            content.id = "content";
+            content.innerHTML = mime.includes("audio") ? 
+            `<audio controls>
+                <source src="${format.url}" type="${mime}" onerror="resourceError()">
+            </audio>` :
+            `<video src="${format.url}" controls onerror="resourceError()"></video>`;
+            document.body.appendChild(content);
+        </script>
+        <p>
+            To download the video/audio, click the three dots on the video/audio and click "download".
+        </p>
+    </body>
 </html>
