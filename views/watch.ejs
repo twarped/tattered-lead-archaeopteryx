@@ -17,8 +17,8 @@
                       document.body.innerHTML = "Needed data not found in query string or ejs. Please try again.";
                   })
                 } else {
-                  window.format = JSON.parse(`<%= JSON.stringify(format) %>`);
-                  window.videoDetails = JSON.parse(`<%= JSON.stringify(videoDetails) %>`)
+                  window.format = JSON.parse(decodeURIComponent(`<%= JSON.stringify(format) %>`.replaceAll("=&#34;", "=\\\"").replaceAll("&#34;&#34;", "\\\"\"").replaceAll("&#34;", "\"")));
+                  window.videoDetails = JSON.parse(`<%= JSON.stringify(videoDetails) %>`.replaceAll("=&#34;", "=\\\"").replaceAll("&#34;&#34;", "\\\"\"").replaceAll("&#34;", "\""));
                 }
             }
         </script>
