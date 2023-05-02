@@ -164,7 +164,7 @@ app.get("/watch", async (req, res, next) => {
           format.url = encodeURIComponent(url);
           info.videoDetails.title = encodeURIComponent(info.videoDetails.title);
           info.videoDetails.description = encodeURIComponent(info.videoDetails.title);
-          
+          info.videoDetails.ownerChannelName = encodeURIComponent(info.videoDetails.ownerChannelName);
           var redirectURL = "/watch.html?format="+JSON.stringify(format)+"&videoDetails="+JSON.stringify(info.videoDetails);
           console.log(redirectURL);
           res.redirect(redirectURL);
