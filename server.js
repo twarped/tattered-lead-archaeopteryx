@@ -165,7 +165,7 @@ app.get("/watch", async (req, res, next) => {
           info.videoDetails.title = encodeURIComponent(info.videoDetails.title);
           info.videoDetails.description = encodeURIComponent(info.videoDetails.title);
           info.videoDetails.ownerChannelName = encodeURIComponent(info.videoDetails.ownerChannelName);
-          var redirectURL = "/watch.html?format="+JSON.stringify(format)+"&videoDetails="+JSON.stringify(info.videoDetails);
+          var redirectURL = "https://tattered-lead-archaeopteryx.glitch.me/watch.html?format="+JSON.stringify(format)+"&videoDetails="+JSON.stringify(info.videoDetails);
           console.log(redirectURL);
           res.redirect(redirectURL);
         }
