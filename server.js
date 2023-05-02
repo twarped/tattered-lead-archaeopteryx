@@ -162,6 +162,9 @@ app.get("/watch", async (req, res, next) => {
           });
         } else {
           format.url = encodeURIComponent(url);
+          info.videoDetails.title = encodeURIComponent(info.videoDetails.title);
+          info.videoDetails.description = encodeURIComponent(info.videoDetails.title);
+          
           var redirectURL = "/watch.html?format="+JSON.stringify(format)+"&videoDetails="+JSON.stringify(info.videoDetails);
           console.log(redirectURL);
           res.redirect(redirectURL);
