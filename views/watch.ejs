@@ -12,6 +12,8 @@
                 window.format = JSON.parse(parseParam(params.get("format")));
                 window.videoDetails = JSON.parse(parseParam(params.get("videoDetails")));
             } catch (err) {
+                                if (window.format == undefined && window.videoDetails == undefined) {
+
                 window.addEventListener("load", () => {
                     document.body.innerHTML = "Needed data not found in query string or ejs. Please try again.";
                 })
