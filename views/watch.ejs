@@ -17,9 +17,8 @@
                       document.body.innerHTML = "Needed data not found in query string or ejs. Please try again.";
                   })
                 } else {
-                  <% videoDetails.description = videoDetails.description.replaceAll("=&#34;", "=\\\"").replaceAll("&#34;&#34;", "\\\"\"").replaceAll("&#34;", "\"") %>
-                  window.format = <%- JSON.stringify(format) %>;//.replaceAll("=&#34;", "=\\\"").replaceAll("&#34;&#34;", "\\\"\"").replaceAll("&#34;", "\"").replaceAll("\\n", "\\\\n")));
-                  window.videoDetails = <%- JSON.stringify(videoDetails) %>//.replaceAll("=&#34;", "=\\\"").replaceAll("&#34;&#34;", "\\\"\"").replaceAll("&#34;", "\"").replaceAll("\\n", "\\\\n"));
+                  window.format = <%- JSON.stringify(format) %>;
+                  window.videoDetails = <%- JSON.stringify(videoDetails) %>;
                 }
             }
         </script>
@@ -60,10 +59,10 @@
             window.content = document.createElement("div");
             content.id = "content";
             content.innerHTML = mime.includes("audio") ? 
-            `<audio controls>
-                <source src="${format.url}" type="${mime}" onerror="resourceError()">
+            `<audio title="${videoDetails.title}" controls>
+                <source src="${format.url}.${mime.split("/")[1]}" type="${mime}" onerror="resourceError()">
             </audio>` :
-            `<video src="${format.url}" controls onerror="resourceError()"></video>`;
+            `<video title="${videoDetails.title}.mp4" src="${format.url}" controls onerror="resourceError()"></video>`;
             document.body.appendChild(content);
         </script>
         <p>
