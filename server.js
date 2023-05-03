@@ -98,17 +98,9 @@ app.get("/watch", async (req, res, next) => {
       .then((info) => {
         var format;
         if (audio) {
-          format = info.formats.filter(
-            (e) =>
-              e.hasAudio &&
-              !e.hasVideo &&
-              e.audioBitrate ==
-                Math.max(
-                  ...info.formats
-                    .filter((e) => e.hasAudio && !e.hasVideo)
-                    .map((e) => e.audioBitrate)
-                )
-          )[0];
+          format = info.formats
+            .filter((e) => e.hasAudio && !e.hasVideo && e.audioBitrate <= 128)
+            .sort((a, b) => b.audioBitrate - a.audioBitrate)[0];
         } else {
           format = info.formats
             .filter((e) => e.hasAudio && e.hasVideo)
@@ -176,7 +168,10 @@ app.get("/watch", async (req, res, next) => {
           //  var redirectURL = "https://tattered-lead-archaeopteryx.glitch.me/watch.html?format="+JSON.stringify(format)+"&videoDetails="+JSON.stringify(info.videoDetails);
           //  console.log(redirectURL);
           //  res.redirect(redirectURL);
-          res.render("watch.ejs", { format: format, videoDetails: info.videoDetails });
+          res.render("watch.ejs", {
+            format: format,
+            videoDetails: info.videoDetails,
+          });
         }
       })
       .catch((err) => {
