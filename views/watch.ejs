@@ -18,18 +18,24 @@
                   })
                 } else {
                   <% videoDetails.description = videoDetails.description.replaceAll("=&#34;", "=\\\"").replaceAll("&#34;&#34;", "\\\"\"").replaceAll("&#34;", "\"") %>
-                  window.format = JSON.parse(decodeURIComponent(`<%= JSON.stringify(format) %>`.replaceAll("=&#34;", "=\\\"").replaceAll("&#34;&#34;", "\\\"\"").replaceAll("&#34;", "\"").replaceAll("\\n", "\\\\n")));
-                  window.description = `<%= JSON.stringify(videoDetails.description) %>`;
-                  window.videoDetails = JSON.parse(`<%= JSON.stringify(videoDetails) %>`.replaceAll("=&#34;", "=\\\"").replaceAll("&#34;&#34;", "\\\"\"").replaceAll("&#34;", "\"").replaceAll("\\n", "\\\\n"));
+                  window.format = <%- JSON.stringify(format) %>;//.replaceAll("=&#34;", "=\\\"").replaceAll("&#34;&#34;", "\\\"\"").replaceAll("&#34;", "\"").replaceAll("\\n", "\\\\n")));
+                  window.videoDetails = <%- JSON.stringify(videoDetails) %>//.replaceAll("=&#34;", "=\\\"").replaceAll("&#34;&#34;", "\\\"\"").replaceAll("&#34;", "\"").replaceAll("\\n", "\\\\n"));
                 }
             }
         </script>
         <style>
             #content {
                 width: 100%;
+                position: relative;
+                background-color: black;
+                height: 100%;
             }
             #content > video {
+                height: auto;
                 width: 100%;
+                position: absolute;
+                left: 50%;
+                transform: translate(-50%, 0%);
             }
             #content > audio {
                 padding: 15px;
