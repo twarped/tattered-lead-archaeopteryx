@@ -96,39 +96,39 @@ app.get("/watch", async (req, res, next) => {
         },
       })
       .then((info) => {
-        var format;
-        if (audio) {
-          format = info.formats
-            .filter((e) => e.hasAudio && !e.hasVideo && e.audioBitrate <= 128)
-            .sort((a, b) => b.audioBitrate - a.audioBitrate)[0];
-        } else {
-          format = info.formats
-            .filter((e) => e.hasAudio && e.hasVideo)
-            .filter(
-              (e) =>
+        var format = info.formats
+          .filter((e) => e.hasAudio && e.hasVideo)
+          .filter(
+            (e) =>
+              e.audioBitrate +
                 e.audioBitrate +
-                  e.audioBitrate +
-                  e.audioChannels +
-                  e.bitrate +
-                  e.width +
-                  e.height +
-                  e.fps ==
-                Math.max(
-                  ...info.formats
-                    .filter((e) => e.hasAudio && e.hasVideo)
-                    .map(
-                      (e) =>
-                        e.audioBitrate +
-                        e.audioBitrate +
-                        e.audioChannels +
-                        e.bitrate +
-                        e.width +
-                        e.height +
-                        e.fps
-                    )
-                )
-            )[0];
-        }
+                e.audioChannels +
+                e.bitrate +
+                e.width +
+                e.height +
+                e.fps ==
+              Math.max(
+                ...info.formats
+                  .filter((e) => e.hasAudio && e.hasVideo)
+                  .map(
+                    (e) =>
+                      e.audioBitrate +
+                      e.audioBitrate +
+                      e.audioChannels +
+                      e.bitrate +
+                      e.width +
+                      e.height +
+                      e.fps
+                  )
+              )
+          )[0];
+//         if (audio) {
+//           format = info.formats
+//             .filter((e) => e.hasAudio && !e.hasVideo && e.audioBitrate <= 128)
+//             .sort((a, b) => b.audioBitrate - a.audioBitrate)[0];
+//         } else {
+          
+//         }
         // console.log(format);
         var contentLength = format.contentLength;
         var contentType = format.mimeType.split(";")[0];
@@ -150,7 +150,11 @@ app.get("/watch", async (req, res, next) => {
               chunks++;
               console.log(chunks);
             });
-            stream.pipe(res);
+            if (!audio) { 
+              stream.pipe(res);
+            } else {
+              var command = new ffmpeg(stream)
+            }
           });
         } else {
           // format.url = encodeURIComponent(url);
