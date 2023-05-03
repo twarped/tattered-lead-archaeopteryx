@@ -65,8 +65,8 @@
             `<video title="${videoDetails.title}.mp4" src="${format.url}" controls onerror="resourceError()"></video>`;
             document.body.appendChild(content);
         </script>
-        <p>
-            To download the video/audio, click the three dots on the video/audio and click "download".
-        </p>
+        <a href="<%= format.url %>" target="_blank" download>
+            -------Download-------
+        </a>
     </body>
 </html>
