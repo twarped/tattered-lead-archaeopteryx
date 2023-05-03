@@ -59,8 +59,8 @@
             window.content = document.createElement("div");
             content.id = "content";
             content.innerHTML = mime.includes("audio") ? 
-            `<audio title="${videoDetails.title}" controls>
-                <source src="${format.url}.${mime.split("/")[1]}" type="${mime}" onerror="resourceError()">
+            `<audio preload="auto" title="${videoDetails.title}.${mime.split("/")[1]}" controls>
+                <source src="${format.url}" type="${mime}" onerror="resourceError()">
             </audio>` :
             `<video title="${videoDetails.title}.mp4" src="${format.url}" controls onerror="resourceError()"></video>`;
             document.body.appendChild(content);
