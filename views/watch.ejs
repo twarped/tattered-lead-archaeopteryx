@@ -14,6 +14,7 @@
             } catch (err) {
                 if (<%= (() => { try {format; videoDetails;} catch {return true} return false })() %>) {
                   window.addEventListener("load", () => {
+                      var context = new AudioContext();
                       document.body.innerHTML = "Needed data not found in query string or ejs. Please try again.";
                   })
                 } else {
@@ -59,8 +60,8 @@
             window.content = document.createElement("div");
             content.id = "content";
             content.innerHTML = mime.includes("audio") ? 
-            `<audio autoplay="true" preload="auto" title="${videoDetails.title}.${mime.includes("audio") ? "mp3" : "mp4"}" controls>
-                <source src="${format.url}" type="${mime}" onerror="resourceError()">
+            `<audio preload="auto" oncanplaythrough="console.log(this.play())" title="${videoDetails.title}.mp3" controls>
+                <source src="${format.url}" type="audio/mp3" onerror="resourceError()">
             </audio>` :
             `<video title="${videoDetails.title}.mp4" src="${format.url}" controls onerror="resourceError()"></video>`;
             document.body.appendChild(content);
