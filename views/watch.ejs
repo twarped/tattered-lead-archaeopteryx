@@ -59,7 +59,7 @@
             window.content = document.createElement("div");
             content.id = "content";
             content.innerHTML = mime.includes("audio") ? 
-            `<audio preload="auto" title="${videoDetails.title}.${mime.includes("audio") ? "mp3" : "mp4"}}" controls>
+            `<audio autoplay="true" preload="auto" title="${videoDetails.title}.${mime.includes("audio") ? "mp3" : "mp4"}" controls>
                 <source src="${format.url}" type="${mime}" onerror="resourceError()">
             </audio>` :
             `<video title="${videoDetails.title}.mp4" src="${format.url}" controls onerror="resourceError()"></video>`;
