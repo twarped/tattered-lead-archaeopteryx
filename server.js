@@ -137,7 +137,8 @@ app.get("/watch", async (req, res, next) => {
         var filename = info.videoDetails.title + (audio ? ".mp3" : ".mp4");
         if (!inbrowser) {
           res.header("content-type", contentType);
-          res.header("content-disposition", contentdisposition(filename));
+          console.log(contentdisposition(filename));
+          res.header("content-disposition", "" + contentdisposition(filename));
           res.header("content-length", contentLength);
           axios({
             method: "get",
@@ -153,10 +154,13 @@ app.get("/watch", async (req, res, next) => {
             if (!audio) {
               stream.pipe(res);
             } else {
-              var command = new ffmpeg({source: stream})
-                .withAudioCodec("libmp3lame")
-                .toFormat("mp3")
-                .pipe(res);
+              ffmpeg(stream)
+                .audioBitrate("128")
+                .format("mp3")
+                .on("error", function (err) {
+                  console.log("An error occurred: " + err.message);
+                })
+                .pipe(res, { end: true });
             }
           });
         } else {
@@ -175,6 +179,13 @@ app.get("/watch", async (req, res, next) => {
           //  var redirectURL = "https://tattered-lead-archaeopteryx.glitch.me/watch.html?format="+JSON.stringify(format)+"&videoDetails="+JSON.stringify(info.videoDetails);
           //  console.log(redirectURL);
           //  res.redirect(redirectURL);
+          if (audio) {
+            format = info.formats
+              .filter((e) => e.hasAudio && !e.hasVideo && e.audioBitrate <= 128)
+              .sort((a, b) => b.audioBitrate - a.audioBitrate)[0];
+          } else {
+
+          }
           res.render("watch.ejs", {
             format: format,
             videoDetails: info.videoDetails,
