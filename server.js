@@ -153,7 +153,7 @@ app.get("/watch", async (req, res, next) => {
             if (!audio) {
               stream.pipe(res);
             } else {
-              var command = new ffmpeg(stream)
+              var command = new ffmpeg({source: stream})
                 .withAudioCodec("libmp3lame")
                 .toFormat("mp3")
                 .pipe(res);
