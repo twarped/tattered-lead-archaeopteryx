@@ -59,14 +59,13 @@
             window.content = document.createElement("div");
             content.id = "content";
             content.innerHTML = mime.includes("audio") ? 
-            `<audio preload="auto" title="${videoDetails.title}.${mime.split("/")[1]}" controls>
+            `<audio preload="auto" title="${videoDetails.title}.${mime.includes("audio") ? "mp3" : "mp4"}}" controls>
                 <source src="${format.url}" type="${mime}" onerror="resourceError()">
             </audio>` :
             `<video title="${videoDetails.title}.mp4" src="${format.url}" controls onerror="resourceError()"></video>`;
             document.body.appendChild(content);
         </script>
-        <a href="<%= format.url %>" target="_blank" download>
-            -------Download-------
-        </a>
+      <p>If you want to download this, right click the <%= format.mimeType.includes("audio") ? "Audio" : "Video" %> and click "Save <%= format.mimeType.includes("audio") ? "Audio" : "Video" %> As".
+        </p>
     </body>
 </html>
