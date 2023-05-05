@@ -132,14 +132,11 @@ app.get("/watch", async (req, res, next) => {
         var contentLength = format.contentLength;
         var contentType = format.mimeType.split(";")[0];
         var audioBitrate = format.audioBitrate;
-        console.log(format.url)
+        // console.log(format.url)
         var url = format.url + (audio ? "&range=0-" + contentLength : "");
         var filename = info.videoDetails.title + (audio ? ".mp3" : ".mp4");
         if (!inbrowser) {
-          //res.header("content-type", contentType);
           console.log(contentdisposition(filename));
-          //res.header("content-disposition", "" + contentdisposition(filename));
-          //res.header("content-length", contentLength);
           axios({
             method: "get",
             url: url,
@@ -148,6 +145,12 @@ app.get("/watch", async (req, res, next) => {
             var data = response.data;
             var passthrough = new stream.PassThrough();
             var chunks = 0;
+            var headers = JSON.parse(JSON.stringify(response.headers));
+            headers["content-disposition"] = "" + contentdisposition(filename);
+            headers["content-length"] = contentLength;
+            headers["content-type"] = contentType;
+            res.set(headers);
+            console.log(headers)
             data.on("data", data => {
               //chunks++;
               //console.log(chunks);
