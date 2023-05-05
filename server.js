@@ -150,8 +150,13 @@ app.get("/watch", async (req, res, next) => {
             headers["content-length"] = contentLength;
             headers["content-type"] = contentType;
             res.set(headers);
-            console.log(headers)
-            data.pipe(res, {end: true});
+            console.log(headers);
+            console.log(req.headers);
+            res.on("data", chunk => {
+              chunks++;
+              console.log(chunks);
+            });
+            data.pipe(res)
           });
         } else {
           res.render("watch.ejs", {
