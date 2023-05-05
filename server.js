@@ -86,7 +86,7 @@ app.get("/watch", async (req, res, next) => {
   } catch (e) {
     iboss = false;
   }
-  try {
+  // try {
     ytdl
       .getInfo(req.query.v, {
         requestOptions: {
@@ -132,7 +132,8 @@ app.get("/watch", async (req, res, next) => {
         var contentLength = format.contentLength;
         var contentType = format.mimeType.split(";")[0];
         var audioBitrate = format.audioBitrate;
-        var url = format.url + audio ? `&range=0-${contentLength}` : "";
+        console.log(format.url + ``)
+        var url = format.url + (audio ? "&range=0-" + contentLength : "");
         var filename = info.videoDetails.title + (audio ? ".mp3" : ".mp4");
         if (!inbrowser) {
           res.header("content-type", contentType);
@@ -144,6 +145,7 @@ app.get("/watch", async (req, res, next) => {
             url: url,
             responseType: "stream",
           }).then(function (response) {
+            
             var stream = response.data;
             stream.pipe(res);
           });
@@ -155,13 +157,13 @@ app.get("/watch", async (req, res, next) => {
           });
         }
       })
-      .catch((err) => {
-        next(err);
-      });
-  } catch (e) {
-    console.log(e);
-    res.send(e);
-  }
+      // .catch((err) => {
+      //   next(err);
+      // });
+  // } catch (e) {
+  //   console.log(e);
+  //   res.send(e);
+  // }
 });
 
 app.get("/playlistsetup", (req, res) => {
