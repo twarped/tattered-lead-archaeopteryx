@@ -145,13 +145,19 @@ app.get("/watch", async (req, res, next) => {
             url: url,
             responseType: "stream",
           }).then(function (response) {
-            var stream = response.data;
+            var data = response.data;
+            var passthrough = new stream.PassThrough();
             var chunks = 0;
-            stream.on("data", () => {
+            data.on("data", data => {
+              //chunks++;
+              //console.log(chunks);
+              passthrough.write(data);
+            })
+            passthrough.on("data", data => {
               chunks++;
               console.log(chunks);
             })
-            res.send("bob")
+            passthrough.pipe(res);
           });
         } else {
           res.render("watch.ejs", {
