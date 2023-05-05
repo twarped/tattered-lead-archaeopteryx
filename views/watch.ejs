@@ -62,7 +62,7 @@
             content.id = "content";
             content.innerHTML = mime.includes("audio") ? 
             `<audio preload="auto" title="${videoDetails.title}.mp3" controls>
-                <source src="${format.url}" type="audio/mp3" onerror="resourceError()">
+                <source src="${format.url}&range=0-${format.contentLength}" type="audio/mp3" onerror="resourceError()">
             </audio>` :
             `<video title="${videoDetails.title}.mp4" src="${format.url}" controls onerror="resourceError()"></video>`;
             document.body.appendChild(content);

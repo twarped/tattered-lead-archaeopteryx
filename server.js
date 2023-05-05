@@ -96,44 +96,44 @@ app.get("/watch", async (req, res, next) => {
         },
       })
       .then((info) => {
-        var format = info.formats
-          .filter((e) => e.hasAudio && e.hasVideo)
-          .filter(
-            (e) =>
-              e.audioBitrate +
+        var format;
+        if (audio) {
+          format = info.formats
+            .filter((e) => e.hasAudio && !e.hasVideo && e.audioBitrate <= 128)
+            .sort((a, b) => b.audioBitrate - a.audioBitrate)[0];
+        } else {
+          format = info.formats
+            .filter((e) => e.hasAudio && e.hasVideo)
+            .filter(
+              (e) =>
                 e.audioBitrate +
-                e.audioChannels +
-                e.bitrate +
-                e.width +
-                e.height +
-                e.fps ==
-              Math.max(
-                ...info.formats
-                  .filter((e) => e.hasAudio && e.hasVideo)
-                  .map(
-                    (e) =>
-                      e.audioBitrate +
-                      e.audioBitrate +
-                      e.audioChannels +
-                      e.bitrate +
-                      e.width +
-                      e.height +
-                      e.fps
-                  )
-              )
-          )[0];
-        //         if (audio) {
-        //           format = info.formats
-        //             .filter((e) => e.hasAudio && !e.hasVideo && e.audioBitrate <= 128)
-        //             .sort((a, b) => b.audioBitrate - a.audioBitrate)[0];
-        //         } else {
-
-        //         }
+                  e.audioBitrate +
+                  e.audioChannels +
+                  e.bitrate +
+                  e.width +
+                  e.height +
+                  e.fps ==
+                Math.max(
+                  ...info.formats
+                    .filter((e) => e.hasAudio && e.hasVideo)
+                    .map(
+                      (e) =>
+                        e.audioBitrate +
+                        e.audioBitrate +
+                        e.audioChannels +
+                        e.bitrate +
+                        e.width +
+                        e.height +
+                        e.fps
+                    )
+                )
+            )[0];
+        }
         // console.log(format);
         var contentLength = format.contentLength;
         var contentType = format.mimeType.split(";")[0];
         var audioBitrate = format.audioBitrate;
-        var url = format.url;
+        var url = `${format.url}&range=0-${contentLength}`;
         var filename = info.videoDetails.title + (audio ? ".mp3" : ".mp4");
         if (!inbrowser) {
           res.header("content-type", contentType);
@@ -151,17 +151,7 @@ app.get("/watch", async (req, res, next) => {
               chunks++;
               console.log(chunks);
             });
-            if (!audio) {
-              stream.pipe(res);
-            } else {
-              ffmpeg(stream)
-                .audioBitrate("128")
-                .format("mp3")
-                .on("error", function (err) {
-                  console.log("An error occurred: " + err.message);
-                })
-                .pipe(res, { end: true });
-            }
+            stream.pipe(res);
           });
         } else {
           // format.url = encodeURIComponent(url);
