@@ -1,23 +1,23 @@
 const express = require("express");
 const cors = require("cors");
 const got = require("got");
-const youtubedl = require("youtube-dl");
+// const youtubedl = require("youtube-dl");
 const ytdl = require("ytdl-core");
 const request = require("request");
 const events = require("events");
 const contentdisposition = require("content-disposition");
 const archiver = require("archiver");
 const axios = require("axios");
-const http2Express = require("http2-express-bridge");
+// const http2Express = require("http2-express-bridge");
 const fs = require("graceful-fs");
 const toBlobURL = require("stream-to-blob-url");
 const stream = require("stream");
-const httpsproxyagent = require("https-proxy-agent");
+// const httpsproxyagent = require("https-proxy-agent");
 //const packer = require("zip-stream");
 const packer = require("archiver");
 const util = require("util");
-const puppeteer = require("puppeteer");
-const coolThing = require("./other-cool-thing.js");
+// const puppeteer = require("puppeteer");
+// const coolThing = require("./other-cool-thing.js");
 const ffmpeg = require("fluent-ffmpeg");
 const miniget = require("miniget");
 const https = require("node:https");
@@ -294,9 +294,9 @@ app.get("/get_video_info", async (req, res) => {
   }
 });
 
-app.get("/waitstuffs", async (req, res) => {
-  coolThing.waitStuffs(req, res);
-});
+// app.get("/waitstuffs", async (req, res) => {
+//   coolThing.waitStuffs(req, res);
+// });
 
 app.get("/get_site_html", (req, res) => {
   res.setHeader("content-type", "text/plain");
