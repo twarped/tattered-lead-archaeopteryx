@@ -1,6 +1,7 @@
 <html>
     <head>
         <script>
+          <% format.audio = format.mimeType.includes("audio") %>
             function parseParam(param) {
                 if (param[0] == "'") param = param.substr(1);
                 if (param[param.length - 1] == "'") param = param.slice(0, -1);
@@ -43,8 +44,8 @@
                 width: calc(100% - 30px);
             }
             p {
-                margin: 0;
-                padding-left: 20px;
+              margin: 0;
+                padding: 20px;
             }
         </style>
     </head>
@@ -60,13 +61,13 @@
             window.content = document.createElement("div");
             content.id = "content";
             content.innerHTML = mime.includes("audio") ? 
-            `<audio preload="auto" oncanplaythrough="console.log(this.play())" title="${videoDetails.title}.mp3" controls>
+            `<audio preload="auto" title="${videoDetails.title}.mp3" controls>
                 <source src="${format.url}" type="audio/mp3" onerror="resourceError()">
             </audio>` :
             `<video title="${videoDetails.title}.mp4" src="${format.url}" controls onerror="resourceError()"></video>`;
             document.body.appendChild(content);
         </script>
-      <p>If you want to download this, right click the <%= format.mimeType.includes("audio") ? "Audio" : "Video" %> and click "Save <%= format.mimeType.includes("audio") ? "Audio" : "Video" %> As".
+      <p>If you want to download this <%= format.audio ? "Audio" : "Video" %>, right click the <%= format.audio ? "Audio" : "Video" %>, then click "Save <%= format.audio ? "Audio" : "Video" %> As". If the download is too slow, try again. Don't reload the page.
         </p>
     </body>
 </html>
