@@ -62,9 +62,9 @@
             content.id = "content";
             content.innerHTML = mime.includes("audio") ? 
             `<audio preload="auto" title="${videoDetails.title}.mp3" controls>
-                <source src="${format.url}&range=0-${format.contentLength}" type="audio/mp3" onerror="resourceError()">
+                <source src="<%- url %>" type="audio/mp3" onerror="resourceError()">
             </audio>` :
-            `<video title="${videoDetails.title}.mp4" src="${format.url}" controls onerror="resourceError()"></video>`;
+            `<video title="${videoDetails.title}.mp4" src="<%- url %>" controls onerror="resourceError()"></video>`;
             document.body.appendChild(content);
         </script>
       <p>If you want to download this <%= format.audio ? "Audio" : "Video" %>, right click the <%= format.audio ? "Audio" : "Video" %>, then click "Save <%= format.audio ? "Audio" : "Video" %> As". If the download is too slow, try again. Don't reload the page.

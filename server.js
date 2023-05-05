@@ -129,7 +129,6 @@ app.get("/watch", async (req, res, next) => {
                 )
             )[0];
         }
-        // console.log(format);
         var contentLength = format.contentLength;
         var contentType = format.mimeType.split(";")[0];
         var audioBitrate = format.audioBitrate;
@@ -146,39 +145,13 @@ app.get("/watch", async (req, res, next) => {
             responseType: "stream",
           }).then(function (response) {
             var stream = response.data;
-            var chunks = 0;
-            stream.on("data", () => {
-              chunks++;
-              console.log(chunks);
-            });
             stream.pipe(res);
           });
         } else {
-          // format.url = encodeURIComponent(url);
-          // info.videoDetails.title = encodeURIComponent(info.videoDetails.title);
-          // info.videoDetails.description = encodeURIComponent(info.videoDetails.title);
-          // info.videoDetails.ownerChannelName = encodeURIComponent(info.videoDetails.ownerChannelName);
-          // info.videoDetails.keywords = info.videoDetails.keywords.map(e => encodeURIComponent(e));
-          // info.videoDetails.author.name = encodeURIComponent(info.videoDetails.author.name);
-          // delete info.videoDetails.storyboards;
-          // info.videoDetails.thumbnails = info.videoDetails.thumbnails.map(e => {
-          //   var obj = JSON.parse(JSON.stringify(e));
-          //   obj.url = encodeURIComponent(obj.url);
-          //   return obj;
-          // })
-          //  var redirectURL = "https://tattered-lead-archaeopteryx.glitch.me/watch.html?format="+JSON.stringify(format)+"&videoDetails="+JSON.stringify(info.videoDetails);
-          //  console.log(redirectURL);
-          //  res.redirect(redirectURL);
-          if (audio) {
-            format = info.formats
-              .filter((e) => e.hasAudio && !e.hasVideo && e.audioBitrate <= 128)
-              .sort((a, b) => b.audioBitrate - a.audioBitrate)[0];
-          } else {
-
-          }
           res.render("watch.ejs", {
             format: format,
             videoDetails: info.videoDetails,
+            url: `/watch?v=${req.query.v}&dlmp3=${audio}`,
           });
         }
       })
