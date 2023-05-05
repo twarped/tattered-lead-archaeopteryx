@@ -151,13 +151,11 @@ app.get("/watch", async (req, res, next) => {
             data.on("data", data => {
               //chunks++;
               //console.log(chunks);
-              passthrough.write(data);
+              res.write(data);
+            });
+            data.on("end", () => {
+              res.end()
             })
-            passthrough.on("data", data => {
-              chunks++;
-              console.log(chunks);
-            })
-            passthrough.pipe(res);
           });
         } else {
           res.render("watch.ejs", {
