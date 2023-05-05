@@ -145,9 +145,13 @@ app.get("/watch", async (req, res, next) => {
             url: url,
             responseType: "stream",
           }).then(function (response) {
-            
             var stream = response.data;
-            stream.pipe(res);
+            var chunks = 0;
+            stream.on("data", () => {
+              chunks++;
+              console.log(chunks);
+            })
+            res.send("bob")
           });
         } else {
           res.render("watch.ejs", {
