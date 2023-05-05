@@ -151,14 +151,7 @@ app.get("/watch", async (req, res, next) => {
             headers["content-type"] = contentType;
             res.set(headers);
             console.log(headers)
-            data.on("data", data => {
-              //chunks++;
-              //console.log(chunks);
-              res.write(data);
-            });
-            data.on("end", () => {
-              res.end()
-            })
+            data.pipe(res, {end: true});
           });
         } else {
           res.render("watch.ejs", {
