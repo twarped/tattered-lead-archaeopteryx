@@ -86,7 +86,7 @@ app.get("/watch", async (req, res, next) => {
   } catch (e) {
     iboss = false;
   }
-  // try {
+  try {
     ytdl
       .getInfo(req.query.v, {
         requestOptions: {
@@ -142,19 +142,11 @@ app.get("/watch", async (req, res, next) => {
             responseType: "stream",
           }).then(function (response) {
             var data = response.data;
-            var passthrough = new stream.PassThrough();
-            var chunks = 0;
             var headers = JSON.parse(JSON.stringify(response.headers));
             headers["content-disposition"] = "" + contentdisposition(filename);
-            headers["content-length"] = contentLength == undefined ? (format.bitrate*format.approxDurationMs/8000) : contentLength;
+            //headers["content-length"] = contentLength == undefined ? (format.bitrate*format.approxDurationMs/8000) : contentLength;
             headers["content-type"] = contentType;
             res.set(headers);
-            console.log(headers);
-            console.log(req.headers);
-            res.on("data", chunk => {
-              chunks++;
-              console.log(chunks);
-            });
             data.pipe(res)
           }).catch(err => {
             console.log(url)
@@ -171,10 +163,10 @@ app.get("/watch", async (req, res, next) => {
       .catch((err) => {
         next(err);
       });
-  // } catch (e) {
-  //   console.log(e);
-  //   res.send(e);
-  // }
+  } catch (e) {
+    console.log(e);
+    res.send(e);
+  }
 });
 
 app.get("/playlistsetup", (req, res) => {
