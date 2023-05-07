@@ -229,19 +229,17 @@ app.get("/playlist", async (req, res) => {
     "Content-Disposition",
     contentdisposition(playlist_name + ".zip")
   );
-  const handleEntries = (videoStream) => {
+  const handleEntries = (videoStream, info) => {
     return new Promise((resolve, reject) => {
-      videoStream.on("info", (info) => {
-        var title = info.videoDetails.title;
-        console.log(title);
-        console.log(videoStream);
-        console.log({ name: title + (audio == true ? ".mp3" : ".mp4") });
-        playlist.append(videoStream, {
-          name: title + (audio == true ? ".mp3" : ".mp4"),
-        });
+      var title = info.videoDetails.title;
+      console.log(title);
+      console.log({ name: title + (audio == true ? ".mp3" : ".mp4") });
+      playlist.append(videoStream, {
+        name: title + (audio == true ? ".mp3" : ".mp4"),
       });
       videoStream.on("end", () => {
         console.log("finished downloading");
+        resolve(true);
       });
       videoStream.on("error", (err) => {
         console.log(err);
@@ -253,14 +251,11 @@ app.get("/playlist", async (req, res) => {
   for (var i in video_ids) {
     var vaStream = await axios({
       method: "get",
-      url: `/watch?v=${video_ids[i]}&dlmp3=${audio}`,
+      url: `http://localhost:3000/watch?v=${video_ids[i]}&dlmp3=${audio}`,
       responseType: "stream"
     }).then(response => response.data);
-    console.log(vaStream);
-    console.log("audio? ", audio);
-    console.log(audio == true ? "audioStream" : "videoStream");
-    //console.log(audio ? audioStream : videoStream)
-    await handleEntries(vaStream);
+    var info = await ytdl.getInfo(video_ids[i]);
+    await handleEntries(vaStream, info);
   }
   console.log("done...");
   playlist.finish();
