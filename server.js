@@ -252,31 +252,15 @@ app.get("/playlist", async (req, res) => {
   console.log("downloading playlist, plz don't touch...");
   for (var i in video_ids) {
     var vaStream;
-    if (audio) {
-      axios()
-    }
-    var videoStream = ytdl(video_ids[i], {
-      requestOptions: {
-        headers: {
-          cookie: "key=" + apikey,
-        },
-      },
-      quality: audio == true ? "highestaudio" : "highest",
-    });
-    console.log("passed videostream (ytdl)");
-    if (audio) {
-      console.log("downloading audio")
-      var proc = new ffmpeg({ source: videoStream });
-      proc
-        .withAudioCodec("libmp3lame")
-        .toFormat("mp3")
-        .output(audioStream)
-        .run();
-    } else {}
-    console.log(audio);
+    axios({
+      method: "get",
+      url: `/watch?v=${video_ids[i]}&dlmp3=${audio}`,
+      responseType: "stream"
+    })
+    console.log("audio? ", audio);
     console.log(audio == true ? "audioStream" : "videoStream");
     //console.log(audio ? audioStream : videoStream)
-    await handleEntries(audio == true ? audioStream : videoStream);
+    await handleEntries(vaStream);
   }
   console.log("done...");
   playlist.finish();
