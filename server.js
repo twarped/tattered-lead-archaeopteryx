@@ -251,12 +251,12 @@ app.get("/playlist", async (req, res) => {
   playlist.pipe(res);
   console.log("downloading playlist, plz don't touch...");
   for (var i in video_ids) {
-    var vaStream;
-    axios({
+    var vaStream = await axios({
       method: "get",
       url: `/watch?v=${video_ids[i]}&dlmp3=${audio}`,
       responseType: "stream"
-    })
+    }).then(response => response.data);
+    console.log(vaStream);
     console.log("audio? ", audio);
     console.log(audio == true ? "audioStream" : "videoStream");
     //console.log(audio ? audioStream : videoStream)
