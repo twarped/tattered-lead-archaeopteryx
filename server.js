@@ -136,7 +136,6 @@ app.get("/watch", async (req, res, next) => {
         console.log(format)
         var filename = info.videoDetails.title + (audio ? ".mp3" : ".mp4");
         if (!inbrowser) {
-          console.log(contentdisposition(filename));
           axios({
             method: "get",
             url: url,
@@ -147,7 +146,7 @@ app.get("/watch", async (req, res, next) => {
             var chunks = 0;
             var headers = JSON.parse(JSON.stringify(response.headers));
             headers["content-disposition"] = "" + contentdisposition(filename);
-            headers["content-length"] = contentLength;
+            headers["content-length"] = contentLength == undefined ? (format.bitrate*format.approxDurationMs/8000) : contentLength;
             headers["content-type"] = contentType;
             res.set(headers);
             console.log(headers);
