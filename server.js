@@ -216,6 +216,11 @@ app.get("/playlistsetup", (req, res) => {
 
 app.get("/playlist", async (req, res) => {
   var audio = req.query.dlmp3;
+  try {
+    audio = audio.toString() === "true";
+  } catch (e) {
+    audio = false;
+  }
   console.log("pending...");
   console.log(audio);
   var pausableStream = new PausablePassThrough();
