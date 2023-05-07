@@ -251,7 +251,10 @@ app.get("/playlist", async (req, res) => {
   playlist.pipe(res);
   console.log("downloading playlist, plz don't touch...");
   for (var i in video_ids) {
-    var audioStream = new PausablePassThrough();
+    var vaStream;
+    if (audio) {
+      axios()
+    }
     var videoStream = ytdl(video_ids[i], {
       requestOptions: {
         headers: {
@@ -262,13 +265,14 @@ app.get("/playlist", async (req, res) => {
     });
     console.log("passed videostream (ytdl)");
     if (audio) {
+      console.log("downloading audio")
       var proc = new ffmpeg({ source: videoStream });
       proc
         .withAudioCodec("libmp3lame")
         .toFormat("mp3")
         .output(audioStream)
         .run();
-    }
+    } else {}
     console.log(audio);
     console.log(audio == true ? "audioStream" : "videoStream");
     //console.log(audio ? audioStream : videoStream)
