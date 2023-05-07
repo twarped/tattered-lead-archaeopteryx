@@ -258,7 +258,7 @@ app.get("/playlist", async (req, res) => {
     await handleEntries(vaStream, info);
   }
   console.log("done...");
-  playlist.finish();
+  playlist.finalize();
 });
 
 app.get("/get_video_info", async (req, res) => {
