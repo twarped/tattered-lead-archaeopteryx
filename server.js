@@ -133,7 +133,7 @@ app.get("/watch", async (req, res, next) => {
         var contentType = format.mimeType.split(";")[0];
         var audioBitrate = format.audioBitrate;
         var url = format.url + (audio ? "&range=0-" + (contentLength == undefined ? (format.bitrate*format.approxDurationMs/8000) : contentLength) : ""); //(audio ? "&range=0-" + contentLength : "");
-        console.log(format)
+        console.log(format);
         var filename = info.videoDetails.title + (audio ? ".mp3" : ".mp4");
         if (!inbrowser) {
           axios({
