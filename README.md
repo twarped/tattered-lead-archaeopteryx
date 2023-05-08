@@ -2,7 +2,7 @@
 
 A sweet [youtube video downloader](https://tattered-lead-archaeopteryx.glitch.me) that is being maintained by someone who doesn't super know what he's doing, but he uses it a lot and fixes it when it causes him issues. Just download it, or go to https://tattered-lead-archaeopteryx.glitch.me. 
 
-Run `node server.js` and it will run on port 3000, or whatever you change it to in the .env file. You can also use your own youtube api-key if you want. It's just to prevent 429 errors. Try to use node 18+ because node 16 doesn't work with proxies very well.
+Run `node server.js` and it will run on port 3000, or whatever you change it to in the .env file. You can also use your own youtube api-key if you want. It's just to prevent 429 errors. Try to use node 18+ because node 16 doesn't work with proxies very well. If you get some errors saying it's missing packages, run `npm install`
 
 
 ## Your Project
