@@ -15,7 +15,7 @@ downloadbutton.addEventListener("click", () => {
     );
     if (wantstodownload == true) {
       window.open(
-        "https://tattered-lead-archaeopteryx.glitch.me/watch?v=" +
+        "/watch?v=" +
           url +
           (ytbrowser.checked ? "&inbrowser=true" : "") +
           (ytmp3.checked ? "&dlmp3=true" : "")
@@ -30,7 +30,7 @@ downloadbutton.addEventListener("click", () => {
     );
     if (wantstodownload == true) {
       window.open(
-        "https://tattered-lead-archaeopteryx.glitch.me/playlistsetup?list=" +
+        "/playlistsetup?list=" +
           url + 
           (ytmp3.checked ? "&dlmp3=true" : "")
       );

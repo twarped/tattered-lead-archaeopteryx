@@ -23,7 +23,9 @@ const miniget = require("miniget");
 const https = require("node:https");
 //const http2 = require("http2");
 //const spdy = require("spdy");
+const dotenv = require("dotenv").config();
 const apikey = process.env.api_key;
+const port = process.env.port;
 
 var app = express();
 
@@ -256,7 +258,7 @@ app.get("/playlist", async (req, res) => {
   for (var i in video_ids) {
     var vaStream = await axios({
       method: "get",
-      url: `http://localhost:3000/watch?v=${video_ids[i]}&dlmp3=${audio}`,
+      url: `http://localhost:${port}/watch?v=${video_ids[i]}&dlmp3=${audio}`,
       responseType: "stream"
     }).then(response => response.data);
     var info = await ytdl.getInfo(video_ids[i]);
@@ -308,9 +310,9 @@ var options = {
 // var server = spdy.createServer(options, app);
 // server.listen
 
-app.listen(process.env.PORT, (err) => {
+app.listen(port, (err) => {
   if (err) {
     throw err;
   }
-  console.log(process.env.PORT + " is the port");
+  console.log(port + " is the port");
 });
