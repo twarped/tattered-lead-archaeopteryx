@@ -21,6 +21,7 @@ const util = require("util");
 const ffmpeg = require("fluent-ffmpeg");
 const miniget = require("miniget");
 const https = require("node:https");
+const contentDisposition = require("content-disposition");
 //const http2 = require("http2");
 //const spdy = require("spdy");
 const dotenv = require("dotenv").config();
@@ -69,6 +70,27 @@ app.get("/watch.html", (req, res) => {
   res.sendFile(__dirname + "/views/watch.html");
 });
 
+app.get("/test", async (req, res) => {
+  var info = await ytdl.getInfo("https://www.youtube.com/watch?v=-z3RRwk2rdU");
+  var options = {
+    filter: e => e.hasAudio && !e.hasVideo && e.audioBitrate <= 128
+  }
+  var format = ytdl.chooseFormat(info.formats, options);
+  console.log(format);
+  console.log()
+  res.set({
+    "content-disposition": contentDisposition(info.videoDetails.title, { type: "inline" }),
+    "content-type": "audio/mpeg",
+  })
+  var stream = ytdl.downloadFromInfo(info, options);
+  stream.on("data", chunk => {
+    res.write(chunk);
+  });
+  stream.on("end", () => {
+    res.end();
+  });
+});
+
 app.get("/watch", async (req, res, next) => {
   var audio = req.query.dlmp3;
   var inbrowser = req.query.inbrowser;
@@ -89,91 +111,25 @@ app.get("/watch", async (req, res, next) => {
     iboss = false;
   }
   try {
-    ytdl
-      .getInfo(req.query.v, {
-        requestOptions: {
-          headers: {
-            cookie: "key=" + apikey,
-          },
-        },
-      })
-      .then((info) => {
-        var format;
-        if (audio) {
-          format = info.formats
-            .filter((e) => e.hasAudio && !e.hasVideo && e.audioBitrate <= 128)
-            .sort((a, b) => b.audioBitrate - a.audioBitrate)[0];
-        } else {
-          format = info.formats
-            .filter((e) => e.hasAudio && e.hasVideo)
-            .filter(
-              (e) =>
-                e.audioBitrate +
-                  e.audioBitrate +
-                  e.audioChannels +
-                  e.bitrate +
-                  e.width +
-                  e.height +
-                  e.fps ==
-                Math.max(
-                  ...info.formats
-                    .filter((e) => e.hasAudio && e.hasVideo)
-                    .map(
-                      (e) =>
-                        e.audioBitrate +
-                        e.audioBitrate +
-                        e.audioChannels +
-                        e.bitrate +
-                        e.width +
-                        e.height +
-                        e.fps
-                    )
-                )
-            )[0];
-        }
-        var contentLength = format.contentLength;
-        var contentType = format.mimeType.split(";")[0];
-        var audioBitrate = format.audioBitrate;
-        var url = format.url + (audio ? "&range=0-" + (contentLength == undefined ? (format.bitrate*format.approxDurationMs/8000) : contentLength) : ""); //(audio ? "&range=0-" + contentLength : "");
-        console.log(format);
-        var filename = info.videoDetails.title + (audio ? ".mp3" : ".mp4");
-        if (!inbrowser) {
-          axios({
-            method: "get",
-            url: url,
-            responseType: "stream",
-          }).then(function (response) {
-            var data = response.data;
-            var headers = JSON.parse(JSON.stringify(response.headers));
-            headers["content-disposition"] = "" + contentdisposition(filename);
-            //headers["content-length"] = contentLength == undefined ? (format.bitrate*format.approxDurationMs/8000) : contentLength;
-            headers["content-type"] = contentType;
-            res.set(headers);
-            data.pipe(res)
-          }).catch(err => {
-            console.log(url)
-            next(err);
-          });
-        } else {
-          res.render("watch.ejs", {
-            format: format,
-            videoDetails: info.videoDetails,
-            url: `/watch?v=${req.query.v}&dlmp3=${audio}`,
-          });
-        }
-      })
-      .catch((err) => {
-        next(err);
-      });
+    var info = await ytdl.getInfo(req.query.v);
+    var options = {
+      filter: e => audio ? e.hasAudio && !e.hasVideo && e.audioBitrate <= 128 : e.hasAudio && e.hasVideo
+    }
+    var format = ytdl.chooseFormat(info.formats, options);
+    console.log(format);
+    res.set({
+      "content-disposition": contentDisposition(info.videoDetails.title, { type: inbrowser ? "inline" : "attachment" }),
+      "content-type": audio ? "audio/mp3" : "video/mp4",
+    })
+    var stream = ytdl.downloadFromInfo(info, options).pipe(res);
   } catch (e) {
     console.log(e);
-    res.send(e);
+    next(e);
   }
 });
 
 app.get("/playlistsetup", (req, res) => {
   var playlistURL;
-  console.log(playlistURL);
   if (req.query.list.includes("youtu" && "http" && "?list=" && "/playlist"))
     playlistURL =
       "https://www.youtube.com/playlist" + req.query.list.split("/playlist")[1];
