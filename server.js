@@ -22,6 +22,7 @@ const ffmpeg = require("fluent-ffmpeg");
 const miniget = require("miniget");
 const https = require("node:https");
 const contentDisposition = require("content-disposition");
+const { log } = require("console");
 //const http2 = require("http2");
 //const spdy = require("spdy");
 const dotenv = require("dotenv").config();
@@ -111,17 +112,19 @@ app.get("/watch", async (req, res, next) => {
     iboss = false;
   }
   try {
-    var info = await ytdl.getInfo(req.query.v).on("error", err => {
-      next(err);
-    });
+    var info = await ytdl.getInfo(req.query.v);
     var options = {
       filter: e => audio ? e.hasAudio && !e.hasVideo && e.audioBitrate <= 128 : e.hasAudio && e.hasVideo
     }
     var format = ytdl.chooseFormat(info.formats, options);
-    console.log(format);
+    console.log(format.contentLength);
+    if (format.contentLength == undefined) {
+      format.contentLength = Math.ceil(format.approxDurationMs * format.bitrate / 8050);
+    }
     res.set({
-      "content-disposition": contentDisposition(info.videoDetails.title, { type: inbrowser ? "inline" : "attachment" }),
+      "content-disposition": contentDisposition(info.videoDetails.title + (audio ? ".mp3" : ".mp4"), { type: inbrowser ? "inline" : "attachment" }),
       "content-type": audio ? "audio/mp3" : "video/mp4",
+      "content-length": format.contentLength
     })
     var stream = ytdl.downloadFromInfo(info, options).pipe(res);
   } catch (e) {
