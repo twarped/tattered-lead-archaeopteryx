@@ -111,7 +111,9 @@ app.get("/watch", async (req, res, next) => {
     iboss = false;
   }
   try {
-    var info = await ytdl.getInfo(req.query.v);
+    var info = await ytdl.getInfo(req.query.v).on("error", err => {
+      next(err);
+    });
     var options = {
       filter: e => audio ? e.hasAudio && !e.hasVideo && e.audioBitrate <= 128 : e.hasAudio && e.hasVideo
     }
@@ -123,7 +125,6 @@ app.get("/watch", async (req, res, next) => {
     })
     var stream = ytdl.downloadFromInfo(info, options).pipe(res);
   } catch (e) {
-    console.log(e);
     next(e);
   }
 });
