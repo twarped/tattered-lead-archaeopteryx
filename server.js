@@ -117,16 +117,15 @@ app.get("/watch", async (req, res, next) => {
       filter: e => audio ? e.hasAudio && !e.hasVideo && e.audioBitrate <= 128 : e.hasAudio && e.hasVideo
     }
     var format = ytdl.chooseFormat(info.formats, options);
-    console.log(format.contentLength);
-    if (format.contentLength == undefined) {
-      format.contentLength = Math.ceil(format.approxDurationMs * format.bitrate / 8050);
-    }
-    res.set({
-      "content-disposition": contentDisposition(info.videoDetails.title + (audio ? ".mp3" : ".mp4"), { type: inbrowser ? "inline" : "attachment" }),
-      "content-type": audio ? "audio/mp3" : "video/mp4",
-      "content-length": format.contentLength
-    })
-    var stream = ytdl.downloadFromInfo(info, options).pipe(res);
+    console.log(format);
+    var stream = ytdl.downloadFromInfo(info, options).on("response", response => {
+      res.set({
+        "content-disposition": contentDisposition(info.videoDetails.title + (audio ? ".mp3" : ".mp4"), { type: inbrowser ? "inline" : "attachment" }),
+        "content-type": audio ? "audio/mp3" : "video/mp4",
+        "content-length": response.req.res.headers["content-length"],
+      })
+    });
+    stream.pipe(res);
   } catch (e) {
     next(e);
   }
