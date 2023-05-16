@@ -124,8 +124,8 @@ app.get("/watch", async (req, res, next) => {
         "content-type": audio ? "audio/mp3" : "video/mp4",
         "content-length": response.req.res.headers["content-length"],
       })
+      stream.pipe(res);
     });
-    stream.pipe(res);
   } catch (e) {
     next(e);
   }
