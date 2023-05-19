@@ -96,6 +96,15 @@ app.get("/watch", async (req, res, next) => {
   var audio = req.query.dlmp3;
   var inbrowser = req.query.inbrowser;
   var iboss = req.query.iboss;
+  var range = req.headers.range;
+  var start = false;
+  var end = false;
+  if (range != undefined) {
+    console.log(range);
+    start = parseInt(range.replace("bytes=", "").split("-")[0]);
+    var er = range.split("-")[1];
+    end = er == "" ? false : parseInt(er);
+  }
   try {
     audio = audio.toString() === "true";
   } catch (e) {
@@ -112,20 +121,45 @@ app.get("/watch", async (req, res, next) => {
     iboss = false;
   }
   try {
-    var info = await ytdl.getInfo(req.query.v);
+    var info = await ytdl.getInfo(req.query.v).catch(err => {
+      var message = err.stack + "\nerrno: "+err.errno+"\nat ytdl.getInfo";
+      console.error(message);
+      res.end(message);
+      return err;
+    });
+    if (info.code) return;
     var options = {
-      filter: e => audio ? e.hasAudio && !e.hasVideo && e.audioBitrate <= 128 : e.hasAudio && e.hasVideo
-    }
+      filter: e => audio ? e.hasAudio && !e.hasVideo && e.audioBitrate <= 128 : e.hasAudio && e.hasVideo,
+      requestOptions: {
+        headers: {
+          cookie: "key=" + apikey,
+        },
+      },
+      range: {},
+    };
+    if (start != false) options.range.start = start;
+    if (end != false) options.range.end = end;
     var format = ytdl.chooseFormat(info.formats, options);
     console.log(format);
+    console.log(options);
+
     var stream = ytdl.downloadFromInfo(info, options).on("response", response => {
-      res.set({
+      console.log(response.req.res.headers);
+      var contentLength = response.req.res.headers["content-length"];
+      var contentRange = response.req.res.headers["content-range"] || `bytes 0-${contentLength - 1}/${contentLength}`;
+      res.writeHead(start ? 206 : 200, {
         "content-disposition": contentDisposition(info.videoDetails.title + (audio ? ".mp3" : ".mp4"), { type: inbrowser ? "inline" : "attachment" }),
         "content-type": audio ? "audio/mp3" : "video/mp4",
-        "content-length": response.req.res.headers["content-length"],
+        "content-length": contentLength,
+        "content-range": contentRange,
+        "accept-ranges": "bytes",
       })
-      stream.pipe(res);
-    });
+    }).on("error", err => {
+      var message = err.stack + "\nerrno: "+err.errno+"\nat ytdl.downloadFromInfo";
+      console.error(message);
+      res.end(message);
+      return err;
+    }).pipe(res);
   } catch (e) {
     next(e);
   }
