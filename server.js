@@ -1,31 +1,12 @@
 const express = require("express");
 const cors = require("cors");
-const got = require("got");
-// const youtubedl = require("youtube-dl");
 const ytdl = require("ytdl-core");
-const request = require("request");
-const events = require("events");
 const contentdisposition = require("content-disposition");
-const archiver = require("archiver");
 const axios = require("axios");
-// const http2Express = require("http2-express-bridge");
-const fs = require("graceful-fs");
-const toBlobURL = require("stream-to-blob-url");
-const stream = require("stream");
-// const httpsproxyagent = require("https-proxy-agent");
-//const packer = require("zip-stream");
 const packer = require("archiver");
-const util = require("util");
-// const puppeteer = require("puppeteer");
-// const coolThing = require("./other-cool-thing.js");
-const ffmpeg = require("fluent-ffmpeg");
 const miniget = require("miniget");
-const https = require("node:https");
-const contentDisposition = require("content-disposition");
-const { log } = require("console");
-//const http2 = require("http2");
-//const spdy = require("spdy");
-const dotenv = require("dotenv").config();
+
+require("dotenv").config();
 const apikey = process.env.api_key;
 const port = process.env.port;
 
@@ -36,60 +17,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.set("view engine", "ejs");
-//app.use(app.router);
 
-app.get("/", (request, res) => {
+app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html");
 });
 
-util.inherits(PausablePassThrough, stream.Transform);
-function PausablePassThrough(options) {
-  stream.Transform.call(this, options);
-  this.paused = false;
-  this.queuedCallbacks = [];
-}
-
-PausablePassThrough.prototype.togglePause = function (paused) {
-  this.paused = paused;
-  if (!this.paused) {
-    while (this.queuedCallbacks.length) {
-      this.queuedCallbacks.shift()();
-    }
-  }
-};
-
-PausablePassThrough.prototype._transform = function (chunk, encoding, cb) {
-  this.push(chunk);
-  if (this.paused) {
-    this.queuedCallbacks.push(cb);
-  } else {
-    cb();
-  }
-};
-
 app.get("/watch.html", (req, res) => {
   res.sendFile(__dirname + "/views/watch.html");
-});
-
-app.get("/test", async (req, res) => {
-  var info = await ytdl.getInfo("https://www.youtube.com/watch?v=-z3RRwk2rdU");
-  var options = {
-    filter: e => e.hasAudio && !e.hasVideo && e.audioBitrate <= 128
-  }
-  var format = ytdl.chooseFormat(info.formats, options);
-  console.log(format);
-  console.log()
-  res.set({
-    "content-disposition": contentDisposition(info.videoDetails.title, { type: "inline" }),
-    "content-type": "audio/mpeg",
-  })
-  var stream = ytdl.downloadFromInfo(info, options);
-  stream.on("data", chunk => {
-    res.write(chunk);
-  });
-  stream.on("end", () => {
-    res.end();
-  });
 });
 
 app.get("/watch", async (req, res, next) => {
@@ -148,7 +82,7 @@ app.get("/watch", async (req, res, next) => {
       var contentLength = response.req.res.headers["content-length"];
       var contentRange = response.req.res.headers["content-range"] || `bytes 0-${contentLength - 1}/${contentLength}`;
       res.writeHead(start ? 206 : 200, {
-        "content-disposition": contentDisposition(info.videoDetails.title + (audio ? ".mp3" : ".mp4"), { type: inbrowser ? "inline" : "attachment" }),
+        "content-disposition": contentdisposition(info.videoDetails.title + (audio ? ".mp3" : ".mp4"), { type: inbrowser ? "inline" : "attachment" }),
         "content-type": audio ? "audio/mp3" : "video/mp4",
         "content-length": contentLength,
         "content-range": contentRange,
@@ -179,11 +113,11 @@ app.get("/playlistsetup", (req, res) => {
       "https://www.youtube.com/playlist?list=" +
       req.query.list.split("&list=")[1];
   else res.redirect("/");
-  //console.log(playlistURL)
-  request.get(playlistURL, (err, body) => {
-    //"https://www.youtube.com/playlist?list=PLLu_K5OA-nxzrrmOUB7_NZ2hbIX7qGvfr"
-    //res.send(body.body.split(`var ytInitialData = `)[1].replace(";", ""));
-    var unParsedBody = body.body.split(`var ytInitialData = `)[1];
+  axios({
+    "method": "GET",
+    "url": playlistURL,
+  }).then(body => {
+    var unParsedBody = body.data.split(`var ytInitialData = `)[1];
     unParsedBody = unParsedBody.split(`;</script>`)[0];
     var parsedBody = JSON.parse(unParsedBody);
     var playlistTitle = parsedBody.metadata.playlistMetadataRenderer.title;
@@ -193,7 +127,6 @@ app.get("/playlistsetup", (req, res) => {
         .playlistVideoListRenderer;
     contents.playlistTitle = playlistTitle;
     for (var i in contents.contents) {
-      //console.info(contents.contents)
       if (
         contents.contents[i].playlistVideoRenderer &&
         contents.contents[i].playlistVideoRenderer.thumbnail.thumbnails[0]
@@ -218,7 +151,6 @@ app.get("/playlist", async (req, res) => {
   }
   console.log("pending...");
   console.log(audio);
-  var pausableStream = new PausablePassThrough();
   var video_ids = JSON.parse(req.query.video_ids);
   var playlist_name = req.query.playlist_name;
   var playlist = new packer("zip", { zlib: { level: 9 } });
@@ -271,18 +203,7 @@ app.get("/get_video_info", async (req, res) => {
   }
 });
 
-// app.get("/waitstuffs", async (req, res) => {
-//   coolThing.waitStuffs(req, res);
-// });
-
-app.get("/get_site_html", (req, res) => {
-  res.setHeader("content-type", "text/plain");
-  request(req.query.q, (err, response, body) => {
-    res.send(body);
-  });
-});
-
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   res.status(404);
   if (req.accepts("html")) {
     res.sendFile(__dirname + "/views/404.html", { url: req.url });
@@ -294,14 +215,6 @@ app.use(function (req, res, next) {
   }
   res.type("txt").send("Not found");
 });
-
-var options = {
-  key: fs.readFileSync("./key.pem"),
-  cert: fs.readFileSync("./cert.pem"),
-};
-
-// var server = spdy.createServer(options, app);
-// server.listen
 
 app.listen(port, (err) => {
   if (err) {
