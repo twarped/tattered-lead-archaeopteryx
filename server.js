@@ -4,7 +4,6 @@ const ytdl = require("ytdl-core");
 const contentdisposition = require("content-disposition");
 const axios = require("axios");
 const packer = require("archiver");
-const miniget = require("miniget");
 
 require("dotenv").config();
 const apikey = process.env.api_key;
@@ -77,11 +76,11 @@ app.get("/watch", async (req, res, next) => {
     console.log(format);
     console.log(options);
 
-    var stream = ytdl.downloadFromInfo(info, options).on("response", response => {
+    ytdl.downloadFromInfo(info, options).on("response", response => {
       console.log(response.req.res.headers);
       var contentLength = response.req.res.headers["content-length"];
       var contentRange = response.req.res.headers["content-range"] || `bytes 0-${contentLength - 1}/${contentLength}`;
-      res.writeHead(start ? 206 : 200, {
+      res.writeHead(start || end ? 206 : 200, {
         "content-disposition": contentdisposition(info.videoDetails.title + (audio ? ".mp3" : ".mp4"), { type: inbrowser ? "inline" : "attachment" }),
         "content-type": audio ? "audio/mp3" : "video/mp4",
         "content-length": contentLength,
@@ -134,11 +133,7 @@ app.get("/playlistsetup", (req, res) => {
       )
         delete contents.contents[i];
     }
-    //console.log(contents);
-    //res.send(contents)
     res.render(__dirname + "/views/playlist", { contents: contents });
-    //console.log(__dirname);
-    //console.log(playlistTitle);
   });
 });
 

@@ -4,6 +4,10 @@ A sweet [youtube video downloader](https://tattered-lead-archaeopteryx.glitch.me
 
 Run `node server.js` and it will run on port 3000, or whatever you change it to in the .env file. You can also use your own youtube api-key if you want. It's just to prevent 429 errors. Try to use node 18+ because node 16 doesn't work with proxies very well. If you get some errors saying it's missing packages, run `npm install`
 
+It can download playlists, but if your internet has a smart proxy server, you'll have to run it locally. The api key here is just a general key, you can change it to your own in the `.env` file, especially if you have access to special videos.
+
+Feel free to hack away, check out [ytdl-core](https://github.com/fent/node-ytdl-core/) for more information.
+
 
 ## Your Project
 
