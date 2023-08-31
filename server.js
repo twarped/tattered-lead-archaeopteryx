@@ -4,6 +4,15 @@ const ytdl = require("ytdl-core");
 const contentdisposition = require("content-disposition");
 const axios = require("axios");
 const packer = require("archiver");
+const miniget = require("miniget");
+const ffmpeg = require("fluent-ffmpeg");
+const stream = require("stream");
+const childprocess = require("child_process");
+const opus = require("@discordjs/opus");
+const prism = require("prism-media");
+const lame = require("node-lame");
+const readline = require("readline");
+const { Worker } = require("worker_threads");
 
 require("dotenv").config();
 const apikey = process.env.api_key;
@@ -16,6 +25,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.set("view engine", "ejs");
+
+// ffmpeg.setFfmpegPath(process.env.ffmpeg_path);
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/views/index.html");
@@ -33,7 +44,7 @@ app.get("/watch", async (req, res, next) => {
   var start = false;
   var end = false;
   if (range != undefined) {
-    console.log(range);
+    // console.log(range); //logs the user requested range
     start = parseInt(range.replace("bytes=", "").split("-")[0]);
     var er = range.split("-")[1];
     end = er == "" ? false : parseInt(er);
@@ -54,15 +65,15 @@ app.get("/watch", async (req, res, next) => {
     iboss = false;
   }
   try {
-    var info = await ytdl.getInfo(req.query.v).catch(err => {
-      var message = err.stack + "\nerrno: "+err.errno+"\nat ytdl.getInfo";
+    var info = await ytdl.getInfo(req.query.v).catch((err) => {
+      var message = err.stack + "\nerrno: " + err.errno + "\nat ytdl.getInfo";
       console.error(message);
       res.end(message);
       return err;
     });
     if (info.code) return;
     var options = {
-      filter: e => audio ? e.hasAudio && !e.hasVideo && e.audioBitrate <= 128 : e.hasAudio && e.hasVideo,
+      filter: (e) => (audio ? e.audioBitrate >= 128 : e.hasAudio && e.hasVideo),
       requestOptions: {
         headers: {
           cookie: "key=" + apikey,
@@ -73,26 +84,64 @@ app.get("/watch", async (req, res, next) => {
     if (start != false) options.range.start = start;
     if (end != false) options.range.end = end;
     var format = ytdl.chooseFormat(info.formats, options);
+    var contentLength, contentRange;
     console.log(format);
-    console.log(options);
-
-    ytdl.downloadFromInfo(info, options).on("response", response => {
-      console.log(response.req.res.headers);
-      var contentLength = response.req.res.headers["content-length"];
-      var contentRange = response.req.res.headers["content-range"] || `bytes 0-${contentLength - 1}/${contentLength}`;
-      res.writeHead(start || end ? 206 : 200, {
-        "content-disposition": contentdisposition(info.videoDetails.title + (audio ? ".mp3" : ".mp4"), { type: inbrowser ? "inline" : "attachment" }),
-        "content-type": audio ? "audio/mp3" : "video/mp4",
-        "content-length": contentLength,
-        "content-range": contentRange,
-        "accept-ranges": "bytes",
-      })
-    }).on("error", err => {
-      var message = err.stack + "\nerrno: "+err.errno+"\nat ytdl.downloadFromInfo";
-      console.error(message);
-      res.end(message);
-      return err;
-    }).pipe(res);
+    // console.log(options);
+    // console.log("req.headers"); //logs the user request headers
+    // console.log(req.headers);
+    var timeMS = 0;
+    var increaseMS = () => timeMS++;
+    var timeInterval = setInterval(increaseMS, 1);
+    const worker = new Worker("./mp3-worker.js");
+    worker.on("message", (data) => {
+      if (data.hasOwnProperty("response")) {
+        contentLength = data.response.req.res.headers["content-length"];
+        contentRange =
+          data.response.req.res.headers["content-range"] ||
+          `bytes 0-${contentLength - 1}/${contentLength}`;
+        //console.log("contentLength:", contentLength); //logs contentLength
+        //console.log("contentRange:", contentRange);   //logs contentRange
+        if (res.headersSent) return;
+        res.writeHead(start ? 206 : 200, {
+          "content-disposition": contentdisposition(
+            info.videoDetails.title + (audio ? ".mp3" : ".mp4"),
+            { type: inbrowser ? "inline" : "attachment" }
+          ),
+          "content-type": audio ? "audio/mpeg" : "video/mp4",
+          "content-length": contentLength,
+          "content-range": contentRange,
+          "accept-ranges": "bytes",
+        });
+      } else if (data.hasOwnProperty("error")) {
+        res.end(data.error);
+      }
+    });
+    worker.on("error", (error) => {
+      console.log("mp3-worker.js error:", error);
+      res.end(error);
+    });
+    worker.on("end", () => {
+      clearInterval(timeInterval);
+      console.log("Finished!");
+      console.log(
+        "Took",
+        timeMS / 1000,
+        "seconds to complete",
+        format.contentLength,
+        "bytes"
+      );
+      console.log(
+        "Thats",
+        format.contentLength / (timeMS / 1000),
+        "bytes per second."
+      );
+      res.end();
+    });
+    worker.postMessage({
+      info: info,
+      audio: audio,
+      format: format,
+    });
   } catch (e) {
     next(e);
   }
@@ -113,9 +162,9 @@ app.get("/playlistsetup", (req, res) => {
       req.query.list.split("&list=")[1];
   else res.redirect("/");
   axios({
-    "method": "GET",
-    "url": playlistURL,
-  }).then(body => {
+    method: "GET",
+    url: playlistURL,
+  }).then((body) => {
     var unParsedBody = body.data.split(`var ytInitialData = `)[1];
     unParsedBody = unParsedBody.split(`;</script>`)[0];
     var parsedBody = JSON.parse(unParsedBody);
@@ -133,7 +182,11 @@ app.get("/playlistsetup", (req, res) => {
       )
         delete contents.contents[i];
     }
+    //console.log(contents);
+    //res.send(contents)
     res.render(__dirname + "/views/playlist", { contents: contents });
+    //console.log(__dirname);
+    //console.log(playlistTitle);
   });
 });
 
@@ -179,8 +232,8 @@ app.get("/playlist", async (req, res) => {
     var vaStream = await axios({
       method: "get",
       url: `http://localhost:${port}/watch?v=${video_ids[i]}&dlmp3=${audio}`,
-      responseType: "stream"
-    }).then(response => response.data);
+      responseType: "stream",
+    }).then((response) => response.data);
     var info = await ytdl.getInfo(video_ids[i]);
     await handleEntries(vaStream, info);
   }
