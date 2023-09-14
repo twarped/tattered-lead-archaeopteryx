@@ -5,13 +5,6 @@ const contentdisposition = require("content-disposition");
 const axios = require("axios");
 const packer = require("archiver");
 const miniget = require("miniget");
-const ffmpeg = require("fluent-ffmpeg");
-const stream = require("stream");
-const childprocess = require("child_process");
-const opus = require("@discordjs/opus");
-const prism = require("prism-media");
-const readline = require("readline");
-const { Worker } = require("worker_threads");
 
 require("dotenv").config();
 const apikey = process.env.api_key;
@@ -85,69 +78,25 @@ app.get("/watch", async (req, res, next) => {
     var format = ytdl.chooseFormat(info.formats, options);
     var contentLength, contentRange;
     console.log(format);
-    // console.log(options);
-    // console.log("req.headers"); //logs the user request headers
-    // console.log(req.headers);
-    var timeMS = 0;
-    var increaseMS = () => timeMS++;
-    var timeInterval = setInterval(increaseMS, 1);
-    const worker = new Worker("./mp3-worker.js");
-    worker.on("message", (data) => {
-      if (data.hasOwnProperty("response")) {
-        contentLength = data.response.req.res.headers["content-length"];
-        contentRange =
-          data.response.req.res.headers["content-range"] ||
-          `bytes 0-${contentLength - 1}/${contentLength}`;
-        //console.log("contentLength:", contentLength); //logs contentLength
-        //console.log("contentRange:", contentRange);   //logs contentRange
-        if (res.headersSent) return;
-        res.writeHead(start ? 206 : 200, {
-          "content-disposition": contentdisposition(
-            info.videoDetails.title + (audio ? ".mp3" : ".mp4"),
-            { type: inbrowser ? "inline" : "attachment" }
-          ),
-          "content-type": audio ? "audio/mpeg" : "video/mp4",
-          "content-length": contentLength,
-          "content-range": contentRange,
-          "accept-ranges": "bytes",
-        });
-      } else if (data.hasOwnProperty("error")) {
-        // console.log("caught mp3-worker.js error:", data);
-        // res.status(500, "Internal Server Error");
-        // res.end();
-        // worker.terminate();
-        // next(data);
-      }
-    });
-    worker.on("error", (error) => {
-      console.log("mp3-worker.js error:", error);
-      res.status(500, "Internal Server Error");
-      res.end();
-      worker.terminate();
-      next(error);
-    });
-    worker.on("end", () => {
-      clearInterval(timeInterval);
-      console.log("Finished!");
-      console.log(
-        "Took",
-        timeMS / 1000,
-        "seconds to complete",
-        format.contentLength,
-        "bytes"
-      );
-      console.log(
-        "Thats",
-        format.contentLength / (timeMS / 1000),
-        "bytes per second."
-      );
-      res.end();
-    });
-    worker.postMessage({
-      info: info,
-      audio: audio,
-      format: format,
-    });
+    console.log(options);
+
+    var stream = ytdl.downloadFromInfo(info, options).on("response", response => {
+      console.log(response.req.res.headers);
+      var contentLength = response.req.res.headers["content-length"];
+      var contentRange = response.req.res.headers["content-range"] || `bytes 0-${contentLength - 1}/${contentLength}`;
+      res.writeHead(start ? 206 : 200, {
+        "content-disposition": contentdisposition(info.videoDetails.title + (audio ? ".mp3" : ".mp4"), { type: inbrowser ? "inline" : "attachment" }),
+        "content-type": audio ? "audio/mp3" : "video/mp4",
+        "content-length": contentLength,
+        "content-range": contentRange,
+        "accept-ranges": "bytes",
+      })
+    }).on("error", err => {
+      var message = err.stack + "\nerrno: "+err.errno+"\nat ytdl.downloadFromInfo";
+      console.error(message);
+      res.end(message);
+      return err;
+    }).pipe(res);
   } catch (e) {
     next(e);
   }
