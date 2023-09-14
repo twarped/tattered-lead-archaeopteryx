@@ -64,7 +64,7 @@ app.get("/watch", async (req, res, next) => {
     });
     if (info.code) return;
     var options = {
-      filter: (e) => (audio ? e.audioBitrate >= 128 : e.hasAudio && e.hasVideo),
+      filter: (e) => (audio ? e.audioBitrate >= 128 && !e.hasVideo : e.hasAudio && e.hasVideo),
       requestOptions: {
         headers: {
           cookie: "key=" + apikey,
@@ -83,8 +83,8 @@ app.get("/watch", async (req, res, next) => {
       var contentLength = response.req.res.headers["content-length"];
       var contentRange = response.req.res.headers["content-range"] || `bytes 0-${contentLength - 1}/${contentLength}`;
       res.writeHead(start ? 206 : 200, {
-        "content-disposition": contentdisposition(info.videoDetails.title + (audio ? ".mp3" : ".mp4"), { type: inbrowser ? "inline" : "attachment" }),
-        "content-type": audio ? "audio/mp3" : "video/mp4",
+        "content-disposition": contentdisposition(info.videoDetails.title + "." + format.container, { type: inbrowser ? "inline" : "attachment" }),
+        "content-type": format.mimeType,
         "content-length": contentLength,
         "content-range": contentRange,
         "accept-ranges": "bytes",
