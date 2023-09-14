@@ -10,7 +10,6 @@ const stream = require("stream");
 const childprocess = require("child_process");
 const opus = require("@discordjs/opus");
 const prism = require("prism-media");
-const lame = require("node-lame");
 const readline = require("readline");
 const { Worker } = require("worker_threads");
 
@@ -113,12 +112,19 @@ app.get("/watch", async (req, res, next) => {
           "accept-ranges": "bytes",
         });
       } else if (data.hasOwnProperty("error")) {
-        res.end(data.error);
+        // console.log("caught mp3-worker.js error:", data);
+        // res.status(500, "Internal Server Error");
+        // res.end();
+        // worker.terminate();
+        // next(data);
       }
     });
     worker.on("error", (error) => {
       console.log("mp3-worker.js error:", error);
-      res.end(error);
+      res.status(500, "Internal Server Error");
+      res.end();
+      worker.terminate();
+      next(error);
     });
     worker.on("end", () => {
       clearInterval(timeInterval);

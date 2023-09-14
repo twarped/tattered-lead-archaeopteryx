@@ -3,6 +3,7 @@ const prism = require("prism-media");
 const { OpusEncoder } = require("@discordjs/opus");
 const Lame = require("node-lame").Lame;
 const { parentPort } = require("worker_threads");
+const fs = require("graceful-fs"); 
 
 require("dotenv").config();
 const apikey = process.env.api_key;
@@ -34,7 +35,6 @@ const workerProcessStream = async (userData) => {
         parentPort.postMessage({ error: err });
         return err;
       });
-    var demuxer = new prism.opus.WebmDemuxer();
     var decoder = new OpusEncoder(48000, 2);
     var splitDecodedChunk = (decodedChunk) => {
       let leftChannel = [];
@@ -52,54 +52,35 @@ const workerProcessStream = async (userData) => {
       };
     };
 
-    let opusStream = new prism.opus.WebmDemuxer().on("data", (chunk) => {
-      const decoder = new OpusEncoder(48000, 2);
-      let decodedOpus = decoder.decode(chunk);
-      let encoder = new Lame({
-        output: "buffer",
-        bitwidth: 16,
-        out_samplerate: 48000,
-        mode: "stereo",
-      }).setBuffer(decodedOpus);
-      encoder
-        .encode()
-        .then(() => {
-          let mp3Buffer = encoder.getBuffer();
-          parentPort.postMessage(mp3Buffer);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    });
+    let opusStream = new prism.opus.WebmDemuxer();
 
     var totalBytes = 0;
 
-    videoStream.pipe(demuxer).on("data", (chunk) => {
+    var pcmFileStream = fs.createWriteStream("audio.pcm");
+    var webmFileStream = fs.createWriteStream("audio.webm");
+
+    videoStream.on("data").pipe(opusStream).on("data", (chunk) => {
       totalBytes += chunk.length;
       console.log((totalBytes / format.contentLength) * 100, "%");
+      var decoder = new OpusEncoder(48000, 2);
       var decodedChunk = decoder.decode(chunk);
+      pcmFileStream.write(decodedChunk);
+      webmFileStream.write(chunk);
       var samples = splitDecodedChunk(decodedChunk);
       var encoder = new Lame({
-        output: "buffer",
-        bitwidth: 16,
-        // resamplerate: 48000,
-        mode: "s",
+        "output": "buffer",
+        "bitrate": 128
       }).setBuffer(decodedChunk);
-
-      encoder
-        .encode()
-        .then(() => {
-          var encodedChunk = encoder.getBuffer();
-          parentPort.postMessage(encodedChunk);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-
-      opusStream.write(chunk);
+      encoder.encode().then(() => {
+        var encodedChunk = encoder.getBuffer();
+        console.log(encodedChunk);
+        parentPort.postMessage(encodedChunk, [encodedChunk.buffer]);
+      }).catch(error => {
+        parentPort.postMessage({error: error});
+      });
     });
   } catch (error) {
-    console.error(error);
+    parentPort.postMessage({error: error});
   }
 };
 
