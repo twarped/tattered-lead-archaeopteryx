@@ -4,7 +4,6 @@ const ytdl = require("ytdl-core");
 const contentdisposition = require("content-disposition");
 const axios = require("axios");
 const packer = require("archiver");
-const miniget = require("miniget");
 
 require("dotenv").config();
 const apikey = process.env.api_key;
@@ -76,7 +75,6 @@ app.get("/watch", async (req, res, next) => {
     if (start != false) options.range.start = start;
     if (end != false) options.range.end = end;
     var format = ytdl.chooseFormat(info.formats, options);
-    var contentLength, contentRange;
     console.log(format);
     console.log(options);
 
