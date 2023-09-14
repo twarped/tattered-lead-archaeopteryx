@@ -64,7 +64,7 @@ app.get("/watch", async (req, res, next) => {
     });
     if (info.code) return;
     var options = {
-      filter: (e) => (audio ? e.audioBitrate >= 128 && !e.hasVideo : e.hasAudio && e.hasVideo),
+      filter: (e) => (audio ? e.audioBitrate == 128 : e.hasAudio && e.hasVideo),
       requestOptions: {
         headers: {
           cookie: "key=" + apikey,
