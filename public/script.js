@@ -1,8 +1,8 @@
 var downloadbutton = document.getElementById("downloadbutton");
-var ytbrowser = document.getElementById("ytbrowser");
-var ytmp3 = document.getElementById("ytmp3");
+var inbrowser = document.getElementById("inbrowser");
+var audio = document.getElementById("audio");
 downloadbutton.addEventListener("click", () => {
-  var url = document.getElementById("yturl").value;
+  var url = document.getElementById("v").value;
   var idcheckerb = /[A-Za-z0-9_-]+/g;
   var urlcheckervideo = /(http(s|):\/\/|)((www\.|)youtu(be\.com|\.be)\/(watch\?v=|!)|(www\.|)youtu\.be\/)[A-Za-z0-9_-]+/g;
   var urlcheckerplaylist = /http(s|):\/\/(www\.|)youtu(be\.com|\.be)\/playlist\?list=[A-Za-z0-9_-]+/g;
@@ -17,8 +17,8 @@ downloadbutton.addEventListener("click", () => {
       window.open(
         "/watch?v=" +
           url +
-          (ytbrowser.checked ? "&inbrowser=true" : "") +
-          (ytmp3.checked ? "&dlmp3=true" : "")
+          (inbrowser.checked ? "&inbrowser=true" : "") +
+          (audio.checked ? "&audio=true" : "")
       );
     }
   } else if (
@@ -32,11 +32,11 @@ downloadbutton.addEventListener("click", () => {
       window.open(
         "/playlistsetup?list=" +
           url + 
-          (ytmp3.checked ? "&dlmp3=true" : "")
+          (audio.checked ? "&audio=true" : "")
       );
     }
   } else {
-    alert("Type In a Correct Youtube URL");
+    alert("Type In a Correct Youtube URL or video ID");
   }
 });
 var twarped = document.getElementById("twarped");

@@ -28,33 +28,29 @@ app.get("/watch.html", (req, res) => {
 });
 
 app.get("/watch", async (req, res, next) => {
-  var audio = req.query.dlmp3;
+  var audio = req.query.audio;
   var inbrowser = req.query.inbrowser;
   var iboss = req.query.iboss;
   var range = req.headers.range;
   var start = false;
   var end = false;
+  function parseParams() {
+    for (var i in arguments) {
+      try {
+        arguments[i] = arguments[i].toString() == "true" || arguments[i].toString() == "on";
+      } catch (e) {
+        arguments[i] = false;
+      }
+    }
+  }
+  
   if (range != undefined) {
     // console.log(range); //logs the user requested range
     start = parseInt(range.replace("bytes=", "").split("-")[0]);
     var er = range.split("-")[1];
     end = er == "" ? false : parseInt(er);
   }
-  try {
-    audio = audio.toString() === "true";
-  } catch (e) {
-    audio = false;
-  }
-  try {
-    inbrowser = inbrowser.toString() === "true";
-  } catch (e) {
-    inbrowser = false;
-  }
-  try {
-    iboss = iboss.toString() === "true";
-  } catch (e) {
-    iboss = false;
-  }
+  parseParams(audio, inbrowser, iboss);
   try {
     var info = await ytdl.getInfo(req.query.v).catch((err) => {
       var message = err.stack + "\nerrno: " + err.errno + "\nat ytdl.getInfo";
@@ -64,7 +60,7 @@ app.get("/watch", async (req, res, next) => {
     });
     if (info.code) return;
     var options = {
-      filter: (e) => (audio ? e.audioBitrate == 128 : e.hasAudio && e.hasVideo),
+      filter: (e) => (audio ? e.audioBitrate >= 128 : e.hasAudio && e.hasVideo),
       requestOptions: {
         headers: {
           cookie: "key=" + apikey,
