@@ -62,29 +62,41 @@ h1 {
   overflow: hidden;
 }
 
-label {
-  display: block;
+#options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5px;
+}
+
+label.wrap {
+  display: flex;
+  align-items: center;
   cursor: pointer;
   user-select: none;
   font-family: sans-serif;
   font-weight: 1;
   color: grey;
-  margin-top: 1vh;
+  margin-top: 2px;
   font-size: 16px;
+  padding: 1vh;
+}
+
+label.text {
+  margin-left: 5px;
 }
 
 input[type="checkbox"] {
   cursor: pointer;
-  width: 2.7vh;
   margin: 0;
 }
 
 p {
   margin: 0;
-  font-size: .7em;
   color: grey;
   font-family: sans-serif;
   font-weight: 1;
+  font-size: 12px;
 }
 
 #twarped {
@@ -125,10 +137,22 @@ p {
   
 }
 
-@media (max-width: 685px) {
-  label {
-    font-size: 2.85vh;
+@media (max-width: 400px) {
+  label.wrap {
+    font-size: 4vw;
   }
+  input[type="checkbox"] {
+    width: calc(4.4vw);
+  }
+}
+
+@media (max-width: 294px) {
+  p {
+    font-size: 3.96vw;
+  }
+}
+
+@media (max-width: 713px) {
   h1 {
     top: 60px;
   }

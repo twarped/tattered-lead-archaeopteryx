@@ -60,15 +60,18 @@
         />
         <button id="downloadbutton" role="submit">Download...</button>
       </div>
-      <div style="width: 100%">
-        <label>
+      <div style="width: 100%" id="options">
+        <label class="wrap">
           <input id="inbrowser" type="checkbox" />
-            Inline Attachment?<br />
-            (No Download Required) doesn't work for playlists<br />
+          <label for="inbrowser" class="text">
+            Inline Attachment?
+          </label>
         </label>
-        <label>
+        <label class="wrap">
           <input id="audio" type="checkbox" />
-          Audio Only?<br />
+          <label for="audio" class="text">
+            Audio Only?
+          </label>
         </label>
       </div>
     </form>
