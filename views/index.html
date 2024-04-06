@@ -3,13 +3,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link
-      rel="canonical"
-      href="https://quiprivacy.it/vmpjp/youtube-error-429-problem-with-server"
-    />
-    <link rel="canonical" href="https://contrast-checker.glitch.me/" />
-    <link rel="canonical" href="https://gira-same-domain.glitch.me/" />
-    <link rel="canonical" href="http://www.immortalsliondance.com/" />
     <!--<link rel="canonical" href=""/>-->
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -39,56 +32,62 @@
     <script src="/script.js" defer></script>
   </head>
   <body>
-    <h1>Youtube Video Downloader</h1>
     <!-- <h2>
-      Sorry guys, this website is under construction and currently doesn't work right now...
+      this site should work right now. updates coming soon.
     </h2> -->
+    <div class="creditbar up">
+      <p class="credit left">
+        Made By
+        <a id="twarped">twarped</a>
+      </p>
+      <p class="credit right">
+        <a
+          href="javascript:window.open('/get_video_info?video_id='+document.getElementById('yturl').value);"
+          >/get_video_info</a
+        >
+        api
+      </p>
+    </div>
+    <!--<form class="form" action="https://tattered-lead-archaeopteryx.glitch.me/watch" target="_blank">-->
     <form class="form">
-      <input
-        id="yturl"
-        placeholder="Youtube Video or Playlsit URL/id... if you have iboss, playlists might not work."
-        type="text"
-      />
-      <button id="downloadbutton" role="submit">Download...</button>
-      <div style="width: 100%">
-        <br />
-        <label>
-          <input id="ytbrowser" type="checkbox"/>
-          Watch In Browser? <br />
-          (No Download Required) doesn't work for playlists<br />
+      <h1>Youtube Video Downloader</h1>
+      <div style="width: 100%;"></div>
+      <div class="flex container">
+        <input
+          id="v"
+          placeholder="Youtube Video URL... Playlists should work..."
+          type="text"
+        />
+        <button id="downloadbutton" role="submit">Download...</button>
+      </div>
+      <div style="width: 100%" id="options">
+        <label class="wrap">
+          <input id="inbrowser" type="checkbox" />
+          <label for="inbrowser" class="text">
+            Inline Attachment?
+          </label>
         </label>
-        <br />
-        <label>
-          <input id="ytmp3" type="checkbox"/>
-          Audio Only? <br />
-          webM
+        <label class="wrap">
+          <input id="audio" type="checkbox" />
+          <label for="audio" class="text">
+            Audio Only?
+          </label>
         </label>
       </div>
     </form>
-    <div class="videoinfo">
-      <a
-        href="javascript:window.open('/get_video_info?video_id='+document.getElementById('yturl').value);"
-        >/get_video_info</a
-      >
-      api
-    </div>
-    <div>
-      <p class="remix">
+    <div class="creditbar down">
+      <p class="credit left">
+        Made With <a href="https://glitch.com/" target="_blank">Glitch</a>
+      </p>
+      <p class="credit right">
         Make A
-        <a href="https://glitch.com/~tattered-lead-archaeopteryx" target="_blank"
+        <a
+          href="https://glitch.com/~tattered-lead-archaeopteryx"
+          target="_blank"
           >Website</a
         >
         Just Like This!
       </p>
     </div>
-    <p class="glitch">Made With <a href="https://glitch.com/" target="_blank">Glitch</a></p>
-    <p style="position: absolute; top: 10px; left: 10px; margin: 0px">
-      Made By
-      <a
-        id="twarped"
-        style="color: blue; cursor: pointer; text-decoration: underline"
-        >twarped</a
-      >
-    </p>
   </body>
 </html>
