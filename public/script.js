@@ -11,7 +11,7 @@ downloadbutton.addEventListener("click", () => {
     (url.match(idcheckerb) && url.length == (11 || 12))
   ) {
     var wantstodownload = confirm(
-      "Download the video with the video url/id of:\n" + url + "?"
+      "Download the " + (ytmp3.checked ? "audio" : "video") + " with the video url/id of:\n" + url + "?"
     );
     if (wantstodownload == true) {
       window.open(
