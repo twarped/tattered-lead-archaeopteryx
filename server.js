@@ -3,7 +3,7 @@ const cors = require("cors");
 const ytdl = require("ytdl-core");
 const contentdisposition = require("content-disposition");
 const axios = require("axios");
-const packer = require("archiver");
+const archiver = require("archiver");
 
 require("dotenv").config();
 const apikey = process.env.api_key;
@@ -150,7 +150,7 @@ app.get("/playlist", async (req, res) => {
   console.log(audio);
   var video_ids = JSON.parse(req.query.video_ids);
   var playlist_name = req.query.playlist_name;
-  var playlist = new packer("zip", { zlib: { level: 9 } });
+  var playlist = new archiver("zip", { zlib: { level: 9 } });
   playlist.on("error", (err) => {
     throw err;
   });
