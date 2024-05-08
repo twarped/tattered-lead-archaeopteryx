@@ -1,2 +1,0 @@
-get xmlhttprequest on playlistsetup and watch to retrieve ID_TOKEN and INNERTUBE_API_KEY
-    get it on query to get cookies working
