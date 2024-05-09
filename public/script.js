@@ -1,7 +1,19 @@
 var downloadbutton = document.getElementById("downloadbutton");
 var inbrowser = document.getElementById("inbrowser");
 var audio = document.getElementById("audio");
-downloadbutton.addEventListener("click", () => {
+
+function newTab(url) {
+  let a = document.createElement('a');
+  a.href = url;
+  a.target = '_blank';
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+downloadbutton.addEventListener("click", ev => {
+  ev.preventDefault();
   var url = document.getElementById("v").value;
   var idcheckerb = /[A-Za-z0-9_-]+/g;
   var urlcheckervideo = /(http(s|):\/\/|)((www\.|)youtu(be\.com|\.be)\/(watch\?v=|!)|(www\.|)youtu\.be\/)[A-Za-z0-9_-]+/g;
@@ -11,10 +23,10 @@ downloadbutton.addEventListener("click", () => {
     (url.match(idcheckerb) && url.length == (11 || 12))
   ) {
     var wantstodownload = confirm(
-      "Download the " + (ytmp3.checked ? "audio" : "video") + " with the video url/id of:\n" + url + "?"
+      "Download the " + (audio.checked ? "audio" : "video") + " with the video url/id of:\n" + url + "?"
     );
     if (wantstodownload == true) {
-      window.open(
+      newTab(
         "/watch?v=" +
           url +
           (inbrowser.checked ? "&inbrowser=true" : "") +
@@ -29,7 +41,7 @@ downloadbutton.addEventListener("click", () => {
       "Download the playlist with the id of: \n" + url + "?"
     );
     if (wantstodownload == true) {
-      window.open(
+      newTab(
         "/playlistsetup?list=" +
           url + 
           (audio.checked ? "&audio=true" : "")
