@@ -1,0 +1,1 @@
+./glibc/lib/x86_64-linux-gnu/ld-2.27.so --library-path ~/glibc/lib/x86_64-linux-gnu/ ~/.bun/bin/bun-executable "$@"

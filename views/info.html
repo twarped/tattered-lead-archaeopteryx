@@ -1,0 +1,18 @@
+<html>
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NE3TXVVDY4"></script>
+    <script src="/gtag-init.js"></script>
+  </head>
+  <body>
+    <% function isArray(obj) {
+      Object.keys(obj).forEach( content => { %>
+        <div>
+          <%= content %>:
+          <%= JSON.stringify(obj[content]) %>
+    </div>
+      <%});
+    } %>
+    <% isArray(contents) %>
+  </body>
+</html>
